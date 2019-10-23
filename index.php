@@ -133,7 +133,6 @@ switch ($action) {
         include('model/valUpdateUser.php');
         die();
         break;
-    switch ($action) {
     case 'registration':
 
         if (!isset($email)) {
@@ -606,7 +605,6 @@ switch ($action) {
         include 'view/login.php';
         die();
         break;
-    }
 }
      
 
