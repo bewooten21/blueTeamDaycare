@@ -1,13 +1,11 @@
 <?php
 
-require_once('models/user_db.php');
-require_once('models/user.php');
 session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action === null) {
-        $action = 'viewLogin';
+        $action = 'home';
     }
 }
 
@@ -17,15 +15,6 @@ switch ($action) {
         die();
         break;
 
-    case 'contact':
-        include('view/contact.php');
-        die();
-        break;
-    
-    case 'aboutUs':
-        include('view/aboutUs.php');
-        die();
-        break;
 
     case'register':
         
@@ -366,7 +355,7 @@ switch ($action) {
         $error_message['image'] = '';
         $file_name = $_SESSION['currentUser']->getImage();
         $imageChanged = false;
-        
+
         if (!isset($password)) {
             $password = '';
         }
@@ -424,19 +413,18 @@ switch ($action) {
             $temp = explode('.', $temp);
             $temp = end($temp);
             $file_ext = strtolower($temp);
-            
+
 
             $extensions = array("jpeg", "jpg", "png", "gif");
 
             if (in_array($file_ext, $extensions) === false) {
                 $error_message['image'] = "file extension not in whitelist: " . join(',', $extensions);
-            }elseif ($file_size === 0) {
-                
+            } elseif ($file_size === 0) {
+
                 $error_message['image'] = "Your file needs to be smaller than 2M";
-                
             } else {
                 $file_name = $_SESSION['currentUser']->getUName() . '.' . $file_ext;
-                move_uploaded_file($file_tmp, "images/".$file_name);
+                move_uploaded_file($file_tmp, "images/" . $file_name);
                 $imageChanged = TRUE;
             }
         }
@@ -485,20 +473,18 @@ switch ($action) {
             if ($hashedPW === '') {
                 $hashedPW = password_hash($password, PASSWORD_DEFAULT);
             }
-            
-            
-            if($imageChanged != TRUE)
-            {
-            user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
-                $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
-            include 'view/profile.php';
-            }  else {
-                
-                $file_name = "images/".$file_name ;
+
+
+            if ($imageChanged != TRUE) {
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
-            include 'view/profile.php';
-                
+                include 'view/profile.php';
+            } else {
+
+                $file_name = "images/" . $file_name;
+                user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
+                $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
+                include 'view/profile.php';
             }
         }
 
@@ -513,9 +499,9 @@ switch ($action) {
 
     case 'viewLogin';
         $users = user_db::newest_users();
-        
+
         $message = '';
-        
+
         if (!isset($uName)) {
             $uName = '';
         }
@@ -532,7 +518,7 @@ switch ($action) {
 
     case 'loggingIn';
         $users = user_db::newest_users();
-        
+
         $uName = filter_input(INPUT_POST, 'uName');
         $pWord = filter_input(INPUT_POST, 'pWord');
         $checkUserName = user_db::get_user_by_username($uName);
@@ -555,24 +541,22 @@ switch ($action) {
             $error_message['pWord'] = '';
             include 'view/login.php';
         }
-        
+
         die();
         break;
-        
+
 //display the profile page for user
-   case 'displayProfile':
-        
-        if(isset($_SESSION['currentUser']))
-        {
+    case 'displayProfile':
+
+        if (isset($_SESSION['currentUser'])) {
             $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
             $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
             include 'view/profile.php';
             die();
             break;
-        }  
-        else {
-           $users = user_db::newest_users();
-           $message = '';
+        } else {
+            $users = user_db::newest_users();
+            $message = '';
             if (!isset($uName)) {
                 $uName = '';
             }
@@ -585,13 +569,13 @@ switch ($action) {
             include 'view/login.php';
             die();
             break;
-        }    
+        }
     case 'logout':
         session_destroy();
         $users = user_db::newest_users();
-        
+
         $message = "You have successfully logged out!";
-        
+
         if (!isset($uName)) {
             $uName = '';
         }
@@ -606,5 +590,8 @@ switch ($action) {
         die();
         break;
 }
+    
+
+
      
 
