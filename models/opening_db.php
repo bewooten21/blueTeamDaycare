@@ -11,8 +11,7 @@ class user_db {
         $users = [];
 
         foreach ($rows as $value) {
-            $userRole = role_db::get_role_by_id($value['roleID']);
-            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole);
+            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
         }
         $statement->closeCursor();
 
@@ -30,8 +29,7 @@ class user_db {
         $statement->execute();
         $value = $statement->fetch();
         
-        $userRole = role_db::get_role_by_id($value['roleID']);
-        $users = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole);
+        $users = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
         
         $statement->closeCursor();
 

@@ -1,8 +1,10 @@
 <?php
-require_once 'models/database.php';
-require_once 'models/user_db.php';
-require_once 'models/user.php';
 require_once 'models/comment.php';
+require_once 'models/database.php';
+require_once 'models/role.php';
+require_once 'models/role_db.php';
+require_once 'models/user.php';
+require_once 'models/user_db.php';
 
 session_start();
 $action = filter_input(INPUT_POST, 'action');
