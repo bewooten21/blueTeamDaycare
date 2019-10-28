@@ -1,17 +1,21 @@
 <?php
+require_once 'models/database.php';
+require_once 'models/user_db.php';
+require_once 'models/user.php';
+require_once 'models/comment.php';
 
 session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action === null) {
-        $action = 'home';
+        $action = 'viewLogin';
     }
 }
 
 switch ($action) {
-    case 'home':
-        include('home.php');
+    case 'about':
+        include('views/about.php');
         die();
         break;
 
@@ -50,7 +54,7 @@ switch ($action) {
             $error_message['image'] = '';
         }
 
-        include 'view/registration.php';
+        include 'views/registration.php';
         die();
         break;
     case 'register':
@@ -192,7 +196,7 @@ switch ($action) {
 
 // if an error message exists, go to the index page
         if ($error_message['image'] != '' || $error_message['fName'] != '' || $error_message['lName'] != '' || $error_message['uName'] != '' || $error_message['email'] != '' || $error_message['password'] != '' || $error_message['pwMessage'] != '') {
-            include 'view/registration.php';
+            include 'views/registration.php';
             exit();
         } else {
 
@@ -206,7 +210,7 @@ switch ($action) {
             
             $currentUser = user_db::validate_user_login($uName);
             $_SESSION['currentUser'] = $currentUser;
-            include 'view/confirmation.php';
+            include 'views/confirmation.php';
         }
         die();
         break;
@@ -225,7 +229,7 @@ switch ($action) {
         if (!isset($password)) {
             $password = '';
         }
-        include 'view/changeInfo.php';
+        include 'views/changeInfo.php';
         die();
         break;
 
@@ -360,7 +364,7 @@ switch ($action) {
 
 //to update DB
         if ($error_message['image'] != '' || $error_message['fName'] != '' || $error_message['lName'] != '' || $error_message['email'] != '' || $error_message['password'] != '' || $error_message['pwMessage'] != '') {
-            include 'view/changeInfo.php';
+            include 'views/changeInfo.php';
             exit();
         } else {
             if ($hashedPW === '') {
@@ -371,13 +375,13 @@ switch ($action) {
             if ($imageChanged != TRUE) {
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
-                include 'view/profile.php';
+                include 'views/profile.php';
             } else {
 
                 $file_name = "images/" . $file_name;
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
-                include 'view/profile.php';
+                include 'views/profile.php';
             }
         }
 
@@ -386,7 +390,7 @@ switch ($action) {
 
     case 'displayAllUsers';
         $users = user_db::select_all();
-        include 'view/displayAllUsers.php';
+        include 'views/displayAllUsers.php';
         die();
         break;
 
@@ -405,7 +409,7 @@ switch ($action) {
             $error_message['pWord'] = '';
         }
 
-        include 'view/login.php';
+        include 'views/login.php';
         die();
         break;
 
@@ -423,16 +427,16 @@ switch ($action) {
             if (password_verify($pWord, $theUser->getPWord())) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
-                include 'view/profile.php';
+                include 'views/profile.php';
             } else {
                 $error_message['uName'] = '';
                 $error_message['pWord'] = '';
-                include 'view/login.php';
+                include 'views/login.php';
             }
         } else {
             $error_message['uName'] = 'No User By That Name';
             $error_message['pWord'] = '';
-            include 'view/login.php';
+            include 'views/login.php';
         }
 
         die();
@@ -444,7 +448,7 @@ switch ($action) {
         if (isset($_SESSION['currentUser'])) {
             $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
             $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
-            include 'view/profile.php';
+            include 'views/profile.php';
             die();
             break;
         } else {
@@ -459,7 +463,7 @@ switch ($action) {
                 $error_message['uName'] = '';
                 $error_message['pWord'] = '';
             }
-            include 'view/login.php';
+            include 'views/login.php';
             die();
             break;
         }
@@ -479,7 +483,7 @@ switch ($action) {
             $error_message['pWord'] = '';
         }
 
-        include 'view/login.php';
+        include 'views/login.php';
         die();
         break;
 }

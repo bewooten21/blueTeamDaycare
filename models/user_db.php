@@ -1,6 +1,4 @@
-<?php
-include('models/database.php'); 
-
+<?php 
 class user_db {
 
     public static function select_all() {

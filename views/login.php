@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Team S</title>
-        <link rel="stylesheet" type="text/css" href="main.css">
+        <title>Login - Team Blue</title>
+        <?php include ('css/css.php'); ?>   
     </head>
-
     <body>
+        <?php include ('nav.php'); ?>
         <main>
-            <header>BranWillTy Social Media Platform</header>
+            <header>Blue's Daycare Portal</header>
                                 
             
             <div id="formWrap">
@@ -58,7 +58,7 @@
 
             </div>
             <footer>
-                <p>BranWillTy @2019</p>
+                <p>Team Blue @2019</p>
             </footer>
         </main>
     </body>
