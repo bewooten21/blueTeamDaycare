@@ -14,15 +14,16 @@ and open the template in the editor.
         <?php include('nav.php'); ?> 
         <div class="container">
   <h2>Login</h2>
-<form class="form-horizontal" action="/action_page.php">
+<form class="form-horizontal" method="post">
+    <input type="hidden" name="action" value="addJobVal">
   <div class="form-group">
     <label class="control-label col-sm-2" for="email">Company:</label>
     <div class="col-sm-4">
-      <select id="companyName" name="companyName">
-                                    <option value="<?php echo $cId?>"><?php echo $cName ?></option>
-                                  <?php foreach ($companies as $c) : ?>
-                                    <option value="<?php echo $c['id'] ?>"> <?php echo $c['companyName'] ?> </option>
-                                    <?php endforeach; ?>  
+      <select id="companyId" name="companyId">
+                                    
+                                    <?php foreach ($companies as $c) : ?>
+                                    <option value="<?php echo $c->getID(); ?>"><?php echo $c->getCompanyName(); ?></option>
+                                    <?php endforeach; ?>      
                                 </select>
         
     </div>

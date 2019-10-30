@@ -31,11 +31,11 @@ class company_db {
         $value = $statement->fetch();
         
         $owner = user_db::get_user_by_id($value['ownerID']);
-        $companies = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner, $value['companyImage']);
+        $company = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner,$value['companyImage']);
         
         $statement->closeCursor();
 
-        return $companies;
+        return $company;
     }
 
     public static function get_company_by_companyname($companyName) {
