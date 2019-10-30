@@ -5,6 +5,8 @@ require_once 'models/role.php';
 require_once 'models/role_db.php';
 require_once 'models/user.php';
 require_once 'models/user_db.php';
+require_once 'models/company_db.php';
+require_once 'models/company.php';
 
 session_start();
 $action = filter_input(INPUT_POST, 'action');
@@ -495,7 +497,7 @@ switch ($action) {
         break;
     
     case 'addJob':
-        $companies=
+        $companies= company_db::select_all();
         include 'views/addJob.php';
         die();
         break;

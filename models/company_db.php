@@ -11,8 +11,8 @@ class company_db {
         $companies = [];
 
         foreach ($rows as $value) {
-            $owner = user_db::get_user_by_id($value['ownerID']);
-            $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value[', childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner);
+            $owner = company_db::get_company_by_id($value['ownerID']);
+            $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner);
         }
         $statement->closeCursor();
 
@@ -30,7 +30,7 @@ class company_db {
         $statement->execute();
         $value = $statement->fetch();
         
-        $owner = user_db::get_user_by_id($value['ownerID']);
+        $owner = company_db::get_company_by_id($value['ownerID']);
         $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value[', childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner);
         
         $statement->closeCursor();

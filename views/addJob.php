@@ -21,7 +21,7 @@ and open the template in the editor.
       <select id="companyName" name="companyName">
                                     <option value="<?php echo $cId?>"><?php echo $cName ?></option>
                                   <?php foreach ($companies as $c) : ?>
-                                    <option value="<?php echo $c['id'] ?>"> <?php echo $c['conf_name'] ?> </option>
+                                    <option value="<?php echo $c['id'] ?>"> <?php echo $c['companyName'] ?> </option>
                                     <?php endforeach; ?>  
                                 </select>
         
