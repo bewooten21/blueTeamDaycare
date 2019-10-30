@@ -30,8 +30,8 @@ class company_db {
         $statement->execute();
         $value = $statement->fetch();
         
-        $owner = company_db::get_company_by_id($value['ownerID']);
-        $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value[', childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner);
+        $owner = user_db::get_user_by_id($value['ownerID']);
+        $companies = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner, $value['companyImage']);
         
         $statement->closeCursor();
 
@@ -50,7 +50,7 @@ class company_db {
         $value = $statement->fetch();
 
         $owner = user_db::get_user_by_id($value['ownerID']);
-        $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value[', childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner);
+        $companies = new company($value['id'], $value['companyName'], $value['employeeCount'], $value[', childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner);
         
         $statement->closeCursor();
         
@@ -68,6 +68,7 @@ class company_db {
             $statement->bindValue(':companyName', $companyName);
             $statement->bindValue(':employeeCount', $employeeCount);
             $statement->bindValue(':childCapacity', $childCapacity);
+            $statement->bindValue(':childrenEnrolled', $childrenEnrolled);
             $statement->bindValue(':overallRating', $overallRating);
             $statement->bindValue(':ownerID', $ownerID);
            
@@ -96,6 +97,7 @@ class company_db {
             $statement->bindValue(':companyName', $companyName);
             $statement->bindValue(':employeeCount', $employeeCount);
             $statement->bindValue(':childCapacity', $childCapacity);
+            $statement->bindValue(':childrenEnrolled', $childrenEnrolled);
             $statement->bindValue(':overallRating', $overallRating);
             $statement->bindValue(':ownerID', $ownerID);
             $statement->bindValue(':fileLocation', $fileLocation);

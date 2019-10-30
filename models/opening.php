@@ -1,16 +1,15 @@
 <?php
-class user {
-    private $ID, $fName, $lName, $email, $uName, $image, $pWord, $role;
-    function __construct($ID, $fName, $lName, $email, $uName, $pWord, $image, role $role = null) {
+class opening {
+    private $ID, $companyID, $type, $openingName, $jobID, $description, $availableCount;
+    function __construct($ID, $companyID, $type, $openingName, $jobID, $description, $availableCount) {
         
         $this->ID = $ID;
-        $this->fName = $fName;
-        $this->lName = $lName;
-        $this->email = $email;
-        $this->uName = $uName;
-        $this->pWord = $pWord;
-        $this->image = $image;
-        $this->role = $role ?: role(1,'user');
+        $this->companyID = $companyID;
+        $this->type = $type;
+        $this->openingName = $openingName;
+        $this->jobID = $jobID;
+        $this->description = $description;
+        $this->availableCount = $availableCount;
         
     }
     
@@ -18,64 +17,56 @@ class user {
         return $this->ID;
     }
 
-    function getFName() {
-        return $this->fName;
+    function getCompanyID() {
+        return $this->companyID;
     }
 
-    function getLName() {
-        return $this->lName;
+    function getType() {
+        return $this->type;
     }
 
-    function getEmail() {
-        return $this->email;
+    function getOpeningName() {
+        return $this->openingName;
     }
 
-    function getUName() {
-        return $this->uName;
+    function getJobID() {
+        return $this->jobID;
     }
     
-    function getPWord(){
-        return $this->pWord;
+    function getDescription(){
+        return $this->description;
     }
     
-    function getImage() {
-        return $this->image;
-    }
-    
-    function getRole() {
-        return $this->role;
+    function getAvailableCount() {
+        return $this->availableCount;
     }
 
     function setID($ID) {
         $this->ID = $ID;
     }
 
-    function setFName($fName) {
-        $this->fName = $fName;
+    function setCompanyID($companyID) {
+        $this->companyID = $companyID;
     }
 
-    function setLName($lName) {
-        $this->lName = $lName;
+    function setType($type) {
+        $this->type = $type;
     }
 
-    function setEmail($email) {
-        $this->email = $email;
+    function setOpeningName($openingName) {
+        $this->openingName = $openingName;
     }
 
-    function setUName($uName) {
-        $this->uName = $uName;
+    function setJobID($jobID) {
+        $this->jobID = $jobID;
     }
     
-    function setPWord($pWord) {
-        $this->pWord = $pWord;
+    function setDescription($description) {
+        $this->description = $description;
     }
     
-    function setImage($image) {
-        $this->image = $image;
-    }
-
-    function setRole($role) {
-        $this->role = $role;
+    function setAvailableCount($availableCount) {
+        $this->availableCount = $availableCount;
     }
 
 }

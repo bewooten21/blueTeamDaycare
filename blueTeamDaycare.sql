@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2019 at 08:21 PM
+-- Generation Time: Oct 30, 2019 at 09:39 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -97,6 +97,27 @@ INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `c
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `job`
+--
+
+CREATE TABLE `job` (
+  `id` int(11) NOT NULL,
+  `companyID` int(11) NOT NULL,
+  `jobName` varchar(50) DEFAULT NULL,
+  `jobDescription` varchar(500) DEFAULT NULL,
+  `jobRequirements` varchar(500) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `job`
+--
+
+INSERT INTO `job` (`id`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`) VALUES
+(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `opening`
 --
 
@@ -105,6 +126,7 @@ CREATE TABLE `opening` (
   `companyID` int(11) NOT NULL,
   `type` varchar(50) NOT NULL,
   `openingName` varchar(100) NOT NULL,
+  `instanceOfTypeID` int(11) NOT NULL,
   `description` varchar(10000) NOT NULL,
   `availableCount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -113,9 +135,9 @@ CREATE TABLE `opening` (
 -- Dumping data for table `opening`
 --
 
-INSERT INTO `opening` (`id`, `companyID`, `type`, `openingName`, `description`, `availableCount`) VALUES
-(1, 1, 'Employee', 'Daycare Worker', 'Come work for us at Tots R US! ', 1),
-(2, 1, 'Student', 'Tots Tot', 'Our staff build strong connections with our tots, leading them in creative activities and even teaching them the basics of coding!', 13);
+INSERT INTO `opening` (`id`, `companyID`, `type`, `openingName`, `instanceOfTypeID`, `description`, `availableCount`) VALUES
+(1, 1, 'Employee', 'Daycare Worker', 0, 'Come work for us at Tots R US! ', 1),
+(2, 1, 'Student', 'Tots Tot', 0, 'Our staff build strong connections with our tots, leading them in creative activities and even teaching them the basics of coding!', 13);
 
 -- --------------------------------------------------------
 
@@ -188,6 +210,12 @@ ALTER TABLE `company`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `job`
+--
+ALTER TABLE `job`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `opening`
 --
 ALTER TABLE `opening`
@@ -227,6 +255,12 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `job`
+--
+ALTER TABLE `job`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --

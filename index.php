@@ -7,6 +7,7 @@ require_once 'models/user.php';
 require_once 'models/user_db.php';
 require_once 'models/company_db.php';
 require_once 'models/company.php';
+require_once 'models/opening.php';
 
 session_start();
 $action = filter_input(INPUT_POST, 'action');

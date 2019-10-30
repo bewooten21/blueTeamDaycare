@@ -1,27 +1,27 @@
 <?php 
-class opening_db {
+class user_db {
 
     public static function select_all() {
         $db = Database::getDB();
 
-        $queryUsers = 'SELECT * FROM opening';
+        $queryUsers = 'SELECT * FROM user';
         $statement = $db->prepare($queryUsers);
         $statement->execute();
         $rows = $statement->fetchAll();
-        $openings = [];
+        $users = [];
 
         foreach ($rows as $value) {
-            $openings[$value['id']] = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['jobID'], $value['description'], $value['availableCount']);
+            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
         }
         $statement->closeCursor();
 
-        return $openings;
+        return $users;
     }
 
-    public static function get_opening_by_id($id) {
+    public static function get_user_by_id($id) {
         $db = Database::getDB();
         $query = 'SELECT *
-              FROM opening
+              FROM user
               WHERE ID= :id';
 
         $statement = $db->prepare($query);
@@ -29,14 +29,14 @@ class opening_db {
         $statement->execute();
         $value = $statement->fetch();
         
-        $openings = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['jobID'], $value['description'], $value['availableCount']);
+        $users = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
         
         $statement->closeCursor();
 
-        return $openings;
+        return $users;
     }
 
-    public static function get_opening_by_companyID($companyID) {
+    public static function get_user_by_username($uName) {
         $db = Database::getDB();
         $query = 'SELECT uName
               FROM user
@@ -45,13 +45,11 @@ class opening_db {
         $statement = $db->prepare($query);
         $statement->bindValue(':uName', $uName);
         $statement->execute();
-        $value = $statement->fetch();
+        $result = $statement->fetch();
 
-        $openings = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['jobID'], $value['description'], $value['availableCount']);
-        
         $statement->closeCursor();
-
-        return $openings;
+        
+        return $result;
     }
 
     public static function check_user_by_email($email) {
