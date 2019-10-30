@@ -488,6 +488,11 @@ switch ($action) {
         include 'views/login.php';
         die();
         break;
+        
+    case 'viewJobs':
+        include 'views/viewJobs.php';
+        die();
+        break;
 }
     
 
