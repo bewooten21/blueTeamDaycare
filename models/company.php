@@ -1,7 +1,9 @@
 <?php
+require_once("user.php");
+
 class company {
-    private $ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating;
-    function __construct($ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating) {
+    private $ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID;
+    function __construct($ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, user $ownerID = null) {
         
         $this->ID = $ID;
         $this->companyName = $companyName;
@@ -9,7 +11,7 @@ class company {
         $this->childCapacity = $childCapacity;
         $this->childrenEnrolled = $childrenEnrolled;
         $this->overallRating = $overallRating;
-        
+        $this->ownerID = $ownerID;
     }
     
     function getID() {
@@ -36,6 +38,10 @@ class company {
         return $this->overallRating;
     }
 
+    function getOwnerID() {
+        return $this->ownerID;
+    }
+    
     function setID($ID) {
         $this->ID = $ID;
     }
@@ -60,4 +66,8 @@ class company {
         $this->overallRating = $overallRating;
     }
 
+     function setOwnerID($ownerID) {
+        $this->ownerID = $ownerID;
+    }
+    
 }
