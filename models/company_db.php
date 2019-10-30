@@ -82,9 +82,37 @@ class company_db {
             display_db_error($error_message);
         }
     }
-
-    public static function update_company($ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID) {
+    
+    public static function add_company_with_image($companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID, $fileName) {
         
+        $fileLocation = "images/". $fileName;
+        $db = Database::getDB();
+        $query = 'INSERT INTO company
+                 (companyName, employeeCount, childCapacity, childrenEnrolled, overallRating, ownerID, comapnyImage)
+              VALUES
+                 (:companyName, :employeeCount, :childCapacity, :childrenEnrolled, :overallRating, :ownerID, :fileLocation)';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':companyName', $companyName);
+            $statement->bindValue(':employeeCount', $employeeCount);
+            $statement->bindValue(':childCapacity', $childCapacity);
+            $statement->bindValue(':overallRating', $overallRating);
+            $statement->bindValue(':ownerID', $ownerID);
+            $statement->bindValue(':fileLocation', $fileLocation);
+           
+            $statement->execute();
+            $statement->closeCursor();
+            $company_id = $db->lastInsertId();
+            return $company_id;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+
+    public static function update_company($ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID, $image) {
+        
+        $fileLocation = "images/".$image;
         $db = Database::getDB();
         $query = $query = 'UPDATE company
               SET companyName = :companyName,
@@ -93,6 +121,7 @@ class company_db {
                   childrenEnrolled = :childrenEnrolled,
                   overallRating = :overallRating
                   ownerID = :ownerID
+                  image = :companyImage
                 WHERE ID = :ID';
         try {
             $statement = $db->prepare($query);
@@ -102,6 +131,7 @@ class company_db {
             $statement->bindValue(':childrenEnrolled', $childrenEnrolled);
             $statement->bindValue(':overallRating', $overallRating);
             $statement->bindValue(':ownerID', $ownerID);
+            $statement->bindValue(':companyImage', $fileLocation);
             $statement->bindValue(':ID', $ID);
             $row_count = $statement->execute();
             $statement->closeCursor();

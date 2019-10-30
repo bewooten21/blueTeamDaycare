@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 28, 2019 at 08:01 PM
+-- Generation Time: Oct 30, 2019 at 08:21 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -82,15 +82,17 @@ CREATE TABLE `company` (
   `employeeCount` int(11) NOT NULL,
   `childCapacity` int(11) NOT NULL,
   `childrenEnrolled` int(11) NOT NULL,
-  `overallRating` float DEFAULT NULL
+  `overallRating` float DEFAULT NULL,
+  `ownerID` int(11) NOT NULL,
+  `companyImage` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `company`
 --
 
-INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`) VALUES
-(1, 'Tots R Us', 4, 15, 2, 3.42);
+INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
+(1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default.jpg');
 
 -- --------------------------------------------------------
 

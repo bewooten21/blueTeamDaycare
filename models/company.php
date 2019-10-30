@@ -2,8 +2,8 @@
 require_once("user.php");
 
 class company {
-    private $ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID;
-    function __construct($ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, user $ownerID = null) {
+    private $ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID, $image;
+    function __construct($ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, user $ownerID = null, $image) {
         
         $this->ID = $ID;
         $this->companyName = $companyName;
@@ -42,6 +42,10 @@ class company {
         return $this->ownerID;
     }
     
+    function getImage() {
+        return $this->image;
+    }
+    
     function setID($ID) {
         $this->ID = $ID;
     }
@@ -68,6 +72,10 @@ class company {
 
      function setOwnerID($ownerID) {
         $this->ownerID = $ownerID;
+    }
+    
+    function setImage($image) {
+        $this->image = $image;
     }
     
 }
