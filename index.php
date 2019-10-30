@@ -498,6 +498,8 @@ switch ($action) {
     
     case 'addJob':
         $companies= company_db::select_all();
+        $cId="";
+        $cName="";
         include 'views/addJob.php';
         die();
         break;

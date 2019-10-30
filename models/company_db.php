@@ -11,8 +11,8 @@ class company_db {
         $companies = [];
 
         foreach ($rows as $value) {
-            $owner = company_db::get_company_by_id($value['ownerID']);
-            $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner);
+            $owner = user_db::get_user_by_id($value['ownerID']);
+            $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner, $value['companyImage']);
         }
         $statement->closeCursor();
 
