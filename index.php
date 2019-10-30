@@ -503,6 +503,11 @@ switch ($action) {
         include 'views/addJob.php';
         die();
         break;
+    
+    case "addJobVal":
+        include 'models/addJobVal.php';
+        die();
+        break;
 }
     
 
