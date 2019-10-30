@@ -177,7 +177,8 @@ class user_db {
         $statement->execute();
         $value = $statement->fetch();
         
-        $theUser = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
+        $userRole = role_db::get_role_by_id($value['roleID']);
+        $theUser = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole);
 
         $statement->closeCursor();
 

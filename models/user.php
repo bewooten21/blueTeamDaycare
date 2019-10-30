@@ -1,4 +1,5 @@
 <?php
+require_once("role.php");
 class user {
     private $ID, $fName, $lName, $email, $uName, $image, $pWord, $role;
     function __construct($ID, $fName, $lName, $email, $uName, $pWord, $image, role $role = null) {
