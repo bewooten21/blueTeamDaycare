@@ -35,7 +35,23 @@
           </ul>
         </li>
         <li><a href="#">Contact</a></li>
-        <li><a href='index.php?action=viewJobs'>Jobs</a></li>
+        <li class="dropdown">
+          <a
+            href="#"
+            class="dropdown-toggle"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >Jobs<span class="caret"></span
+          ></a>
+          <ul class="dropdown-menu">
+            <li><a href="index.php?action=addJob">Add Job</a></li>
+            <li><a href="index.php?action=viewJobs">View Jobs</a></li>
+            
+          </ul>
+        </li>
+        
         <li><a href='index.php?action=displayProfile'>Profile</a></li>
       </ul>
     </div>

@@ -493,6 +493,12 @@ switch ($action) {
         include 'views/viewJobs.php';
         die();
         break;
+    
+    case 'addJob':
+        $companies=
+        include 'views/addJob.php';
+        die();
+        break;
 }
     
 
