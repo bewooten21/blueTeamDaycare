@@ -35,6 +35,7 @@
           </ul>
         </li>
         <li><a href="#">Contact</a></li>
+        <li><a href='index.php?action=viewJobs'>Jobs</a></li>
         <li><a href='index.php?action=displayProfile'>Profile</a></li>
       </ul>
     </div>
