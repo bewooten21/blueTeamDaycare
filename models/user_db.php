@@ -285,6 +285,22 @@ class user_db {
         return $users;
     }
     
-    
+    public static function get_user_company($id) {
+        $db = Database::getDB();
+        $query = 'SELECT companyID
+              FROM user
+              WHERE ID= :id';
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $value = $statement->fetch();
+        
+        $companyID = $value;
+        
+        $statement->closeCursor();
+        
+        return $comopanyID;
+    }
 //put your code here
 }
