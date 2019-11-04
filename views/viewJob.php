@@ -21,21 +21,23 @@
     </tr>
   </thead>
   <tbody>
-      <?php foreach ($jobs as $j) : ?>
+      
     <tr>
-      <th scope="row"><a href="index.php?action=viewJob&amp;id=<?php echo $j["id"]; ?>">
-                                <?php  echo $j["id"]; ?>
-                            </a></th>
-      <td><?php echo $j["companyName"] ; ?></td>
-      <td><?php echo $j["jobName"] ; ?></td>
-      <td><?php echo $j["jobDescription"] ; ?></td>
-      <td><?php echo $j["jobRequirements"] ; ?></td>
+      <th scope="row"><?php echo $job[0] ; ?></th>
+      <td><?php echo $job["companyName"] ; ?></td>
+      <td><?php echo $job["jobName"] ; ?></td>
+      <td><?php echo $job["jobDescription"] ; ?></td>
+      <td><?php echo $job["jobRequirements"] ; ?></td>
     </tr>
-    <?php endforeach; ?>
+    
   
   </tbody>
+  <tr>
+      <input type="submit" value="Logout"><br>
+  </tr>
 </table>
             </div>
         </div>
     </body>
 </html>
+
