@@ -475,6 +475,28 @@ switch ($action) {
             die();
             break;
         }
+    case 'random_display_profile':
+        $profileID = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $users = user_db::get_user_by_id($profileID);
+        $comments = user_db::get_user_comments($profileID);
+        $comment = '';
+        
+        include 'views/view_profile.php';   
+        die();
+        break;
+    
+    case 'submitComment':
+        $profileID = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $users = user_db::get_user_by_id($profileID);
+        $comment = filter_input(INPUT_POST, 'comment');
+        
+        user_db::make_comment($profileID, $comment, $_SESSION['currentUser']->getID(), $_SESSION['currentUser']->getUName());
+        $comments = user_db::get_user_comments($profileID);
+        $comment = '';
+        include 'views/view_profile.php'; 
+        die();
+        break;
+    
     case 'logout':
         session_destroy();
         $users = user_db::newest_users();

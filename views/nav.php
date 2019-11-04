@@ -51,8 +51,15 @@
             
           </ul>
         </li>
+        <li><a href='index.php?action=displayAllUsers'>All Users</a></li>
         
+        <?php if (isset($_SESSION['currentUser'])):?>
         <li><a href='index.php?action=displayProfile'>Profile</a></li>
+        <li><a href='index.php?action=logout'>Logout</a></li>
+        <?php else: ?>
+        <li><a href='index.php?action=viewLogin'>Login</a></li>
+        <li><a href='index.php?action=registration'>Register</a></li>
+        <?php endif; ?>
       </ul>
     </div>
   </div>

@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Team S</title>
-        <link rel="stylesheet" type="text/css" href="main.css">
+        <meta charset="UTF-8">
+        <title>Blue&apos;s Daycare</title>
+        <?php include ('css/css.php'); ?>   
     </head>
-
     <body>
+        <?php include ('nav.php'); ?>
         <main>
-            <header>BranWillTy Social Media Platform</header>
+            <header>Blue&apos;s Daycare</header>
             <div id="formWrap">
-                <h1>Enter Information</h1>
+                <h1>Register</h1>
                 <form action="index.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="register">
                     <div id="data">
@@ -86,7 +87,7 @@
                     </form>
             </div>
             <footer>
-                <p>BranWillTy @2019</p>
+                <p>Blue Team Daycare @2019</p>
             </footer>
         </main>
     </body>
