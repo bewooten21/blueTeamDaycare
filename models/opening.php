@@ -1,13 +1,13 @@
 <?php
 class opening {
-    private $ID, $companyID, $type, $openingName, $jobID, $description, $availableCount;
-    function __construct($ID, $companyID, $type, $openingName, $jobID, $description, $availableCount) {
+    private $ID, $companyID, $type, $openingName, $instanceOfTypeID, $description, $availableCount;
+    function __construct($ID, $companyID, $type, $openingName, $instanceOfTypeID, $description, $availableCount) {
         
         $this->ID = $ID;
         $this->companyID = $companyID;
         $this->type = $type;
         $this->openingName = $openingName;
-        $this->jobID = $jobID;
+        $this->instanceOfTypeID = $instanceOfTypeID;
         $this->description = $description;
         $this->availableCount = $availableCount;
         
@@ -29,8 +29,8 @@ class opening {
         return $this->openingName;
     }
 
-    function getJobID() {
-        return $this->jobID;
+    function getInstanceOfTypeID() {
+        return $this->instanceOfTypeID;
     }
     
     function getDescription(){
@@ -57,8 +57,8 @@ class opening {
         $this->openingName = $openingName;
     }
 
-    function setJobID($jobID) {
-        $this->jobID = $jobID;
+    function setInstanceOfTypeID($instanceOfTypeID) {
+        $this->instanceOfTypeID = $instanceOfTypeID;
     }
     
     function setDescription($description) {

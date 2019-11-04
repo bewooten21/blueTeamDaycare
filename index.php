@@ -1,4 +1,6 @@
 <?php
+require_once 'models/application.php';
+require_once 'models/application_db.php';
 require_once 'models/comment.php';
 require_once 'models/database.php';
 require_once 'models/role.php';
@@ -8,6 +10,7 @@ require_once 'models/user_db.php';
 require_once 'models/company_db.php';
 require_once 'models/company.php';
 require_once 'models/opening.php';
+require_once 'models/opening_db.php';
 
 session_start();
 $action = filter_input(INPUT_POST, 'action');

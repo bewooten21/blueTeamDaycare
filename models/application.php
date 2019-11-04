@@ -1,16 +1,14 @@
 <?php
 class user {
-    private $ID, $fName, $lName, $email, $uName, $image, $pWord, $role;
-    function __construct($ID, $fName, $lName, $email, $uName, $pWord, $image, role $role = null) {
+    private $ID, $openingID, $isProcessed, $coverLetter, $resume, $userID;
+    function __construct($ID, $openingID, $isProcessed, $coverLetter, $resume, $userID) {
         
         $this->ID = $ID;
-        $this->fName = $fName;
-        $this->lName = $lName;
-        $this->email = $email;
-        $this->uName = $uName;
-        $this->pWord = $pWord;
-        $this->image = $image;
-        $this->role = $role ?: role(1,'user');
+        $this->openingID = $openingID;
+        $this->isProcessed = $isProcessed;
+        $this->coverLetter = $coverLetter;
+        $this->resume = $resume;
+        $this->userID = $userID;
         
     }
     
@@ -18,64 +16,49 @@ class user {
         return $this->ID;
     }
 
-    function getFName() {
-        return $this->fName;
+    function getOpeningID() {
+        return $this->openingID;
     }
 
-    function getLName() {
-        return $this->lName;
+    function getIsProcessed() {
+        return $this->isProcessed;
     }
 
-    function getEmail() {
-        return $this->email;
+    function getCoverLetter() {
+        return $this->coverLetter;
     }
 
-    function getUName() {
-        return $this->uName;
+    function getResume() {
+        return $this->resume;
     }
     
-    function getPWord(){
-        return $this->pWord;
-    }
-    
-    function getImage() {
-        return $this->image;
-    }
-    
-    function getRole() {
-        return $this->role;
+    function getUserID() {
+        return $this->userID;
     }
 
     function setID($ID) {
         $this->ID = $ID;
     }
 
-    function setFName($fName) {
-        $this->fName = $fName;
+    function setOpeningID($openingID) {
+        $this->openingID = $openingID;
     }
 
-    function setLName($lName) {
-        $this->lName = $lName;
+    function setIsProcessed($isProcessed) {
+        $this->isProcessed = $isProcessed;
     }
 
-    function setEmail($email) {
-        $this->email = $email;
+    function setCoverLetter($coverLetter) {
+        $this->coverLetter = $coverLetter;
     }
 
-    function setUName($uName) {
-        $this->uName = $uName;
+    function setResume($resume) {
+        $this->resume = $resume;
     }
     
-    function setPWord($pWord) {
-        $this->pWord = $pWord;
-    }
     
-    function setImage($image) {
-        $this->image = $image;
-    }
-
-    function setRole($role) {
-        $this->role = $role;
+    function setUserID($userID) {
+        $this->userID = $userID;
     }
 
 }
