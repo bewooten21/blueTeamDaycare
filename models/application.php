@@ -1,5 +1,5 @@
 <?php
-class user {
+class application {
     private $ID, $openingID, $isProcessed, $coverLetter, $resume, $userID;
     function __construct($ID, $openingID, $isProcessed, $coverLetter, $resume, $userID) {
         
