@@ -1,39 +1,39 @@
 <?php 
-class user_db {
+class job_db {
 
     public static function select_all() {
         $db = Database::getDB();
 
-        $queryUsers = 'SELECT * FROM user';
-        $statement = $db->prepare($queryUsers);
+        $query='SELECT * from job JOIN company ON
+            job.companyID=company.id
+            ORDER by job.companyID asc'
+            ;
+        $statement = $db->prepare($query);
         $statement->execute();
         $rows = $statement->fetchAll();
-        $users = [];
-
-        foreach ($rows as $value) {
-            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
-        }
+      
         $statement->closeCursor();
 
-        return $users;
+        return $rows;
     }
 
-    public static function get_user_by_id($id) {
+    public static function get_job_by_id($id) {
         $db = Database::getDB();
         $query = 'SELECT *
-              FROM user
-              WHERE ID= :id';
+              FROM job JOIN company ON 
+              job.companyID=companyID
+              WHERE job.id= :id';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $id);
         $statement->execute();
         $value = $statement->fetch();
         
-        $users = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
+        
         
         $statement->closeCursor();
 
-        return $users;
+        return $value;
     }
 
     public static function get_user_by_username($uName) {
@@ -67,26 +67,24 @@ class user_db {
         return $result;
     }
 
-    public static function add_user($fName, $lName, $email, $uName, $hashedPW) {
+    public static function add_job($id, $compId, $jobT, $jobD, $jobR) {
         $db = Database::getDB();
-        $query = 'INSERT INTO user
-                 (fName, lName, email, uName, pWord)
+        $query = 'INSERT INTO job
+                 (id, companyID, jobName, jobDescription, jobRequirements)
               VALUES
-                 (:fName, :lName, :email, :uName, :pWord)';
+                 (:id, :compId, :jobT, :jobD, :jobR)';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue(':fName', $fName);
-            $statement->bindValue(':lName', $lName);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':uName', $uName);
-            $statement->bindValue(':pWord', $hashedPW);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':compId', $compId);
+            $statement->bindValue(':jobT', $jobT);
+            $statement->bindValue(':jobD', $jobD);
+            $statement->bindValue(':jobR', $jobR);
            
             $statement->execute();
             $statement->closeCursor();
 
-            // Get the last product ID that was automatically generated
-            $user_id = $db->lastInsertId();
-            return $user_id;
+           
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             display_db_error($error_message);

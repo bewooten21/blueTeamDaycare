@@ -1,81 +1,57 @@
 <?php
-class user {
-    private $ID, $fName, $lName, $email, $uName, $image, $pWord, $role;
-    function __construct($ID, $fName, $lName, $email, $uName, $pWord, $image, role $role = null) {
+class job {
+    private $Id, $companyId, $jobName, $jobDescription, $jobRequirements;
+    function __construct($Id,$companyId, $jobName, $jobDescription, $jobRequirements) {
         
-        $this->ID = $ID;
-        $this->fName = $fName;
-        $this->lName = $lName;
-        $this->email = $email;
-        $this->uName = $uName;
-        $this->pWord = $pWord;
-        $this->image = $image;
-        $this->role = $role ?: role(1,'user');
+        $this->Id = $Id;
+        $this->companyId=$companyId;
+        $this->jobName=$jobName;
+        $this->jobDescription=$jobDescription;
+        $this->jobRequirements=$jobRequirements;
         
     }
+    function getId() {
+        return $this->Id;
+    }
+
+    function getCompanyId() {
+        return $this->companyId;
+    }
+
+    function getJobName() {
+        return $this->jobName;
+    }
+
+    function getJobDescription() {
+        return $this->jobDescription;
+    }
+
+    function getJobRequirements() {
+        return $this->jobRequirements;
+    }
+
+    function setId($Id) {
+        $this->Id = $Id;
+    }
+
+    function setCompanyId($companyId) {
+        $this->companyId = $companyId;
+    }
+
+    function setJobName($jobName) {
+        $this->jobName = $jobName;
+    }
+
+    function setJobDescription($jobDescription) {
+        $this->jobDescription = $jobDescription;
+    }
+
+    function setJobRequirements($jobRequirements) {
+        $this->jobRequirements = $jobRequirements;
+    }
+
+
     
-    function getID() {
-        return $this->ID;
-    }
-
-    function getFName() {
-        return $this->fName;
-    }
-
-    function getLName() {
-        return $this->lName;
-    }
-
-    function getEmail() {
-        return $this->email;
-    }
-
-    function getUName() {
-        return $this->uName;
-    }
-    
-    function getPWord(){
-        return $this->pWord;
-    }
-    
-    function getImage() {
-        return $this->image;
-    }
-    
-    function getRole() {
-        return $this->role;
-    }
-
-    function setID($ID) {
-        $this->ID = $ID;
-    }
-
-    function setFName($fName) {
-        $this->fName = $fName;
-    }
-
-    function setLName($lName) {
-        $this->lName = $lName;
-    }
-
-    function setEmail($email) {
-        $this->email = $email;
-    }
-
-    function setUName($uName) {
-        $this->uName = $uName;
-    }
-    
-    function setPWord($pWord) {
-        $this->pWord = $pWord;
-    }
-    
-    function setImage($image) {
-        $this->image = $image;
-    }
-
-    function setRole($role) {
-        $this->role = $role;
-    }
+   
 
 }

@@ -10,6 +10,7 @@ require_once 'models/user_db.php';
 require_once 'models/company_db.php';
 require_once 'models/company.php';
 require_once 'models/opening.php';
+require_once 'models/job_db.php';
 require_once 'models/opening_db.php';
 
 session_start();
@@ -518,20 +519,36 @@ switch ($action) {
         break;
         
     case 'viewJobs':
+        $jobs= job_db::select_all();
         include 'views/viewJobs.php';
         die();
         break;
     
     case 'addJob':
-        $companies= company_db::select_all();
-        $cId="";
+        
+        
+        $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
         $cName="";
+        $tError="";
+        $dError="";
+        $rError="";
+        $jobD="";
+        $jobR="";
+        $jobT="";
         include 'views/addJob.php';
         die();
         break;
     
     case "addJobVal":
+        
         include 'models/addJobVal.php';
+        die();
+        break;
+    
+    case 'viewJob':
+        $id=filter_input(INPUT_GET, 'id');
+        $job= job_db::get_job_by_id($id);
+        include ('views/viewJob.php');
         die();
         break;
     

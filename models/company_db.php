@@ -37,6 +37,24 @@ class company_db {
 
         return $company;
     }
+    
+    public static function get_company_by_ownerId($id) {
+        $db = Database::getDB();
+        $query = 'SELECT *
+              FROM company
+              WHERE ownerID= :id';
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $company = $statement->fetch();
+
+        $statement->closeCursor();
+
+        return $company;
+    }
+    
+    
 
     public static function get_company_by_companyname($companyName) {
         $db = Database::getDB();

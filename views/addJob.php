@@ -7,7 +7,7 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Login</title>
+        <title>Add Job</title>
         <?php include ('css/css.php');  ?> 
     </head>
     <body>
@@ -19,32 +19,43 @@ and open the template in the editor.
   <div class="form-group">
     <label class="control-label col-sm-2" for="email">Company:</label>
     <div class="col-sm-4">
-      <select id="companyId" name="companyId">
-                                    
-                                    <?php foreach ($companies as $c) : ?>
-                                    <option value="<?php echo $c->getID(); ?>"><?php echo $c->getCompanyName(); ?></option>
-                                    <?php endforeach; ?>      
-                                </select>
-        
+      <input type="text" class="form-control" id="cName" name="cName" placeholder="Enter company name" value="<?php echo htmlspecialchars($company['companyName']); ?>">
+      <input type="hidden" name="cId" value="<?php echo htmlspecialchars($company['id']); ?>">
     </div>
+    
   </div>
   <div class="form-group">
-    <label class="control-label col-sm-2" for="pwd">Job Title:</label>
+    <label class="control-label col-sm-2" for="jobTitle">Job Title:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="jobTitle" placeholder="Enter job title">
+      <input type="text" class="form-control" id="jobT" name="jobT" placeholder="Enter job title" value="<?php echo htmlspecialchars($jobT); ?>">
     </div>
+    <div class="col-sm-2">
+          <p class="error">
+              <?php echo $tError; ?>
+          </p>
+      </div>
   </div>
     <div class="form-group">
     <label class="control-label col-sm-2" for="jobD">Job Description:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="jobD" placeholder="Enter job description">
+      <input type="text" class="form-control" id="jobD" name="jobD" placeholder="Enter job description" value="<?php echo htmlspecialchars($jobD); ?>">
     </div>
+    <div class="col-sm-2">
+          <p class="error">
+              <?php echo $dError; ?>
+          </p>
+      </div>
   </div>
     <div class="form-group">
     <label class="control-label col-sm-2" for="jobR">Job Requirements:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="jobR" placeholder="Enter job requirements">
+      <input type="text" class="form-control" id="jobR" name="jobR" placeholder="Enter job requirements" value="<?php echo htmlspecialchars($jobR); ?>">
     </div>
+    <div class="col-sm-2">
+          <p class="error">
+              <?php echo $rError; ?>
+          </p>
+      </div>
   </div>
   
   <div class="form-group">
