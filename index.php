@@ -1,4 +1,6 @@
 <?php
+require_once 'models/application.php';
+require_once 'models/application_db.php';
 require_once 'models/comment.php';
 require_once 'models/database.php';
 require_once 'models/role.php';
@@ -9,6 +11,7 @@ require_once 'models/company_db.php';
 require_once 'models/company.php';
 require_once 'models/opening.php';
 require_once 'models/job_db.php';
+require_once 'models/opening_db.php';
 
 session_start();
 $action = filter_input(INPUT_POST, 'action');
@@ -473,6 +476,28 @@ switch ($action) {
             die();
             break;
         }
+    case 'random_display_profile':
+        $profileID = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $users = user_db::get_user_by_id($profileID);
+        $comments = user_db::get_user_comments($profileID);
+        $comment = '';
+        
+        include 'views/view_profile.php';   
+        die();
+        break;
+    
+    case 'submitComment':
+        $profileID = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $users = user_db::get_user_by_id($profileID);
+        $comment = filter_input(INPUT_POST, 'comment');
+        
+        user_db::make_comment($profileID, $comment, $_SESSION['currentUser']->getID(), $_SESSION['currentUser']->getUName());
+        $comments = user_db::get_user_comments($profileID);
+        $comment = '';
+        include 'views/view_profile.php'; 
+        die();
+        break;
+    
     case 'logout':
         session_destroy();
         $users = user_db::newest_users();

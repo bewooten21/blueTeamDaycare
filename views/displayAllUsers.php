@@ -2,15 +2,15 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Baby&apos;s First</title>
+        <title>Blue&apos;s Daycare</title>
         <?php include ('css/css.php'); ?>   
     </head>
     <body>
         <?php include ('nav.php'); ?>
         <main>
-            <header>BranWillTy Social Media Platform</header>
+            <header>Blue&apos;s Daycare Users</header>
             <div id="formWrap">
-                <h1>BranWillTy Users</h1>
+                <h1>Blue&apos;s Daycare Users</h1>
                 <table>
                     <tr>
                         <th>User Name</th>
@@ -35,25 +35,10 @@
 
                 </table><br>
 
-                <form action="index.php" method="post">
-                    <input type="hidden" name="action" value="registration">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Back to Registration"><br>
-                </form>
-                <form action="index.php" method="Post">
-                    <input type="hidden" name="action" value="displayProfile">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Profile Page"></br>
-                </form>
-                <form action="index.php" method="post">
-                    <input type="hidden" name="action" value="logout">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Logout"><br>
-                </form>
             </div>
         </main>
         <footer>
-            <p>BranWillTy @2019</p>
+            <p>Blue Team Daycare @2019</p>
         </footer>
     </body>
 </html>

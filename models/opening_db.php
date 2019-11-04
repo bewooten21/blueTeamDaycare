@@ -11,7 +11,7 @@ class opening_db {
         $openings = [];
 
         foreach ($rows as $value) {
-            $openings[$value['id']] = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['jobID'], $value['description'], $value['availableCount']);
+            $openings[$value['id']] = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['instanceOfTypeID'], $value['description'], $value['availableCount']);
         }
         $statement->closeCursor();
 
@@ -29,7 +29,7 @@ class opening_db {
         $statement->execute();
         $value = $statement->fetch();
         
-        $openings = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['jobID'], $value['description'], $value['availableCount']);
+        $openings = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['instanceOfTypeID'], $value['description'], $value['availableCount']);
         
         $statement->closeCursor();
 
@@ -38,109 +38,67 @@ class opening_db {
 
     public static function get_opening_by_companyID($companyID) {
         $db = Database::getDB();
-        $query = 'SELECT uName
-              FROM user
-              WHERE uName= :uName';
+        $query = 'SELECT *
+              FROM opening
+              WHERE companyID= :companyID';
 
         $statement = $db->prepare($query);
-        $statement->bindValue(':uName', $uName);
+        $statement->bindValue(':companyID', $companyID);
         $statement->execute();
         $value = $statement->fetch();
 
-        $openings = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['jobID'], $value['description'], $value['availableCount']);
+        $openings = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['instanceOfTypeID'], $value['description'], $value['availableCount']);
         
         $statement->closeCursor();
 
         return $openings;
     }
-
-    public static function check_user_by_email($email) {
+    
+    public static function add_opening($companyID, $type, $openingName, $instanceOfTypeID, $description, $availableCount) {
         $db = Database::getDB();
-        $query = 'SELECT email
-              FROM user
-              WHERE email = :email';
-        $statement = $db->prepare($query);
-        $statement->bindValue(':email', $email);
-        $statement->execute();
-        $result = $statement->fetch();
-
-        $statement->closeCursor();
-
-        return $result;
-    }
-
-    public static function add_user($fName, $lName, $email, $uName, $hashedPW) {
-        $db = Database::getDB();
-        $query = 'INSERT INTO user
-                 (fName, lName, email, uName, pWord)
+        $query = 'INSERT INTO opening
+                 (companyID, type, openingName, instanceOfTypeID, description, availableCount)
               VALUES
-                 (:fName, :lName, :email, :uName, :pWord)';
+                 (:companyID, :type, :openingName, :instanceOfTypeID, :description, :availableCount)';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue(':fName', $fName);
-            $statement->bindValue(':lName', $lName);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':uName', $uName);
-            $statement->bindValue(':pWord', $hashedPW);
+            $statement->bindValue(':companyID', $companyID);
+            $statement->bindValue(':type', $type);
+            $statement->bindValue(':openingName', $openingName);
+            $statement->bindValue(':instanceOfTypeID', $instanceOfTypeID);
+            $statement->bindValue(':description', $description);
+            $statement->bindValue(':availableCount', $availableCount);
            
             $statement->execute();
             $statement->closeCursor();
 
             // Get the last product ID that was automatically generated
-            $user_id = $db->lastInsertId();
-            return $user_id;
+            $opening_id = $db->lastInsertId();
+            return $opening_id;
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             display_db_error($error_message);
         }
     }
     
-    public static function add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $fileName) {
-        
-        $fileLocation = "images/". $fileName;
+    public static function update_opening($ID, $companyID, $type, $openingName, $instanceOfTypeID, $description, $availableCount) {
         $db = Database::getDB();
-        $query = 'INSERT INTO user
-                 (fName, lName, email, uName, pWord, image)
-              VALUES
-                 (:fName, :lName, :email, :uName, :pWord, :fileLocation)';
-        try {
-            $statement = $db->prepare($query);
-            $statement->bindValue(':fName', $fName);
-            $statement->bindValue(':lName', $lName);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':uName', $uName);
-            $statement->bindValue(':pWord', $hashedPW);
-            $statement->bindValue(':fileLocation', $fileLocation);
-           
-            $statement->execute();
-            $statement->closeCursor();
-            $user_id = $db->lastInsertId();
-            return $user_id;
-        } catch (PDOException $e) {
-            $error_message = $e->getMessage();
-            display_db_error($error_message);
-        }
-    }
-    
-
-    public static function update_user($ID, $fName, $lName, $email, $uName, $uImage) {
-        
-        $fileLocation = "images/".$uImage;
-        $db = Database::getDB();
-        $query = $query = 'UPDATE user
-              SET fName = :fName,
-                  lName = :lName,
-                  email = :email,
-                  uName = :uName,
-                  uImage = :uImage
+        $query = $query = 'UPDATE opening
+              SET companyID = :companyID,
+                  type = :type,
+                  openingName = :openingName,
+                  instanceOfTypeID = :instanceOfTypeID,
+                  description = :description
+                  availableCount = :availableCount
                 WHERE ID = :ID';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue(':fName', $fName);
-            $statement->bindValue(':lName', $lName);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':uName', $uName);
-            $statement->bindValue(':image', $fileLocation);
+            $statement->bindValue(':companyID', $companyID);
+            $statement->bindValue(':type', $type);
+            $statement->bindValue(':openingName', $openingName);
+            $statement->bindValue(':instanceOfTypeID', $instanceOfTypeID);
+            $statement->bindValue(':description', $description);
+            $statement->bindValue(':availableCount', $availableCount);
             $statement->bindValue(':ID', $ID);
             $row_count = $statement->execute();
             $statement->closeCursor();
@@ -151,9 +109,9 @@ class opening_db {
         }
     }
 
-    public static function delete_by_ID($id) {
+    public static function delete_opening_by_ID($id) {
         $db = Database::getDB();
-        $query = 'DELETE from user WHERE id= :id';
+        $query = 'DELETE from opening WHERE id= :id';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);
@@ -166,123 +124,4 @@ class opening_db {
         }
     }
     
-    public static function validate_user_login($uName) {
-        $db = Database::getDB();
-        $query = 'SELECT *
-              FROM user
-              WHERE uName= :uName';
-
-        $statement = $db->prepare($query);
-        $statement->bindValue(':uName', $uName);
-        $statement->execute();
-        $value = $statement->fetch();
-        
-        $theUser = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
-
-        $statement->closeCursor();
-
-        return $theUser;
-    }
-    public static function update_profile($uName, $fName, $lName, $email, $uImage, $pWord) {
-        $db = Database::getDB();
-        $query = 'UPDATE user
-              SET fName = :fName,
-                  lName = :lName,
-                  email = :email,
-                  image = :image,
-                  pWord = :pWord
-                WHERE uName = :uName';
-        try {
-            $statement = $db->prepare($query);
-            $statement->bindValue(':fName', $fName);
-            $statement->bindValue(':lName', $lName);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':uName', $uName);
-            $statement->bindValue(':image', $uImage);
-            $statement->bindValue(':pWord', $pWord);
-            $statement->execute();
-            $statement->closeCursor();
-//            return $row_count;
-        } catch (PDOException $e) {
-            $error_message = $e->getMessage();
-            var_dump($e);
-//            display_db_error($error_message);
-        }
-    }
-    
-
-    public static function make_comment($profileID, $comment, $commenterID, $commenterUserName) {
-        $db = Database::getDB();
-        $query = 'INSERT INTO comments'
-                . '(profileID, comment, commenterID, commenterUserName)'
-                . 'VALUES'
-                . '(:profileID, :comment, :commenterID, :commenterUserName)';
-        
-        try {
-        $statement = $db->prepare($query);
-        $statement->bindValue(':profileID', $profileID);
-        $statement->bindValue(':comment', $comment);
-        $statement->bindValue(':commenterID', $commenterID);
-        $statement->bindValue(':commenterUserName', $commenterUserName);
-        $statement->execute();
-        $statement->closeCursor();
-        $user_id = $db->lastInsertId();
-        return $user_id;
-        } catch (PDOException $e) {
-            $error_message = $e->getMessage();
-            var_dump($e);
-            display_db_error($error_message);
-        }
-    }
-       public static function get_user_comments($profileID) {
-        $db = Database::getDB();
-        $query = 'SELECT *'
-                . ' FROM comments'
-                . ' WHERE profileID = :profileID';
-        
-        $statement = $db->prepare($query);
-        $statement->bindValue(':profileID', $profileID);
-        $statement->execute();
-        $rows = $statement->fetchAll();
-        $comments = [];
-
-        foreach ($rows as $value) {
-            $comments[$value['commentID']] = new comment($value['commentID'], $value['profileID'], $value['comment'], $value['commenterID'], $value['commenterUserName'], $value['commentTime']);
-        }
-        $statement->closeCursor();
-
-        return $comments;
-        
-    }
-//    public static function newest_users() {
-//        $db = Database::getDB();
-//        $query = 'SELECT *'
-//                . 'FROM user';
-//        $statement = $db->prepare($query);
-//        $statement->execute();
-//        $newest = $statement->fetch();
-//
-//        $statement->closeCursor();
-//
-//        return $newest;
-//    }
-     public static function newest_users() {
-        $db = Database::getDB();
-
-        $queryUsers = 'SELECT * FROM user ORDER BY id DESC LIMIT 10 ';
-        $statement = $db->prepare($queryUsers);
-        $statement->execute();
-        $rows = $statement->fetchAll();
-        $users = [];
-
-        foreach ($rows as $value) {
-            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image']);
-        }
-        $statement->closeCursor();
-
-        return $users;
-    }
-    
-    
-//put your code here
 }
