@@ -45,8 +45,5 @@
                 </table>
             </div>
         </main>
-        <?php
-        // put your code here
-        ?>
     </body>
 </html>

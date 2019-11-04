@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Team S</title>
-        <link rel="stylesheet" type="text/css" href="main.css">
+        <title>Business Registration - Team Blue</title>
+        <?php include ('css/css.php'); ?>   
     </head>
-
     <body>
+        <?php include ('nav.php'); ?>
         <main>
-            <header>BranWillTy Social Media Platform</header>
+            <header>Blue's Daycare Business Registration</header>
             <div id="formWrap">
                 <h1>Enter Information</h1>
                 <form action="index.php" method="post" enctype="multipart/form-data">
@@ -66,24 +66,9 @@
                     </div>
                 </form>
 
-                <form action="index.php" method="post">
-                    <input type="hidden" name="action" value="displayAllUsers">
-                    <label>&nbsp</label>
-                    <input type="submit" value="Display All Users"><br>
-                </form>
-                <form action="index.php" method="Post">
-                    <input type="hidden" name="action" value="displayProfile">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Profile Page"></br>
-                </form>
-                    <form action="index.php" method="post">
-                        <input type="hidden" name="action" value="viewLogin">
-                        <label>&nbsp</label>
-                        <input type="submit" value="Login"><br>
-                    </form>
             </div>
             <footer>
-                <p>BranWillTy @2019</p>
+                <p>Team Blue @2019</p>
             </footer>
         </main>
     </body>
