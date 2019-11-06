@@ -678,6 +678,7 @@ switch ($action) {
             exit();
         } else {
             $uName = $currentUser.getUName();
+            companyApproval_db::add;
             include'views/confirmation.php';
             exit();
             
