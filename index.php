@@ -186,7 +186,8 @@ switch ($action) {
                 $error_message['password'] .= ' You must confirm your password.';
             }
         } else if ($pwLengthValid === FALSE || $pwLengthValid === 0 || $pwRequirements < 3) {
-            $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include:';
+            $numRequired = 3 - $pwRequirements;
+            $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include at least ' . $numRequired . ' of the following:' ;
             if ($pwLowerPresent === FALSE || $pwLowerPresent === 0) {
                 $error_message['requirements'] .= '<li>1 lowercase character</li>';
             }
@@ -353,7 +354,8 @@ switch ($action) {
             $hashedPW = $_SESSION['currentUser']->getPWord();
         } else {
             if ($pwLengthValid === FALSE || $pwLengthValid === 0 || $pwRequirements < 3) {
-                $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include:';
+                $numRequired = 3 - $pwRequirements;
+                $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include at least ' . $numRequired . ' of the following:' ;
                 if ($pwLowerPresent === FALSE || $pwLowerPresent === 0) {
                     $error_message['requirements'] .= '<li>1 lowercase character</li>';
                 }

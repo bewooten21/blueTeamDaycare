@@ -8,28 +8,14 @@
     <body>
         <?php include ('nav.php'); ?>
         <main>
-            <div id="formWrap">
+            <div class="container">
                 <h1>Say Hello!</h1>
                 <div id="profileImg">
                     <p><img src="<?php echo htmlspecialchars($users->getImage()); ?>" width="200" height="200" class="center"></p>
                 </div>
                 <h3><?php echo htmlspecialchars($users->getUName()); ?></h3>
-                <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $users->getID()) : ?>
-                        <h4>Leave a comment!</h4>
-                        <form action="index.php" method="post">
-                            <input type="hidden" name="action" value="submitComment">
-                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($users->getID()); ?>">
-                            <input type="textarea" name="comment" value="<?php echo htmlspecialchars($comment); ?>">
-                            <div id="buttons">
-                                <label>&nbsp</label>
-                                <input type="submit" value="Submit"><br>
-                            </div>      
-                        </form>
-                    <?php endif;
-                endif;
-                ?>
 
-                <table>
+                <table class="table table-dark">
                     <tr>
                         <th> Comments</th>
                     </tr>
@@ -43,6 +29,23 @@
                         </tr>
 <?php endforeach; ?>
                 </table>
+                <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $users->getID()) : ?>
+                        <h4>Leave a comment!</h4>
+                        <form action="index.php" method="post">
+                            <input type="hidden" name="action" value="submitComment">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($users->getID()); ?>">
+                            <div class="form-group col-sm-4">
+                                <input type="textarea" class="form-control" name="comment" value="<?php echo htmlspecialchars($comment); ?>">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-default" value="Submit"><br>
+                            </div>      
+                        </form>
+                    <?php
+                    endif;
+                endif;
+                ?>
+                
             </div>
         </main>
     </body>

@@ -11,7 +11,7 @@
             <header>Blue&apos;s Daycare Users</header>
             <div id="formWrap">
                 <h1>Blue&apos;s Daycare Users</h1>
-                <table>
+                <table class="table table-dark">
                     <tr>
                         <th>User Name</th>
                         <th>First Name</th>
