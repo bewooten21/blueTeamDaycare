@@ -677,10 +677,17 @@ switch ($action) {
             include 'views/businessRegistration.php';
             exit();
         } else {
-            $uName = $currentUser.getUName();
-            companyApproval_db::add;
+            if($cImage === null || $cImage === false)
+            {
+                companyApproval_db::addCompany($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate);
+            }
+            else
+            {
+                companyApproval_db::addCompanyWithLogo($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate, $cImage);
+            }
+            $uName = SESS
             include'views/confirmation.php';
-            exit();
+            exit;
             
         }
         die();
