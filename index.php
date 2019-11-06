@@ -744,9 +744,9 @@ switch ($action) {
         break;
 
     case 'submitJobApp':
-
         include 'models/jobAppVal.php';
-
+        die();
+        break;
 
     case 'viewCompanies':
         $i = 0;
