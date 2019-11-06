@@ -12,8 +12,7 @@ require_once 'models/company.php';
 require_once 'models/opening.php';
 require_once 'models/job_db.php';
 require_once 'models/opening_db.php';
-
-session_start();
+require_once 'models/companyApproval_db.php';
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
     $action = filter_input(INPUT_GET, 'action');
@@ -600,7 +599,7 @@ switch ($action) {
         $maxChild = filter_input(INPUT_POST, 'maxChild', FILTER_VALIDATE_INT);
         $childCount = filter_input(INPUT_POST, 'childCount', FILTER_VALIDATE_INT);
         $empCount = filter_input(INPUT_POST, 'empCount', FILTER_VALIDATE_INT);
-        $cRate = filter_input(INPUT_POST, 'cRate', FILTER_VALIDATE_INT);
+        $cRate = filter_input(INPUT_POST, 'cRate', FILTER_VALIDATE_FLOAT);
         $cImage = filter_input(INPUT_POST, 'image');
         $error_message = [];
         $error_message['cName'] = '';
@@ -680,14 +679,17 @@ switch ($action) {
             if($cImage === null || $cImage === false)
             {
                 companyApproval_db::addCompany($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate);
+                $fName = $currentUser;
+                include'views/confirmation.php';
+                exit;   
             }
             else
             {
                 companyApproval_db::addCompanyWithLogo($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate, $cImage);
+                $fName = $currentUser;
+                include'views/confirmation.php';
+                exit;
             }
-            $uName = SESS
-            include'views/confirmation.php';
-            exit;
             
         }
         die();
