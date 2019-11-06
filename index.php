@@ -187,7 +187,8 @@ switch ($action) {
                 $error_message['password'] .= ' You must confirm your password.';
             }
         } else if ($pwLengthValid === FALSE || $pwLengthValid === 0 || $pwRequirements < 3) {
-            $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include:';
+            $numRequired = 3 - $pwRequirements;
+            $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include at least ' . $numRequired . ' of the following:';
             if ($pwLowerPresent === FALSE || $pwLowerPresent === 0) {
                 $error_message['requirements'] .= '<li>1 lowercase character</li>';
             }
@@ -354,7 +355,8 @@ switch ($action) {
             $hashedPW = $_SESSION['currentUser']->getPWord();
         } else {
             if ($pwLengthValid === FALSE || $pwLengthValid === 0 || $pwRequirements < 3) {
-                $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include:';
+                $numRequired = 3 - $pwRequirements;
+                $error_message['pwMessage'] = 'Your password must be at least 10 characters. And include at least ' . $numRequired . ' of the following:';
                 if ($pwLowerPresent === FALSE || $pwLowerPresent === 0) {
                     $error_message['requirements'] .= '<li>1 lowercase character</li>';
                 }
@@ -675,30 +677,40 @@ switch ($action) {
             include 'views/businessRegistration.php';
             exit();
         } else {
+
             $uName = $currentUser . getUName();
+
+            if ($cImage === null || $cImage === false) {
+                companyApproval_db::addCompany($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate);
+            } else {
+                companyApproval_db::addCompanyWithLogo($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate, $cImage);
+            }
+            $uName = SESS;
+
             include'views/confirmation.php';
+
             exit();
+
+            exit;
         }
         die();
         break;
 
-      
+
     case 'viewCompanies':
-        $i=0;
-        $companies= company_db::select_all();
+        $i = 0;
+        $companies = company_db::select_all();
         include('views/allCompanies.php');
         die();
         break;
-    
+
     case 'viewCompanyProfile':
         $id = filter_input(INPUT_GET, 'id');
         $c = company_db::get_company_by_id($id);
-        $jobs= job_db::get_job_by_Companyid($id);
+        $jobs = job_db::get_job_by_Companyid($id);
         include('views/companyProfile.php');
         die();
         break;
-    
-    
 }
     
 

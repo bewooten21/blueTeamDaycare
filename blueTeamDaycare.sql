@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 30, 2019 at 09:39 PM
+-- Generation Time: Nov 06, 2019 at 09:33 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
-CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -93,6 +91,23 @@ CREATE TABLE `company` (
 
 INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
 (1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `companyapproval`
+--
+
+CREATE TABLE `companyapproval` (
+  `ID` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `maxEmp` int(11) NOT NULL,
+  `maxChildren` int(11) NOT NULL,
+  `currentEmp` int(11) DEFAULT NULL,
+  `currentChildren` int(11) DEFAULT NULL,
+  `rating` float DEFAULT NULL,
+  `logo` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -210,6 +225,12 @@ ALTER TABLE `company`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `companyapproval`
+--
+ALTER TABLE `companyapproval`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `job`
 --
 ALTER TABLE `job`
@@ -256,6 +277,12 @@ ALTER TABLE `comments`
 --
 ALTER TABLE `company`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `companyapproval`
+--
+ALTER TABLE `companyapproval`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `job`
