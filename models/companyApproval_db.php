@@ -3,6 +3,7 @@
 class companyApproval_db {
     public static function addCompany($name, $maxEmp, $maxChild, $curEmp, $curChild, $rating)
     {
+        $db = Database::getDB();
         $query = 'insert into companyapproval(name, maxEmp, maxChildren, currentEmp, currentChildren, rating)'
                 . 'values(:name, :maxEmp, :maxChild, :curEmp, :curChild, :rating)';
         try {
@@ -23,7 +24,8 @@ class companyApproval_db {
     
     public static function addCompanyWithLogo($name, $maxEmp, $maxChild, $curEmp, $curChild, $rating, $logo)
     {
-         $query = 'insert into companyapproval(name, maxEmp, maxChildren, currentEmp, currentChildren, rating, logo)'
+        $db = Database::getDB();
+        $query = 'insert into companyapproval(name, maxEmp, maxChildren, currentEmp, currentChildren, rating, logo)'
                 . 'values(:name, :maxEmp, :maxChild, :curEmp, :curChild, :rating, :logo)';
         try {
             $statement = $db->prepare($query);
