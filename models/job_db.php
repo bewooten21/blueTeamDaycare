@@ -35,6 +35,31 @@ class job_db {
 
         return $value;
     }
+    
+    public static function get_job_by_Companyid($id) {
+        $db = Database::getDB();
+        $query = 'SELECT *
+              FROM job JOIN company ON 
+              job.companyID=company.id
+              WHERE job.companyID= :id';
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+
+        $statement->closeCursor();
+        
+        foreach ($rows as $value) {
+            $job = new job($value['id'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements']);
+
+            $jobs[] = $job;
+        }
+        
+       
+
+        return $jobs;
+    }
 
     public static function get_user_by_username($uName) {
         $db = Database::getDB();

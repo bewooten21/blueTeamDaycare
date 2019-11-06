@@ -52,6 +52,7 @@
           </ul>
         </li>
         <li><a href='index.php?action=displayAllUsers'>All Users</a></li>
+        <li><a href='index.php?action=viewCompanies'>All Companies</a></li>
         
         <?php if (isset($_SESSION['currentUser'])):?>
         <li><a href='index.php?action=displayProfile'>Profile</a></li>

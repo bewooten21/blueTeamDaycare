@@ -8,11 +8,13 @@ class company_db {
         $statement = $db->prepare($queryUsers);
         $statement->execute();
         $rows = $statement->fetchAll();
-        $companies = [];
+        
 
         foreach ($rows as $value) {
             $owner = user_db::get_user_by_id($value['ownerID']);
-            $companies[$value['id']] = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner, $value['companyImage']);
+            $company = new company($value['id'], $value['companyName'], $value['employeeCount'], $value['childCapacity'], $value['childrenEnrolled'], $value['overallRating'], $owner, $value['companyImage']);
+            $companies[]=$company;
+                    
         }
         $statement->closeCursor();
 
@@ -175,6 +177,20 @@ class company_db {
             $error_message = $e->getMessage();
             display_db_error($error_message);
         }
+    }
+    
+    public static function get_all() {
+        $db = Database::getDB();
+
+        $query='SELECT * from company'
+            ;
+        $statement = $db->prepare($query);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+      
+        $statement->closeCursor();
+
+        return $rows;
     }
     
 }
