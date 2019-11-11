@@ -1,5 +1,5 @@
 <?php
-$compId= filter_input(INPUT_POST, 'cId');
+$id= filter_input(INPUT_POST, 'id');
 $cName= filter_input(INPUT_POST, 'cName');
 $jobT= filter_input(INPUT_POST, 'jobT');
 $jobD=filter_input(INPUT_POST, 'jobD');
@@ -7,6 +7,7 @@ $jobR=filter_input(INPUT_POST, 'jobR');
 $tError="";
 $dError="";
 $rError="";
+$job= job_db::get_job_by_id($id);
 $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
 
 $isValid=true;
@@ -27,7 +28,7 @@ if($jobR===""){
 }
 
 if($isValid===false){
-    include('views/addJob.php');
+    include('views/editJob.php');
     exit();
 }
 
