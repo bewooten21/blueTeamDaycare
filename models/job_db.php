@@ -6,7 +6,7 @@ class job_db {
 
         $query='SELECT * from job JOIN company ON
             job.companyID=company.id
-            ORDER by job.companyID asc'
+            ORDER by job.id asc'
             ;
         $statement = $db->prepare($query);
         $statement->execute();
@@ -51,7 +51,7 @@ class job_db {
         $statement->closeCursor();
         
         foreach ($rows as $value) {
-            $job = new job($value['id'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements']);
+            $job = new job($value[0], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements']);
 
             $jobs[] = $job;
         }

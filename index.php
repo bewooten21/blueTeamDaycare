@@ -767,10 +767,37 @@ switch ($action) {
     
     case 'ourJobs':
         $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-        $jobs = job_db::get_job_by_Companyid($id);
-        include('views/companyProfile.php');
+        $jobs = job_db::get_job_by_Companyid($company['id']);
+
+        include('views/ourJobs.php');
         die();
         break;
+    
+    case 'editJob':
+        $id = filter_input(INPUT_POST, 'id');
+        $job= job_db::get_job_by_id($id);
+        
+        $tError = "";
+        $dError = "";
+        $rError = "";
+        $jobD = "";
+        $jobR = "";
+        $jobT = "";
+        include('views/editJob.php');
+        die();
+        break;
+    
+    case 'deleteJob':
+        include('models/deleteJob.php');
+        die();
+        break;
+    
+    case 'editJobVal':
+        include('models/editJobVal.php');
+        die();
+        break;
+        
+        
 }
     
 
