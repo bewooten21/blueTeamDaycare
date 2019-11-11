@@ -4,7 +4,7 @@ class companyApproval_db {
     public static function addCompany($name, $maxEmp, $maxChild, $curEmp, $curChild, $rating)
     {
         $db = Database::getDB();
-        $query = 'insert into companyapproval(name, maxEmp, maxChildren, currentEmp, currentChildren, rating)'
+        $query = 'insert into companyapproval(name, maxEmp, maxChildren, currentEmp, currentChildren, rating) '
                 . 'values(:name, :maxEmp, :maxChild, :curEmp, :curChild, :rating)';
         try {
             $statement = $db->prepare($query);
@@ -14,6 +14,8 @@ class companyApproval_db {
             $statement->bindValue(':curEmp', $curEmp);
             $statement->bindValue(':curChild', $curChild);
             $statement->bindValue(':rating', $rating);
+            $statement->execute();
+            $statement->closeCursor();
         }
         catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -25,8 +27,9 @@ class companyApproval_db {
     public static function addCompanyWithLogo($name, $maxEmp, $maxChild, $curEmp, $curChild, $rating, $logo)
     {
         $db = Database::getDB();
-        $query = 'insert into companyapproval(name, maxEmp, maxChildren, currentEmp, currentChildren, rating, logo)'
-                . 'values(:name, :maxEmp, :maxChild, :curEmp, :curChild, :rating, :logo)';
+        $fileLocation = "images/". $logo;
+        $query = 'insert into companyapproval(name, maxEmp, maxChildren, currentEmp, currentChildren, rating, logo) '
+                . 'values(:name, :maxEmp, :maxChild, :curEmp, :curChild, :rating, :fileLocation)';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':name', $name);
@@ -35,7 +38,9 @@ class companyApproval_db {
             $statement->bindValue(':curEmp', $curEmp);
             $statement->bindValue(':curChild', $curChild);
             $statement->bindValue(':rating', $rating);
-            $statement->bindValue(':logo', $logo);
+            $statement->bindValue(':fileLocation', $fileLocation);
+            $statement->execute();
+            $statement->closeCursor();
         }
         catch (PDOException $e) {
             $error_message = $e->getMessage();

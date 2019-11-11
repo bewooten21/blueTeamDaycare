@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once 'models/application.php';
 require_once 'models/application_db.php';
 require_once 'models/comment.php';
@@ -667,7 +667,7 @@ switch ($action) {
                 $error_message['image'] = "Your file needs to be smaller than 2M";
             } else {
 
-                $file_name = $uName . '.' . $file_ext;
+                $file_name = $cName . '.' . $file_ext;
                 move_uploaded_file($file_tmp, "images/" . $file_name);
             }
         }
@@ -676,19 +676,16 @@ switch ($action) {
             include 'views/businessRegistration.php';
             exit();
         } else {
-
-            $uName = $currentUser . getUName();
-
-            if ($cImage === null || $cImage === false) {
+            if ($cImage === '') {
                 companyApproval_db::addCompany($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate);
-                $fName = $currentUser;
+                $uName = $_SESSION['currentUser']->getUName();
                 include'views/confirmation.php';
                 exit;   
             }
             else
             {
-                companyApproval_db::addCompanyWithLogo($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate, $cImage);
-                $fName = $currentUser;
+                companyApproval_db::addCompanyWithLogo($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate, $file_name);
+                $uName = $_SESSION['currentUser'];
                 include'views/confirmation.php';
                 exit;
             }
