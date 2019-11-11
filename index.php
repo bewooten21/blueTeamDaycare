@@ -704,40 +704,25 @@ switch ($action) {
         break;
         
     case 'applyToJob':
-        $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-        if (!isset($cName)) {
-            $cName = '';
+        $jobId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $job= job_db::get_job($jobId);
+        if (!isset($jobId)) {
+            $jobId = '';
+        }
+        if (!isset($coverLetter)) {
+            $coverLetter = '';
         }
 
-        if (!isset($maxEmp)) {
-            $maxEmp = '';
-        }
-
-        if (!isset($maxChild)) {
-            $maxChild = '';
-        }
-
-        if (!isset($childCount)) {
-            $childCount = '';
-        }
-
-        if (!isset($empCount)) {
-            $empCount = '';
-        }
-
-        if (!isset($cRate)) {
-            $cRate = '';
+        if (!isset($resume)) {
+            $resume = '';
         }
 
         if (!isset($error_message)) {
             $error_message = [];
-            $error_message['cName'] = '';
-            $error_message['maxEmp'] = '';
-            $error_message['maxChild'] = '';
-            $error_message['empCount'] = '';
-            $error_message['childCount'] = '';
-            $error_message['cRate'] = '';
-            $error_message['image'] = '';
+            $error_message['jobId'] = '';
+            $error_message['coverLetter'] = '';
+            $error_message['resume'] = '';
+            $error_message['previousApplication'] = '';
         }
         include'views/jobApplication.php';
         die();

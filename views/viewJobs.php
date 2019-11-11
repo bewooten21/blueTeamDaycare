@@ -33,7 +33,7 @@
       <td><?php echo $j["jobRequirements"] ; ?></td>
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="applyToJob">
-                  <input type="hidden" name="id"  value="<?php echo htmlspecialchars(j["id"]); ?>">
+                  <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j["id"]); ?>">
                   <input type="submit" value="Apply">
               </form>
           </td>

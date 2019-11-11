@@ -11,7 +11,7 @@ class application_db {
         $applications = [];
 
         foreach ($rows as $value) {
-            $applications[$value['id']] = new application($value['id'], $value['openingID'], $value['isProcessed'], $value['coverLetter'], $value['resume'], $value['userID']);
+            $applications[$value['id']] = new application($value['applicationId'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
         }
         $statement->closeCursor();
 
@@ -29,7 +29,7 @@ class application_db {
         $statement->execute();
         $value = $statement->fetch();
         
-        $applications = new application($value['id'], $value['openingID'], $value['isProcessed'], $value['coverLetter'], $value['resume'], $value['userID']);
+        $applications = new application($value['applicationId'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
         
         $statement->closeCursor();
 
@@ -47,23 +47,41 @@ class application_db {
         $statement->execute();
         $value = $statement->fetch();
 
-        $applications = new application($value['id'], $value['openingID'], $value['isProcessed'], $value['coverLetter'], $value['resume'], $value['userID']);
+        $applications = new application($value['applicationId'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
         
         $statement->closeCursor();
 
         return $applications;
     }
 
-    public static function add_user($openingID, $isProcessed, $coverLetter, $resume, $userID) {
+    public static function check_for_duplicate($jobId, $userId) {
+        $db = Database::getDB();
+        $query = 'SELECT jobID, userID
+              FROM application
+              WHERE jobID= :jobId AND userID= :userId AND isProcessed = 0';
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(':jobId', $jobId);
+        $statement->bindValue(':userId', $userId);
+        $statement->execute();
+        $result = $statement->fetch();
+
+        $statement->closeCursor();
+        
+        return $result;
+    }
+    
+    public static function add_application($jobID, $isProcessed, $isApproved, $coverLetter, $resume, $userID) {
         $db = Database::getDB();
         $query = 'INSERT INTO application
-                 (openingID, isProcessed, coverLetter, resume, userID)
+                 (jobID, isProcessed, isApproved, coverLetter, resume, userID)
               VALUES
-                 (:openingID, :isProcessed, :coverLetter, :resume, :userID)';
+                 (:jobID, :isProcessed, :isApproved, :coverLetter, :resume, :userID)';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue(':openingID', $openingID);
+            $statement->bindValue(':jobID', $jobID);
             $statement->bindValue(':isProcessed', $isProcessed);
+            $statement->bindValue(':isApproved', $isApproved);
             $statement->bindValue(':coverLetter', $coverLetter);
             $statement->bindValue(':resume', $resume);
             $statement->bindValue(':userID', $userID);
@@ -80,23 +98,53 @@ class application_db {
         }
     }
     
-    public static function update_application($openingID, $isProcessed, $coverLetter, $resume, $userID) {
+    public static function process_application($applicationId, $isProcessed) {
         $db = Database::getDB();
         $query = $query = 'UPDATE application
-              SET openingID = :openingID,
-                  isProcessed = :isProcessed,
-                  coverLetter = :coverLetter,
-                  resume = :resume,
-                  userID = :userID
-                WHERE ID = :ID';
+              SET isProcessed = :isProcessed
+              WHERE applicationId = :applicationD';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue(':openingID', $openingID);
             $statement->bindValue(':isProcessed', $isProcessed);
-            $statement->bindValue(':coverLetter', $coverLetter);
-            $statement->bindValue(':resume', $resume);
-            $statement->bindValue(':userID', $userID);
-            $statement->bindValue(':ID', $ID);
+            $statement->bindValue(':application', $applicationId);
+            $row_count = $statement->execute();
+            $statement->closeCursor();
+            return $row_count;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+    
+    public static function approve_application($applicationId, $isApproved) {
+        $db = Database::getDB();
+        $query = $query = 'UPDATE application
+              SET isApproved = :isApproved
+              WHERE applicationId = :applicationId';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':isApproved', $isApproved);
+            $statement->bindValue(':applicationId', $applicationId);
+            $row_count = $statement->execute();
+            $statement->closeCursor();
+            return $row_count;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+    
+    public static function process_and_approve_application($applicationId, $isProcessed, $isApproved) {
+        $db = Database::getDB();
+        $query = $query = 'UPDATE application
+              SET isProcessed = :isProcessed,
+                  isApproved = :isApproved
+              WHERE applicationId = :applicationId';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':isProcessed', $isProcessed);
+            $statement->bindValue(':isApproved', $isApproved);
+            $statement->bindValue(':applicationId', $applicationId);
             $row_count = $statement->execute();
             $statement->closeCursor();
             return $row_count;
@@ -108,7 +156,7 @@ class application_db {
 
     public static function delete_by_ID($id) {
         $db = Database::getDB();
-        $query = 'DELETE from application WHERE id= :id';
+        $query = 'DELETE from application WHERE applicationId= :id';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);
