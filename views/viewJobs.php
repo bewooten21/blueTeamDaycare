@@ -24,8 +24,8 @@
   <tbody>
       <?php foreach ($jobs as $j) : ?>
     <tr>
-      <th scope="row"><a href="index.php?action=viewJob&amp;id=<?php echo $j["id"]; ?>">
-                                <?php  echo $j["id"]; ?>
+      <th scope="row"><a href="index.php?action=viewJob&amp;id=<?php echo $j[0]; ?>">
+                                <?php  echo $j[0]; ?>
                             </a></th>
       <td><?php echo $j["companyName"] ; ?></td>
       <td><?php echo $j["jobName"] ; ?></td>
