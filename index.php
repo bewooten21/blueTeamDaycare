@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once 'models/application.php';
 require_once 'models/application_db.php';
 require_once 'models/comment.php';
