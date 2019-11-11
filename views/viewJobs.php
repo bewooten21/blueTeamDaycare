@@ -18,6 +18,7 @@
       <th scope="col">Job Title</th>
       <th scope="col">Job Description</th>
       <th scope="col">Job Requirements</th>
+      <th scope="col">Apply</th>
     </tr>
   </thead>
   <tbody>
@@ -30,6 +31,12 @@
       <td><?php echo $j["jobName"] ; ?></td>
       <td><?php echo $j["jobDescription"] ; ?></td>
       <td><?php echo $j["jobRequirements"] ; ?></td>
+          <td><form action="index.php" method="post">
+                  <input type="hidden" name="action" value="applyToJob">
+                  <input type="hidden" name="id"  value="<?php echo htmlspecialchars(j["id"]); ?>">
+                  <input type="submit" value="Apply">
+              </form>
+          </td>
     </tr>
     <?php endforeach; ?>
   

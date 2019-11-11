@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2019 at 09:33 PM
+-- Generation Time: Nov 06, 2019 at 10:15 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
+CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -112,6 +114,20 @@ CREATE TABLE `companyapproval` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `employee`
+--
+
+CREATE TABLE `employee` (
+  `empID` int(11) NOT NULL,
+  `userId` int(11) NOT NULL,
+  `companyId` int(11) NOT NULL,
+  `jobId` int(11) NOT NULL,
+  `yearsWithCompany` decimal(10,0) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `job`
 --
 
@@ -120,39 +136,40 @@ CREATE TABLE `job` (
   `companyID` int(11) NOT NULL,
   `jobName` varchar(50) DEFAULT NULL,
   `jobDescription` varchar(500) DEFAULT NULL,
-  `jobRequirements` varchar(500) DEFAULT NULL
+  `jobRequirements` varchar(500) DEFAULT NULL,
+  `applicationSlots` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `job`
 --
 
-INSERT INTO `job` (`id`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`) VALUES
-(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children');
+INSERT INTO `job` (`id`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
+(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `opening`
+-- Table structure for table `daycareopening`
 --
 
-CREATE TABLE `opening` (
-  `id` int(11) NOT NULL,
+CREATE TABLE `daycareopening` (
+  `daycareOpeningId` int(11) NOT NULL,
   `companyID` int(11) NOT NULL,
+  `instanceOfTypeID` int(11) NOT NULL,
   `type` varchar(50) NOT NULL,
   `openingName` varchar(100) NOT NULL,
-  `instanceOfTypeID` int(11) NOT NULL,
   `description` varchar(10000) NOT NULL,
   `availableCount` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `opening`
+-- Dumping data for table `daycareopening`
 --
 
-INSERT INTO `opening` (`id`, `companyID`, `type`, `openingName`, `instanceOfTypeID`, `description`, `availableCount`) VALUES
-(1, 1, 'Employee', 'Daycare Worker', 0, 'Come work for us at Tots R US! ', 1),
-(2, 1, 'Student', 'Tots Tot', 0, 'Our staff build strong connections with our tots, leading them in creative activities and even teaching them the basics of coding!', 13);
+INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID`, `type`, `openingName`, `description`, `availableCount`) VALUES
+(1, 1, 0, 'Employee', 'Daycare Worker', 'Come work for us at Tots R US! ', 1),
+(2, 1, 0, 'Student', 'Tots Tot', 'Our staff build strong connections with our tots, leading them in creative activities and even teaching them the basics of coding!', 13);
 
 -- --------------------------------------------------------
 
@@ -174,6 +191,20 @@ INSERT INTO `role` (`id`, `type`) VALUES
 (2, 'employee'),
 (3, 'owner'),
 (4, 'administrator');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `student`
+--
+
+CREATE TABLE `student` (
+  `studentId` int(11) NOT NULL,
+  `parentId` int(11) NOT NULL,
+  `companyId` int(11) NOT NULL,
+  `stuFName` int(11) DEFAULT NULL,
+  `stuLName` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -231,22 +262,34 @@ ALTER TABLE `companyapproval`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `employee`
+--
+ALTER TABLE `employee`
+  ADD UNIQUE KEY `empId` (`empID`);
+
+--
 -- Indexes for table `job`
 --
 ALTER TABLE `job`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `opening`
+-- Indexes for table `daycareopening`
 --
-ALTER TABLE `opening`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `daycareopening`
+  ADD PRIMARY KEY (`daycareOpeningId`);
 
 --
 -- Indexes for table `role`
 --
 ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `student`
+--
+ALTER TABLE `student`
+  ADD PRIMARY KEY (`studentId`);
 
 --
 -- Indexes for table `user`
@@ -285,22 +328,34 @@ ALTER TABLE `companyapproval`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `employee`
+--
+ALTER TABLE `employee`
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `job`
 --
 ALTER TABLE `job`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `opening`
+-- AUTO_INCREMENT for table `daycareopening`
 --
-ALTER TABLE `opening`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `daycareopening`
+  MODIFY `daycareOpeningId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `role`
 --
 ALTER TABLE `role`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `student`
+--
+ALTER TABLE `student`
+  MODIFY `studentId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user`
