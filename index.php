@@ -15,6 +15,7 @@ require_once 'models/job.php';
 require_once 'models/job_db.php';
 require_once 'models/opening_db.php';
 require_once 'models/companyApproval_db.php';
+session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
     $action = filter_input(INPUT_GET, 'action');
@@ -22,6 +23,7 @@ if ($action === null) {
         $action = 'viewLogin';
     }
 }
+
 
 switch ($action) {
     case 'about':
@@ -714,6 +716,13 @@ switch ($action) {
     case 'viewCompanyProfile':
         $id = filter_input(INPUT_GET, 'id');
         $c = company_db::get_company_by_id($id);
+        $jobs = job_db::get_job_by_Companyid($id);
+        include('views/companyProfile.php');
+        die();
+        break;
+    
+    case 'ourJobs':
+        $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
         $jobs = job_db::get_job_by_Companyid($id);
         include('views/companyProfile.php');
         die();

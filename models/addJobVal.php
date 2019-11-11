@@ -33,5 +33,7 @@ if($isValid===false){
 
 if($isValid===true){
     job_db::add_job('', $compId, $jobT, $jobD, $jobR);
+    header("Location: index.php?action=viewJobs");
+   
     
 }

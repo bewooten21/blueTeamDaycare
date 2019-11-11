@@ -48,6 +48,7 @@
           <ul class="dropdown-menu">
             <li><a href="index.php?action=addJob">Add Job</a></li>
             <li><a href="index.php?action=viewJobs">View Jobs</a></li>
+            <li><a href="index.php?action=ourJobs">Our Jobs</a></li>
             
           </ul>
         </li>
