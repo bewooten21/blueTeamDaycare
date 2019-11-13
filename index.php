@@ -762,9 +762,7 @@ switch ($action) {
         $tError = "";
         $dError = "";
         $rError = "";
-        $jobD = "";
-        $jobR = "";
-        $jobT = "";
+        
         include('views/editJob.php');
         die();
         break;
