@@ -457,13 +457,18 @@ switch ($action) {
 
 //display the profile page for user
     case 'displayProfile':
-
+        
         if (isset($_SESSION['currentUser'])) {
-            $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
-            $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
-            include 'views/profile.php';
-            die();
-            break;
+            if($_SESSION['currentUser']->getRole() != 4 ){
+                $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
+                $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
+                include 'views/profile.php';
+                die();
+                break;
+            } else {
+                
+                include 'views/adminProfile.php';
+            }
         } else {
             $users = user_db::newest_users();
             $message = '';
