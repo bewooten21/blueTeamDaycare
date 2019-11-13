@@ -1,27 +1,32 @@
 <?php
 class application {
-    private $ID, $openingID, $isProcessed, $coverLetter, $resume, $userID;
-    function __construct($ID, $openingID, $isProcessed, $coverLetter, $resume, $userID) {
+    private $applicationId, $jobId, $isProcessed, $isApproved, $coverLetter, $resume, $userID;
+    function __construct($applicationId, $jobId, $isProcessed, $isApproved, $coverLetter, $resume, $userID) {
         
-        $this->ID = $ID;
-        $this->openingID = $openingID;
+        $this->applicationId = $applicationId;
+        $this->jobId = $jobId;
         $this->isProcessed = $isProcessed;
+        $this->isApproved = $isApproved;
         $this->coverLetter = $coverLetter;
         $this->resume = $resume;
         $this->userID = $userID;
         
     }
     
-    function getID() {
-        return $this->ID;
+    function getApplicationId() {
+        return $this->applicationId;
     }
 
-    function getOpeningID() {
-        return $this->openingID;
+    function getJobId() {
+        return $this->jobId;
     }
 
     function getIsProcessed() {
         return $this->isProcessed;
+    }
+    
+    function getIsApproved() {
+        return $this->isApproved;
     }
 
     function getCoverLetter() {
@@ -36,18 +41,22 @@ class application {
         return $this->userID;
     }
 
-    function setID($ID) {
-        $this->ID = $ID;
+    function setApplicationId($applicationId) {
+        $this->applicationId = $applicationId;
     }
 
-    function setOpeningID($openingID) {
-        $this->openingID = $openingID;
+    function setOpeningID($jobId) {
+        $this->jobId = $jobId;
     }
 
     function setIsProcessed($isProcessed) {
         $this->isProcessed = $isProcessed;
     }
 
+    function setIsApproved($isApproved) {
+        $this->isApproved = $isApproved;
+    }
+    
     function setCoverLetter($coverLetter) {
         $this->coverLetter = $coverLetter;
     }

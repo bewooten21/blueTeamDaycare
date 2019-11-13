@@ -1,89 +1,95 @@
 <?php
 // get the data from the application form
-        $cName = filter_input(INPUT_POST, 'cName');
-        $maxEmp = filter_input(INPUT_POST, 'maxEmp', FILTER_VALIDATE_INT);
-        $maxChild = filter_input(INPUT_POST, 'maxChild', FILTER_VALIDATE_INT);
-        $childCount = filter_input(INPUT_POST, 'childCount', FILTER_VALIDATE_INT);
-        $empCount = filter_input(INPUT_POST, 'empCount', FILTER_VALIDATE_INT);
-        $cRate = filter_input(INPUT_POST, 'cRate', FILTER_VALIDATE_INT);
-        $cImage = filter_input(INPUT_POST, 'image');
-        $error_message = [];
-        $error_message['cName'] = '';
-        $error_message['maxEmp'] = '';
-        $error_message['maxChild'] = '';
-        $error_message['empCount'] = '';
-        $error_message['childCount'] = '';
-        $error_message['cRate'] = '';
-        $error_message['image'] = '';
-        $file_name = '';
-       
+$jobId = filter_input(INPUT_POST, 'jobId', FILTER_VALIDATE_INT);
+$coverLetter = filter_input(INPUT_POST, 'coverLetter');
+$resume = filter_input(INPUT_POST, 'resume');
+$error_message = [];
+$error_message['jobId'] = '';
+$error_message['coverLetter'] = '';
+$error_message['resume'] = '';
+$error_message['previousApplication'] = '';
+$coverLetter_name = '';
+$resume_name = '';
+$job = job_db::get_job($jobId);
 
-        //Create Regex patterns
-        $namePattern = '/^[a-zA-Z]/';
-        // Only alphanumeric for the second part so that there aren't any conflicts 
-        // with special characters when we persist for authentication
-        $cNamePattern = '/^[a-zA-Z][a-zA-Z0-9]{3,29}$/';
-// validate company name
-        $cNameValid = preg_match($namePattern, $cName);
+// validate job
+if ($jobId === null || $jobId === '' || $jobId === false) {
+    $error_message['jobId'] = 'You must apply for an existing job';
+}
+// validate coverLetter
+if ($_FILES['coverLetter']['name'] != '') {
 
-        if ($cName === null || $cName === "") {
-            $error_message['cName'] = 'You must enter a company name.';
-        } else if ($cNameValid === FALSE || $cNameValid === 0) {
-            $error_message['cName'] = 'company name must start with a letter.';
-        }
-// validate max employees
-        if($maxEmp === null || $maxEmp === '' || $maxEmp === false){
-            $error_message['maxEmp'] = 'Max Employees must be filled out and must be a number';
-        }
-// validate max enrolled children
-        if($maxChild === null || $maxChild === '' || $maxChild === false){
-            $error_message['maxChild'] = 'Max Enrolled Children must be filled out and must be a number';
-        }
-// validate number of employees
-        if($empCount === null || $empCount === '' || $empCount === false){
-            $error_message['empCount'] = 'Number of Employees must be filled out and must be a number';
-        }
-// validate number of children
-        if($childCount === null || $childCount === '' || $childCount === false){
-            $error_message['childCount'] = 'Number of Enrolled Children must be filled out and must be a number';
-        }
-// validate company rating
-        if($cRate === null || $cRate === '' || $cRate === false){
-            $error_message['cRate'] = 'Company Rating must be filled out and must be a number';
-        }
-// validate image
-        if ($_FILES['image']['name'] != '') {
+    $file_name = $_FILES['coverLetter']['name'];
+    $file_size = $_FILES['coverLetter']['size'];
+    $file_tmp = $_FILES['coverLetter']['tmp_name'];
+    $file_type = $_FILES['coverLetter']['type'];
+    $temp = $_FILES['coverLetter']['name'];
+    $temp = explode('.', $temp);
+    $temp = end($temp);
+    $file_ext = strtolower($temp);
 
-            $file_name = $_FILES['image']['name'];
-            $file_size = $_FILES['image']['size'];
-            $file_tmp = $_FILES['image']['tmp_name'];
-            $file_type = $_FILES['image']['type'];
-            $temp = $_FILES['image']['name'];
-            $temp = explode('.', $temp);
-            $temp = end($temp);
-            $file_ext = strtolower($temp);
+    $extensions = array("pdf", "doc", "docx", "rtf");
 
-            $extensions = array("jpeg", "jpg", "png", "gif");
+    if (in_array($file_ext, $extensions) === false) {
+        $error_message['coverLetter'] = "file extension not in whitelist: " . join(',', $extensions);
+    } elseif ($file_size === 0) {
 
-            if (in_array($file_ext, $extensions) === false) {
-                $error_message['image'] = "file extension not in whitelist: " . join(',', $extensions);
-            }elseif ($file_size === 0) {
-                
-                $error_message['image'] = "Your file needs to be smaller than 2M";
-                
-            } else {
-                
-                $file_name = $uName . '.' . $file_ext;
-                move_uploaded_file($file_tmp, "images/".$file_name);
-            }
-        }
+        $error_message['coverLetter'] = "Your file needs to be smaller than 2M";
+    } else {
+
+        $coverLetter_file_name = $_SESSION['currentUser']->getUName() . '-cover-letter' . '.' . $file_ext;
+        move_uploaded_file($file_tmp, "coverLetters/" . $file_name);
+    }
+}
+// validate resume
+if ($_FILES['resume']['name'] != '') {
+
+    $file_name = $_FILES['resume']['name'];
+    $file_size = $_FILES['resume']['size'];
+    $file_tmp = $_FILES['resume']['tmp_name'];
+    $file_type = $_FILES['resume']['type'];
+    $temp = $_FILES['resume']['name'];
+    $temp = explode('.', $temp);
+    $temp = end($temp);
+    $file_ext = strtolower($temp);
+
+    $extensions = array("pdf", "doc", "docx", "rtf");
+
+    if (in_array($file_ext, $extensions) === false) {
+        $error_message['resume'] = "file extension not in whitelist: " . join(',', $extensions);
+    } elseif ($file_size === 0) {
+
+        $error_message['resume'] = "Your file needs to be smaller than 2M";
+    } else {
+
+        $resume_file_name = $_SESSION['currentUser']->getUName() . 'resume' . '.' . $file_ext;
+        move_uploaded_file($file_tmp, "resumes/" . $file_name);
+    }
+}
 // if an error message exists, go to the index page
-        if ($error_message['image'] != '' || $error_message['cName'] != '' || $error_message['maxEmp'] != '' || $error_message['maxChild'] != '' || $error_message['empCount'] != '' || $error_message['childCount'] != '' || $error_message['cRate'] != '') {
-            include 'views/businessRegistration.php';
-            exit();
+if ($error_message['resume'] != '' || $error_message['coverLetter'] != '' || $error_message['jobId'] != '') {
+    include('views/jobApplication.php');
+} else {
+
+    $checkPreviousApplications = application_db::check_for_duplicate($job->getId(), $_SESSION['currentUser']->getID());
+    if ($checkPreviousApplications !== FALSE) {
+        $error_message['previousApplication'] = 'You have already applied for this job, please wait for your application to be processed.';
+        include('views/jobApplication.php');
+        exit();
+    } else {
+        $applicationId = application_db::add_application($job->getId(), 0, 0, $coverLetter_file_name, $resume_file_name, $_SESSION['currentUser']->getUName());
+        if ($applicationId !== null && $applicationId !== '' && $applicationId !== false) {
+            $applicationSlots = $job->getApplicationSlots() - 1;
+            job_db::take_application_slot($job->getId(), $applicationSlots);
+            include('views/confirmation.php');
+
+            // later for downloading files for viewing - https://www.allphptricks.com/trigger-download-file-when-clicking-link/
+            //https://stackoverflow.com/questions/20929920/display-docx-doc-on-browser-without-downloading-in-php
+            //https://stackoverflow.com/questions/18040386/how-to-display-pdf-in-php
+            //https://www.php.net/manual/en/faq.html.php
         } else {
-            $uName = $currentUser.getUName();
-            include'views/confirmation.php';
-            exit();
-            
+            include('views/jobApplication.php');
         }
+    }
+    exit();
+}

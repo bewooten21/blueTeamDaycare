@@ -8,71 +8,18 @@
     <body>
         <?php include ('nav.php'); ?>
         <div class="container">
-            <h2>Apply for a Job</h2>
+            <h2>You are applying for <?php echo htmlspecialchars($job->getJobName());?></h2>
+            <p><?php echo htmlspecialchars($job->getJobDescription());?></p>
             <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="submitJobApp">
-                <div class="form-group <?php echo $error_message['fName'] !== '' ? 'has-error' : '';  ?>">
-                    <label class="control-label col-sm-2">First Name: </label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" name="fName" value="<?php echo htmlspecialchars($_SESSION['currentUser']->getFName()) ?>">
-                        <div class="col-sm-12">
-                            <span class="help-block">
-                                <?php echo htmlspecialchars($error_message['fName']); ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group <?php echo $error_message['lName'] !== '' ? 'has-error' : '';  ?>">
-                    <label class="control-label col-sm-2">Last Name: </label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" name="lName" value="<?php echo htmlspecialchars($_SESSION['currentUser']->getLName()) ?>">
-                        <div class="col-sm-12">
-                            <span class="help-block">
-                                <?php echo htmlspecialchars($error_message['lName']); ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group <?php echo $error_message['email'] !== '' ? 'has-error' : '';  ?>">
-                    <label class="control-label col-sm-2">Email: </label>
-                    <div class="col-sm-4">
-                        <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($_SESSION['currentUser']->getEmail()) ?>">
-                        <div class="col-sm-12">
-                            <span class="help-block">
-                                <?php echo htmlspecialchars($error_message['email']); ?>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group <?php if ($error_message['password'] !== ''  || $error_message['pwMessage'] !== '' ):?> has-error <?php endif;?>">
-                    <label class="control-label col-sm-2">Password: </label>
-                    <div class="col-sm-4">
-                        <input type="password" class="form-control" name="password" value="<?php echo $password ?>">
-                        <div class="col-sm-12">
-                        <span class="help-block">
-                            <?php echo htmlspecialchars($error_message['password']) ?>
-                            <?php echo htmlspecialchars($error_message['pwMessage']) ?>
-                            <ul>
-                                <!--http://php.net/manual/en/function.htmlspecialchars-decode.php -->
-                                <?php echo htmlspecialchars_decode($error_message['requirements'], ENT_NOQUOTES); ?>
-                            </ul>
-                        </span>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="control-label col-sm-2">Confirm: </label>
-                    <div class="col-sm-4">
-                        <input type="password" class="form-control" name="confirmPassword" >
-                    </div>
-                </div>
-                <div class="form-group <?php echo $error_message['image'] !== '' ? 'has-error' : '';  ?>">
-                    <label class="control-label col-sm-2">Your Picture: </label>
+                <input type="hidden" name="jobId" value="<?php echo htmlspecialchars($job->getId());?>">
+                <div class="form-group <?php echo $error_message['coverLetter'] !== '' ? 'has-error' : '';  ?>">
+                    <label class="control-label col-sm-2">Your Cover Letter: </label>
                     <div class="col-sm-4">
                         <div class="input-group">
                             <label class="input-group-btn">
                                 <span class="btn btn-default">
-                                    Browse&hellip; <input type="file" style="display: none;" name="image" multiple>
+                                    Browse&hellip; <input type="file" style="display: none;" name="coverLetter" multiple>
                                 </span>
                             </label>
                             <input type="text" class="form-control" readonly>
@@ -80,14 +27,33 @@
                     </div>
                     <div class="col-sm-12">
                         <span class="help-block">
-                            <?php echo htmlspecialchars($error_message['image']); ?>
+                            <?php echo htmlspecialchars($error_message['coverLetter']); ?>
+                        </span>
+                    </div>
+
+                </div>
+                <div class="form-group <?php echo $error_message['resume'] !== '' ? 'has-error' : '';  ?>">
+                    <label class="control-label col-sm-2">Your Resume: </label>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-default">
+                                    Browse&hellip; <input type="file" style="display: none;" name="resume" multiple>
+                                </span>
+                            </label>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <span class="help-block">
+                            <?php echo htmlspecialchars($error_message['resume']); ?>
                         </span>
                     </div>
 
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default" value="">Change Profile</button>
+                        <button type="submit" class="btn btn-default" value="">Apply</button>
                     </div>
                 </div>
             </form>
