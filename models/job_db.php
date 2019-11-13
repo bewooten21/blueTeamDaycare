@@ -131,6 +131,30 @@ class job_db {
         }
     }
     
+    public static function delete_job($id){
+        $db = Database::getDB();
+        $query = 
+                'DELETE from job
+                  WHERE id = :id';
+        
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $id);
+            
+            
+           
+            $statement->execute();
+            $statement->closeCursor();
+
+           
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+                
+                
+    }
+    
     public static function add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $fileName) {
         
         $fileLocation = "images/". $fileName;

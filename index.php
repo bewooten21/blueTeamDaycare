@@ -776,6 +776,13 @@ switch ($action) {
         include('models/editJobVal.php');
         die();
         break;
+    
+    case 'viewChildcareOpenings' :
+        $openings = opening_db::select_all();
+        include('views/childcareOpenings.php');
+        die();
+        break;
+        
         
         
 }

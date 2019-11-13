@@ -13,27 +13,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Balance Web Development</a>
+      <a class="navbar-brand" href="#">Childcare Care</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
         <li><a href='index.php?action=about'>About</a></li>
-        <li class="dropdown">
-          <a
-            href="#"
-            class="dropdown-toggle"
-            data-toggle="dropdown"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-            >Services<span class="caret"></span
-          ></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Design</a></li>
-            <li><a href="#">Development</a></li>
-            <li><a href="#">Consulting</a></li>
-          </ul>
-        </li>
+        
         <li><a href="#">Contact</a></li>
         <li class="dropdown">
           <a
@@ -52,6 +37,7 @@
             
           </ul>
         </li>
+        <li><a href='index.php?action=viewChildcareOpenings'>Childcare Openings</a></li>
         <li><a href='index.php?action=displayAllUsers'>All Users</a></li>
         <li><a href='index.php?action=viewCompanies'>All Companies</a></li>
         
