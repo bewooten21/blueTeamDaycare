@@ -31,12 +31,16 @@
       <td><?php echo $j["jobName"] ; ?></td>
       <td><?php echo $j["jobDescription"] ; ?></td>
       <td><?php echo $j["jobRequirements"] ; ?></td>
+      <?php if($j["applicationSlots"] > 0) : ?>
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="applyToJob">
                   <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j["id"]); ?>">
                   <input type="submit" value="Apply">
               </form>
           </td>
+       <?php else: ?>
+          <td> No applications available at this time </td>
+       <?php endif; ?>
     </tr>
     <?php endforeach; ?>
   
