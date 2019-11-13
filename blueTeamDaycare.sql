@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2019 at 10:15 PM
+-- Generation Time: Nov 13, 2019 at 09:26 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -32,8 +32,9 @@ USE `daycare`;
 
 CREATE TABLE `application` (
   `id` int(11) NOT NULL,
-  `openingID` int(11) NOT NULL,
+  `jobID` int(11) NOT NULL,
   `isProcessed` tinyint(1) NOT NULL,
+  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
   `coverLetter` varchar(255) DEFAULT NULL,
   `resume` varchar(255) NOT NULL,
   `userID` int(11) NOT NULL
@@ -43,8 +44,8 @@ CREATE TABLE `application` (
 -- Dumping data for table `application`
 --
 
-INSERT INTO `application` (`id`, `openingID`, `isProcessed`, `coverLetter`, `resume`, `userID`) VALUES
-(1, 2, 0, 'coverletters/myFirst.pdf', 'resumes/mySecond.docx', 1);
+INSERT INTO `application` (`id`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
+(1, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -114,6 +115,30 @@ CREATE TABLE `companyapproval` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `daycareopening`
+--
+
+CREATE TABLE `daycareopening` (
+  `daycareOpeningId` int(11) NOT NULL,
+  `companyID` int(11) NOT NULL,
+  `instanceOfTypeID` int(11) NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `openingName` varchar(100) NOT NULL,
+  `description` varchar(10000) NOT NULL,
+  `availableCount` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `daycareopening`
+--
+
+INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID`, `type`, `openingName`, `description`, `availableCount`) VALUES
+(1, 1, 0, 'Employee', 'Daycare Worker', 'Come work for us at Tots R US! ', 1),
+(2, 1, 0, 'Student', 'Tots Tot', 'Our staff build strong connections with our tots, leading them in creative activities and even teaching them the basics of coding!', 13);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `employee`
 --
 
@@ -145,31 +170,7 @@ CREATE TABLE `job` (
 --
 
 INSERT INTO `job` (`id`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
-(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `daycareopening`
---
-
-CREATE TABLE `daycareopening` (
-  `daycareOpeningId` int(11) NOT NULL,
-  `companyID` int(11) NOT NULL,
-  `instanceOfTypeID` int(11) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `openingName` varchar(100) NOT NULL,
-  `description` varchar(10000) NOT NULL,
-  `availableCount` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `daycareopening`
---
-
-INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID`, `type`, `openingName`, `description`, `availableCount`) VALUES
-(1, 1, 0, 'Employee', 'Daycare Worker', 'Come work for us at Tots R US! ', 1),
-(2, 1, 0, 'Student', 'Tots Tot', 'Our staff build strong connections with our tots, leading them in creative activities and even teaching them the basics of coding!', 13);
+(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 0);
 
 -- --------------------------------------------------------
 
@@ -262,6 +263,12 @@ ALTER TABLE `companyapproval`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `daycareopening`
+--
+ALTER TABLE `daycareopening`
+  ADD PRIMARY KEY (`daycareOpeningId`);
+
+--
 -- Indexes for table `employee`
 --
 ALTER TABLE `employee`
@@ -272,12 +279,6 @@ ALTER TABLE `employee`
 --
 ALTER TABLE `job`
   ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `daycareopening`
---
-ALTER TABLE `daycareopening`
-  ADD PRIMARY KEY (`daycareOpeningId`);
 
 --
 -- Indexes for table `role`
@@ -328,6 +329,12 @@ ALTER TABLE `companyapproval`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `daycareopening`
+--
+ALTER TABLE `daycareopening`
+  MODIFY `daycareOpeningId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
@@ -338,12 +345,6 @@ ALTER TABLE `employee`
 --
 ALTER TABLE `job`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `daycareopening`
---
-ALTER TABLE `daycareopening`
-  MODIFY `daycareOpeningId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `role`
