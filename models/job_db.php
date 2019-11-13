@@ -102,6 +102,63 @@ class job_db {
             display_db_error($error_message);
         }
     }
+    
+    public static function update_job($id, $jobT, $jobD, $jobR) {
+        $db = Database::getDB();
+        $query = 'Update job
+              Set
+                  
+                  jobName = :jobT,
+                  jobDescription = :jobD,
+                  jobRequirements = :jobR
+                  WHERE id = :id' ;
+                 
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $id);
+            
+            $statement->bindValue(':jobT', $jobT);
+            $statement->bindValue(':jobD', $jobD);
+            $statement->bindValue(':jobR', $jobR);
+           
+            $statement->execute();
+            $statement->closeCursor();
+
+           
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+    
+    public static function delete_job($id){
+        $db = Database::getDB();
+        $query = 
+                'DELETE from job
+                  WHERE id = :id';
+        
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $id);
+            
+            
+           
+            $statement->execute();
+            $statement->closeCursor();
+
+           
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+                
+                
+    }
+    
+    public static function add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $fileName) {
+        
+        $fileLocation = "images/". $fileName;
+    }
 
     public static function take_application_slot($ID, $applicationSlots) {
         $db = Database::getDB();

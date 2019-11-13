@@ -4,18 +4,15 @@ class opening_db {
     public static function select_all() {
         $db = Database::getDB();
 
-        $queryUsers = 'SELECT * FROM opening';
+        $queryUsers = 'SELECT * FROM company
+                       WHERE  childCapacity - childrenEnrolled > 0'
+                ;
         $statement = $db->prepare($queryUsers);
         $statement->execute();
         $rows = $statement->fetchAll();
-        $openings = [];
+        
 
-        foreach ($rows as $value) {
-            $openings[$value['id']] = new opening($value['id'], $value['companyID'], $value['type'], $value['openingName'], $value['instanceOfTypeID'], $value['description'], $value['availableCount']);
-        }
-        $statement->closeCursor();
-
-        return $openings;
+        return $rows;
     }
 
     public static function get_opening_by_id($id) {

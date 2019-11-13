@@ -1,5 +1,5 @@
 <?php
-$id= filter_input(INPUT_POST, 'id');
+$id= filter_input(INPUT_POST, 'jobId');
 $cName= filter_input(INPUT_POST, 'cName');
 $jobT= filter_input(INPUT_POST, 'jobT');
 $jobD=filter_input(INPUT_POST, 'jobD');
@@ -33,8 +33,8 @@ if($isValid===false){
 }
 
 if($isValid===true){
-    job_db::add_job('', $compId, $jobT, $jobD, $jobR);
-    header("Location: index.php?action=viewJobs");
+    job_db::update_job($id, $jobT, $jobD, $jobR);
+    header("Location: index.php?action=ourJobs");
    
     
 }

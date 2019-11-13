@@ -10,6 +10,7 @@
         <div class="container">
             <h2>You are applying for <?php echo htmlspecialchars($job->getJobName());?></h2>
             <p><?php echo htmlspecialchars($job->getJobDescription());?></p>
+            <div><?php echo $error_message['previousApplication'] !== '' ? $error_message['previousApplication'] : '' ?></div>
             <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="submitJobApp">
                 <input type="hidden" name="jobId" value="<?php echo htmlspecialchars($job->getId());?>">

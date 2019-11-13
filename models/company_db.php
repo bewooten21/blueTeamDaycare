@@ -79,6 +79,7 @@ class company_db {
 
     public static function add_company($companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID) {
         $db = Database::getDB();
+        
         $query = 'INSERT INTO company
                  (companyName, employeeCount, childCapacity, childrenEnrolled, overallRating, ownerID)
               VALUES

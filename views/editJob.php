@@ -16,6 +16,7 @@ and open the template in the editor.
   <h2>Login</h2>
 <form class="form-horizontal" method="post">
     <input type="hidden" name="action" value="editJobVal">
+    <input type="hidden" name="jobId" value="<?php echo $id; ?>">
   
   <div class="form-group">
     <label class="control-label col-sm-2" for="jobTitle">Job Title:</label>
