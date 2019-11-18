@@ -15,6 +15,7 @@ require_once 'models/job.php';
 require_once 'models/job_db.php';
 require_once 'models/opening_db.php';
 require_once 'models/companyApproval_db.php';
+require_once 'models/feedback_db.php';
 session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
@@ -810,18 +811,17 @@ switch ($action) {
         break;
     
     case 'reviewUser' :
-        if(isset($_SESSION['currentUser'])){
-            include 'views/review.php';
-            die();
-            break;
-        }
-        else{
-            $error_message['uName'] = 'You must be logged in to post feedback';
-            include'views/login.php';
-            die();
-            break;           
-        }
-        
+        include 'views/review.php';
+        die();
+        break;
+    
+    case 'submitFeedback' :
+        $feedback = filter_input(INPUT_POST, 'feedback');
+        $rating = filter_input(INPUT_POST, 'rating');
+        $target = $_SESSION['profileID'];
+        $sender = $_SESSION['currentUser']->getID();
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        include('views/confirmFeedback.php');
 }
     
 

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 06:30 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Generation Time: Nov 18, 2019 at 10:23 PM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,7 +32,7 @@ CREATE TABLE `application` (
   `id` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
   `isProcessed` tinyint(1) NOT NULL,
-  `isApproved` tinyint(1) NOT NULL DEFAULT '0',
+  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
   `coverLetter` varchar(255) DEFAULT NULL,
   `resume` varchar(255) NOT NULL,
   `userID` int(11) NOT NULL
@@ -57,7 +57,7 @@ CREATE TABLE `comments` (
   `comment` tinytext NOT NULL,
   `commenterID` int(11) NOT NULL,
   `commenterUserName` varchar(50) NOT NULL,
-  `commentTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `commentTime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -109,15 +109,16 @@ CREATE TABLE `companyapproval` (
   `logo` varchar(255) DEFAULT NULL,
   `ownerID` int(11) NOT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `isProccessed` tinyint(1) NOT NULL DEFAULT '0'
+  `isProcessed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `companyapproval`
 --
 
-INSERT INTO `companyapproval` (`ID`, `name`, `maxChildren`, `currentEmp`, `currentChildren`, `rating`, `logo`, `ownerID`, `isApproved`, `isProccessed`) VALUES
-(1, 'bob\'s', 20, 3, 10, 3.5, 'images/', 0, NULL, 0);
+INSERT INTO `companyapproval` (`ID`, `name`, `maxChildren`, `currentEmp`, `currentChildren`, `rating`, `logo`, `ownerID`, `isApproved`, `isProcessed`) VALUES
+(1, 'bob\'s', 20, 3, 10, 3.5, 'images/', 0, 1, 1),
+(2, 'Bob\'s Daycare', 20, 2, 5, 3.5, NULL, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -156,6 +157,27 @@ CREATE TABLE `employee` (
   `jobId` int(11) NOT NULL,
   `yearsWithCompany` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE `feedback` (
+  `ID` int(11) NOT NULL,
+  `sender` int(11) NOT NULL,
+  `target` int(11) NOT NULL,
+  `feedback` varchar(255) NOT NULL,
+  `rating` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`) VALUES
+(0, 3, 1, 'Test', 3.2);
 
 -- --------------------------------------------------------
 
@@ -282,6 +304,12 @@ ALTER TABLE `employee`
   ADD UNIQUE KEY `empId` (`empID`);
 
 --
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `job`
 --
 ALTER TABLE `job`
@@ -333,7 +361,7 @@ ALTER TABLE `company`
 -- AUTO_INCREMENT for table `companyapproval`
 --
 ALTER TABLE `companyapproval`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `daycareopening`
