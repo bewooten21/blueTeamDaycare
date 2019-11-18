@@ -495,6 +495,7 @@ switch ($action) {
         }
     case 'random_display_profile':
         $profileID = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $_SESSION['profileID'] = $profileID;
         $users = user_db::get_user_by_id($profileID);
         $comments = user_db::get_user_comments($profileID);
         $comment = '';
@@ -749,6 +750,7 @@ switch ($action) {
 
     case 'viewCompanyProfile':
         $id = filter_input(INPUT_GET, 'id');
+        $_SESSION['companyID'] = $id;
         $c = company_db::get_company_by_id($id);
         $jobs = job_db::get_job_by_Companyid($id);
         include('views/companyProfile.php');
@@ -792,7 +794,7 @@ switch ($action) {
         break;
         
     case 'approveCompany' :
-        $id = filter_input(INPUT_POST, 'id');
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         companyApproval_db::approveCompany($id);
         $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
         include('views/adminProfile.php');
@@ -800,12 +802,25 @@ switch ($action) {
         break;
     
     case 'declineCompany' :
-        $id = filter_input(INPUT_POST, 'id');
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         companyApproval_db::declineCompany($id);
         $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
         include('views/adminProfile.php');
         die();
         break;
+    
+    case 'reviewUser' :
+        if(isset($_SESSION['currentUser'])){
+            include 'views/review.php';
+            die();
+            break;
+        }
+        else{
+            $error_message['uName'] = 'You must be logged in to post feedback';
+            include'views/login.php';
+            die();
+            break;           
+        }
         
 }
     
