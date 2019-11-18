@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 06:30 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Generation Time: Nov 18, 2019 at 11:07 PM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
+CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -29,10 +31,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `application` (
-  `id` int(11) NOT NULL,
+  `applicationID` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
   `isProcessed` tinyint(1) NOT NULL,
-  `isApproved` tinyint(1) NOT NULL DEFAULT '0',
+  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
   `coverLetter` varchar(255) DEFAULT NULL,
   `resume` varchar(255) NOT NULL,
   `userID` int(11) NOT NULL
@@ -42,8 +44,8 @@ CREATE TABLE `application` (
 -- Dumping data for table `application`
 --
 
-INSERT INTO `application` (`id`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
-(1, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
+INSERT INTO `application` (`applicationID`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
+(1, 1, 1, 1, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -57,7 +59,7 @@ CREATE TABLE `comments` (
   `comment` tinytext NOT NULL,
   `commenterID` int(11) NOT NULL,
   `commenterUserName` varchar(50) NOT NULL,
-  `commentTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `commentTime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -109,7 +111,7 @@ CREATE TABLE `companyapproval` (
   `logo` varchar(255) DEFAULT NULL,
   `ownerID` int(11) NOT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `isProccessed` tinyint(1) NOT NULL DEFAULT '0'
+  `isProccessed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -249,7 +251,9 @@ INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `uName`, `pWord`, `image`, 
 -- Indexes for table `application`
 --
 ALTER TABLE `application`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`applicationID`),
+  ADD KEY `job_application_fk` (`jobID`),
+  ADD KEY `user_application_fk` (`userID`);
 
 --
 -- Indexes for table `comments`
@@ -315,7 +319,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -370,6 +374,17 @@ ALTER TABLE `student`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `application`
+--
+ALTER TABLE `application`
+  ADD CONSTRAINT `job_application_fk` FOREIGN KEY (`jobID`) REFERENCES `job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_application_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

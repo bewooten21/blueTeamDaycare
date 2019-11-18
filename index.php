@@ -806,7 +806,27 @@ switch ($action) {
         include('views/adminProfile.php');
         die();
         break;
+    
+    case 'processApplications' :
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        $job = job_db::get_job($jobID);
+        $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
+        include('views/jobAppApproval.php');
+        die();
+        break;
+    case 'approveJobApp' :
+        $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
         
+        application_db::process_and_approve_application($applicationID, 1, 1);
+        
+        $job = job_db::get_job($jobID);
+        $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
+        include('views/jobAppApproval.php');
+        die();
+        break; 
 }
     
 

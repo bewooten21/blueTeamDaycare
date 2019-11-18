@@ -51,7 +51,7 @@ class job_db {
         $statement->closeCursor();
         
         foreach ($rows as $value) {
-            $job = new job($value[0], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements']);
+            $job = new job($value['id'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots']);
 
             $jobs[] = $job;
         }

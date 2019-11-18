@@ -55,11 +55,9 @@
 <table class="table table-dark">
   <thead>
     <tr>
-      <th scope="col">JobID</th>
-      <th scope="col">Company</th>
-      <th scope="col">Job Title</th>
-      <th scope="col">Job Description</th>
-      <th scope="col">Job Requirements</th>
+      <th scope="col">Job</th>
+      <th scope="col">Applications Available</th>
+      <th scope="col">Pending Applications</th>
       <th scope="col"></th>
     </tr>
   </thead>
@@ -68,18 +66,25 @@
       
     <tr>
       <th scope="row"><a href="index.php?action=viewJob&amp;id=<?php echo $j->getId(); ?>">
-                                <?php  echo $j->getId(); ?>
+                                <?php  echo $j->getJobName(); ?>
                             </a></th>
-      <td><?php echo $c->getCompanyName(); ?></td>
-      <td><?php echo $j->getJobName();?></td>
-      <td><?php echo $j->getJobDescription() ; ?></td>
-      <td><?php echo $j->getJobRequirements() ; ?></td>
-      <td><input type='submit' value='Edit'></td>
+      <td><?php echo $j->getApplicationSlots() ; ?></td>
+      <td>
+          <form action="index.php" method="post">
+                <input type="hidden" name="action" value="processApplications">
+                <input type="hidden" name="companyID" value="<?php echo htmlspecialchars($j->getCompanyId()); ?>">
+                <input type="hidden" name="jobID" value="<?php echo htmlspecialchars($j->getId()); ?>">
+                <input type="submit" class="btn btn-link" value="View Job Applications"><br>
+            </form>
+          
+      </td>
+      <td><input type='submit' class="btn btn-default" value='Edit'></td>
     </tr>
     <?php endforeach; ?>
   
   </tbody>
 </table>
+    
 </body>
 </html>
 
