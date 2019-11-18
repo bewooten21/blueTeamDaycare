@@ -13,6 +13,7 @@ require_once 'models/company.php';
 require_once 'models/opening.php';
 require_once 'models/job.php';
 require_once 'models/job_db.php';
+require_once 'models/child_db.php';
 require_once 'models/opening_db.php';
 require_once 'models/companyApproval_db.php';
 require_once 'models/feedback_db.php';
@@ -442,6 +443,7 @@ switch ($action) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 $role = $_SESSION['currentUser']->getRole();
+                $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if($role->getID() != 4 ){
                     include 'views/profile.php';
                 }
@@ -471,6 +473,7 @@ switch ($action) {
             if($role->getID() != 4 ){
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
+                $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 include 'views/profile.php';
                 die();
                 break;
@@ -811,7 +814,43 @@ switch ($action) {
         break;
     
     case 'reviewUser' :
-        include 'views/review.php';
+            include 'views/review.php';
+            die();
+            break;
+        
+    case 'submitFeedback' :
+        $sender = $_SESSION['currentUser']->getID();
+        $target = $_SESSION['profileID'];
+        $feedback = filter_input(INPUT_POST, 'feedback');
+        $rating = filter_input(INPUT_POST, 'rating');
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        include('views/confirmFeedback.php');
+        die();
+        break;
+        
+    case 'addStudent':
+        $fName="";
+        $lName="";
+        $age="";
+        $fNError="";
+        $lNError="";
+        $ageError="";
+        include('views/addStudent.php');
+        die();
+        break;
+    
+    case 'addStuVal':
+        include('models/addStuVal.php');
+        die();
+        break;
+    
+    case 'editChild':
+        $id = filter_input(INPUT_POST, 'stuId');
+        $child= child_db::get_child_byId($id);
+        $fNError="";
+        $lNError="";
+        $ageError="";
+        include('views/editChild.php');
         die();
         break;
     

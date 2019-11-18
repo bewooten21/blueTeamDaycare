@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 10:23 PM
+-- Generation Time: Nov 18, 2019 at 10:49 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -177,7 +177,8 @@ CREATE TABLE `feedback` (
 --
 
 INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`) VALUES
-(0, 3, 1, 'Test', 3.2);
+(1, 3, 1, 'Test', 3.2),
+(2, 3, 2, 'test 2', 3.2);
 
 -- --------------------------------------------------------
 
@@ -374,6 +375,12 @@ ALTER TABLE `daycareopening`
 --
 ALTER TABLE `employee`
   MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `job`
