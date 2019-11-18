@@ -4,7 +4,7 @@ class companyApproval_db {
     public static function addCompany($name, $maxChild, $curEmp, $curChild, $rating)
     {
         $db = Database::getDB();
-        $query = 'insert into companyapproval(name, maxChildren, currentEmp, currentChildren, rating) '
+        $query = 'insert into companyapproval(name, maxChildren, currentEmp, currentChildren, rating)'
                 . 'values(:name, :maxChild, :curEmp, :curChild, :rating)';
         try {
             $statement = $db->prepare($query);
@@ -50,7 +50,7 @@ class companyApproval_db {
     {
         $db = Database::getDB();
         $query = 'select * from companyapproval '
-                . 'where isProccessed = 0';
+                . 'where isProcessed = 0';
         try {
             $statement = $db->prepare($query);
             $statement->execute();
@@ -67,9 +67,10 @@ class companyApproval_db {
     public static function approveCompany($id)
     {
         $db = Database::getDB();
-        $query = 'update table companyapproval '
-                . 'set isApproved = 1'
-                . 'where id = :id';
+        $query = 'update companyapproval '
+                . 'set isApproved = 1, '
+                . 'isProcessed = 1 '
+                . 'where ID = :id';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);
@@ -85,9 +86,10 @@ class companyApproval_db {
     public static function declineCompany($id)
     {
         $db = Database::getDB();
-        $query = 'update table companyapproval '
-                . 'set isApproved = 0'
-                . 'where id = :id';
+        $query = 'update companyapproval '
+                . 'set isApproved = 0, '
+                . 'isProcessed = 1 '
+                . 'where ID = :id';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);

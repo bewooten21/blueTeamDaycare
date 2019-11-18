@@ -48,6 +48,10 @@
                         <p>
                         </p>
                     </div>
+                    <form action="index.php" method="post">
+                        <input type="hidden" name="action" value="reviewCompany">
+                        <input type="submit" class="btn btn-default" value="Leave a Review"><br>
+                    </form>
                 </div>
   </div>
 </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 11:07 PM
+-- Generation Time: Nov 18, 2019 at 10:49 PM
 -- Server version: 10.3.15-MariaDB
 -- PHP Version: 7.3.6
 
@@ -111,15 +111,16 @@ CREATE TABLE `companyapproval` (
   `logo` varchar(255) DEFAULT NULL,
   `ownerID` int(11) NOT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `isProccessed` tinyint(1) NOT NULL DEFAULT 0
+  `isProcessed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `companyapproval`
 --
 
-INSERT INTO `companyapproval` (`ID`, `name`, `maxChildren`, `currentEmp`, `currentChildren`, `rating`, `logo`, `ownerID`, `isApproved`, `isProccessed`) VALUES
-(1, 'bob\'s', 20, 3, 10, 3.5, 'images/', 0, NULL, 0);
+INSERT INTO `companyapproval` (`ID`, `name`, `maxChildren`, `currentEmp`, `currentChildren`, `rating`, `logo`, `ownerID`, `isApproved`, `isProcessed`) VALUES
+(1, 'bob\'s', 20, 3, 10, 3.5, 'images/', 0, 1, 1),
+(2, 'Bob\'s Daycare', 20, 2, 5, 3.5, NULL, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -158,6 +159,28 @@ CREATE TABLE `employee` (
   `jobId` int(11) NOT NULL,
   `yearsWithCompany` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE `feedback` (
+  `ID` int(11) NOT NULL,
+  `sender` int(11) NOT NULL,
+  `target` int(11) NOT NULL,
+  `feedback` varchar(255) NOT NULL,
+  `rating` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`) VALUES
+(1, 3, 1, 'Test', 3.2),
+(2, 3, 2, 'test 2', 3.2);
 
 -- --------------------------------------------------------
 
@@ -286,6 +309,12 @@ ALTER TABLE `employee`
   ADD UNIQUE KEY `empId` (`empID`);
 
 --
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `job`
 --
 ALTER TABLE `job`
@@ -337,7 +366,7 @@ ALTER TABLE `company`
 -- AUTO_INCREMENT for table `companyapproval`
 --
 ALTER TABLE `companyapproval`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `daycareopening`
@@ -350,6 +379,12 @@ ALTER TABLE `daycareopening`
 --
 ALTER TABLE `employee`
   MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `job`

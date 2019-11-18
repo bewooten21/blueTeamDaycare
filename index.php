@@ -13,8 +13,10 @@ require_once 'models/company.php';
 require_once 'models/opening.php';
 require_once 'models/job.php';
 require_once 'models/job_db.php';
+require_once 'models/child_db.php';
 require_once 'models/opening_db.php';
 require_once 'models/companyApproval_db.php';
+require_once 'models/feedback_db.php';
 session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
@@ -441,6 +443,7 @@ switch ($action) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 $role = $_SESSION['currentUser']->getRole();
+                $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if($role->getID() != 4 ){
                     include 'views/profile.php';
                 }
@@ -470,6 +473,7 @@ switch ($action) {
             if($role->getID() != 4 ){
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
+                $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 include 'views/profile.php';
                 die();
                 break;
@@ -495,6 +499,7 @@ switch ($action) {
         }
     case 'random_display_profile':
         $profileID = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $_SESSION['profileID'] = $profileID;
         $users = user_db::get_user_by_id($profileID);
         $comments = user_db::get_user_comments($profileID);
         $comment = '';
@@ -749,6 +754,7 @@ switch ($action) {
 
     case 'viewCompanyProfile':
         $id = filter_input(INPUT_GET, 'id');
+        $_SESSION['companyID'] = $id;
         $c = company_db::get_company_by_id($id);
         $jobs = job_db::get_job_by_Companyid($id);
         include('views/companyProfile.php');
@@ -792,7 +798,7 @@ switch ($action) {
         break;
         
     case 'approveCompany' :
-        $id = filter_input(INPUT_POST, 'id');
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         companyApproval_db::approveCompany($id);
         $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
         include('views/adminProfile.php');
@@ -800,14 +806,62 @@ switch ($action) {
         break;
     
     case 'declineCompany' :
-        $id = filter_input(INPUT_POST, 'id');
+        $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         companyApproval_db::declineCompany($id);
         $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
         include('views/adminProfile.php');
         die();
         break;
     
-    case 'processApplications' :
+    case 'reviewUser' :
+            include 'views/review.php';
+            die();
+            break;
+        
+    case 'submitFeedback' :
+        $sender = $_SESSION['currentUser']->getID();
+        $target = $_SESSION['profileID'];
+        $feedback = filter_input(INPUT_POST, 'feedback');
+        $rating = filter_input(INPUT_POST, 'rating');
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        include('views/confirmFeedback.php');
+        die();
+        break;
+        
+    case 'addStudent':
+        $fName="";
+        $lName="";
+        $age="";
+        $fNError="";
+        $lNError="";
+        $ageError="";
+        include('views/addStudent.php');
+        die();
+        break;
+    
+    case 'addStuVal':
+        include('models/addStuVal.php');
+        die();
+        break;
+    
+    case 'editChild':
+        $id = filter_input(INPUT_POST, 'stuId');
+        $child= child_db::get_child_byId($id);
+        $fNError="";
+        $lNError="";
+        $ageError="";
+        include('views/editChild.php');
+        die();
+        break;
+    
+    case 'submitFeedback' :
+        $feedback = filter_input(INPUT_POST, 'feedback');
+        $rating = filter_input(INPUT_POST, 'rating');
+        $target = $_SESSION['profileID'];
+        $sender = $_SESSION['currentUser']->getID();
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        include('views/confirmFeedback.php');
+     case 'processApplications' :
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
         $job = job_db::get_job($jobID);
