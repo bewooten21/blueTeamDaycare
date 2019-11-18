@@ -20,12 +20,6 @@
                                     <td><input type="text" name="cName" value="<?php echo htmlspecialchars($cName) ?>"></td>
                                     <td><div id="error"><?php echo htmlspecialchars($error_message['cName']); ?></div></td>
                                 </tr>
-
-                                <tr>
-                                    <td><label>Max Employees: </label></td>
-                                    <td><input type="text" name="maxEmp" value="<?php echo htmlspecialchars($maxEmp) ?>"></td>
-                                    <td><div id="error"><?php echo htmlspecialchars($error_message['maxEmp']); ?></div></td>
-                                </tr>
                                 <tr style="background-color: white;">
                                     <td><label>Max Enrolled Children: </label></td>
                                     <td><input type="text" name="maxChild" value="<?php echo htmlspecialchars($maxChild) ?>"></td>

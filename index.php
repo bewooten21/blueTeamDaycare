@@ -440,7 +440,14 @@ switch ($action) {
             if (password_verify($pWord, $theUser->getPWord())) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
-                include 'views/profile.php';
+                $role = $_SESSION['currentUser']->getRole();
+                if($role->getID() != 4 ){
+                    include 'views/profile.php';
+                }
+                else {
+                    $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
+                     include('views/adminProfile.php');
+                }
             } else {
                 $error_message['uName'] = '';
                 $error_message['pWord'] = '';
@@ -459,14 +466,15 @@ switch ($action) {
     case 'displayProfile':
         
         if (isset($_SESSION['currentUser'])) {
-            if($_SESSION['currentUser']->getRole() != 4 ){
+            $role = $_SESSION['currentUser']->getRole();
+            if($role->getID() != 4 ){
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 include 'views/profile.php';
                 die();
                 break;
             } else {
-                
+                $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
                 include 'views/adminProfile.php';
             }
         } else {
@@ -603,7 +611,6 @@ switch ($action) {
     case 'validate business':
         // get the data from the registration form
         $cName = filter_input(INPUT_POST, 'cName');
-        $maxEmp = filter_input(INPUT_POST, 'maxEmp', FILTER_VALIDATE_INT);
         $maxChild = filter_input(INPUT_POST, 'maxChild', FILTER_VALIDATE_INT);
         $childCount = filter_input(INPUT_POST, 'childCount', FILTER_VALIDATE_INT);
         $empCount = filter_input(INPUT_POST, 'empCount', FILTER_VALIDATE_INT);
@@ -632,10 +639,6 @@ switch ($action) {
             $error_message['cName'] = 'You must enter a company name.';
         } else if ($cNameValid === FALSE || $cNameValid === 0) {
             $error_message['cName'] = 'company name must start with a letter.';
-        }
-// validate max employees
-        if ($maxEmp === null || $maxEmp === '' || $maxEmp === false) {
-            $error_message['maxEmp'] = 'Max Employees must be filled out and must be a number';
         }
 // validate max enrolled children
         if ($maxChild === null || $maxChild === '' || $maxChild === false) {
@@ -679,19 +682,19 @@ switch ($action) {
             }
         }
 // if an error message exists, go to the index page
-        if ($error_message['image'] != '' || $error_message['cName'] != '' || $error_message['maxEmp'] != '' || $error_message['maxChild'] != '' || $error_message['empCount'] != '' || $error_message['childCount'] != '' || $error_message['cRate'] != '') {
+        if ($error_message['image'] != '' || $error_message['cName'] != '' || $error_message['maxChild'] != '' || $error_message['empCount'] != '' || $error_message['childCount'] != '' || $error_message['cRate'] != '') {
             include 'views/businessRegistration.php';
             exit();
         } else {
-            if ($cImage === '') {
-                companyApproval_db::addCompany($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate);
+            if ($cImage === '' || $cImage === null) {
+                companyApproval_db::addCompany($cName, $maxChild, $empCount, $childCount, $cRate);
                 $uName = $_SESSION['currentUser']->getUName();
                 include'views/confirmation.php';
                 exit;   
             }
             else
             {
-                companyApproval_db::addCompanyWithLogo($cName, $maxEmp, $maxChild, $empCount, $childCount, $cRate, $file_name);
+                companyApproval_db::addCompanyWithLogo($cName, $maxChild, $empCount, $childCount, $cRate, $file_name);
                 $uName = $_SESSION['currentUser'];
                 include'views/confirmation.php';
                 exit;
@@ -788,7 +791,21 @@ switch ($action) {
         die();
         break;
         
-        
+    case 'approveCompany' :
+        $id = filter_input(INPUT_POST, 'id');
+        companyApproval_db::approveCompany($id);
+        $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
+        include('views/adminProfile.php');
+        die();
+        break;
+    
+    case 'declineCompany' :
+        $id = filter_input(INPUT_POST, 'id');
+        companyApproval_db::declineCompany($id);
+        $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
+        include('views/adminProfile.php');
+        die();
+        break;
         
 }
     
