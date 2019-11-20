@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2019 at 07:19 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Generation Time: Nov 20, 2019 at 11:06 PM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -33,8 +33,8 @@ USE `daycare`;
 CREATE TABLE `application` (
   `applicationID` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
-  `isProcessed` tinyint(1) NOT NULL,
-  `isApproved` tinyint(1) NOT NULL DEFAULT '0',
+  `isProcessed` tinyint(1) NOT NULL DEFAULT 0,
+  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
   `coverLetter` varchar(255) DEFAULT NULL,
   `resume` varchar(255) NOT NULL,
   `userID` int(11) NOT NULL
@@ -45,9 +45,9 @@ CREATE TABLE `application` (
 --
 
 INSERT INTO `application` (`applicationID`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
-(1, 1, 1, 1, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
-(2, 1, 0, 0, 'bwooten-1-cover-letter.pdf', 'bwooten-1-resume.pdf', 2),
-(3, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
+(1, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
+(2, 1, 1, 1, 'bwooten-1-cover-letter.pdf', 'bwooten-1-resume.pdf', 2),
+(3, 2, 0, 0, 'tstading-2-cover-letter.pdf', 'tstading-2-resume.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -61,7 +61,7 @@ CREATE TABLE `comments` (
   `comment` tinytext NOT NULL,
   `commenterID` int(11) NOT NULL,
   `commenterUserName` varchar(50) NOT NULL,
-  `commentTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `commentTime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -114,7 +114,7 @@ CREATE TABLE `companyapproval` (
   `logo` varchar(255) DEFAULT NULL,
   `ownerID` int(11) NOT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `isProcessed` tinyint(1) NOT NULL DEFAULT '0'
+  `isProcessed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -157,11 +157,16 @@ INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID
 
 CREATE TABLE `employee` (
   `empID` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `companyId` int(11) NOT NULL,
-  `jobId` int(11) NOT NULL,
-  `yearsWithCompany` decimal(10,0) NOT NULL
+  `applicationID` int(11) NOT NULL,
+  `hireDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`empID`, `applicationID`, `hireDate`) VALUES
+(10000, 2, '2019-11-20 21:43:05');
 
 -- --------------------------------------------------------
 
@@ -205,7 +210,7 @@ CREATE TABLE `job` (
 --
 
 INSERT INTO `job` (`jobID`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
-(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 14),
+(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 16),
 (2, 1, 'Daycare Manager', 'Supervise daycare staff and aid in administrative work. ', 'At least 3 years of experience in child care. \r\nPrevious experience with leadership roles preferred. ', 5);
 
 -- --------------------------------------------------------
@@ -310,7 +315,7 @@ ALTER TABLE `daycareopening`
 -- Indexes for table `employee`
 --
 ALTER TABLE `employee`
-  ADD UNIQUE KEY `empId` (`empID`);
+  ADD PRIMARY KEY (`empID`);
 
 --
 -- Indexes for table `feedback`
@@ -382,7 +387,7 @@ ALTER TABLE `daycareopening`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10001;
 
 --
 -- AUTO_INCREMENT for table `feedback`

@@ -17,6 +17,7 @@ require_once 'models/child_db.php';
 require_once 'models/opening_db.php';
 require_once 'models/companyApproval_db.php';
 require_once 'models/feedback_db.php';
+require_once 'models/employee_db.php';
 session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
@@ -757,6 +758,7 @@ switch ($action) {
         $_SESSION['companyID'] = $id;
         $c = company_db::get_company_by_id($id);
         $jobs = job_db::get_job_by_Companyid($id);
+        $employees = employee_db::get_employees_by_companyID($id);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
         include('views/companyProfile.php');
         die();
@@ -777,6 +779,7 @@ switch ($action) {
         $tError = "";
         $dError = "";
         $rError = "";
+        $aError = "";
         
         include('views/editJob.php');
         die();
@@ -863,6 +866,7 @@ switch ($action) {
      case 'processApplications' :
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        $message = "";        
         $job = job_db::get_job($jobID);
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
         include('views/jobAppApproval.php');
@@ -874,7 +878,10 @@ switch ($action) {
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
         
+        // Update application and add to employee table
         application_db::process_and_approve_application($applicationID, 1, 1);
+        $newEmpID = employee_db::add_employee($applicationID);
+        $message = "Congratulations on your new hire!"; 
         
         $job = job_db::get_job($jobID);
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
@@ -890,9 +897,30 @@ switch ($action) {
         $applicant = user_db::get_user_by_id($application->getUserID()); 
         $job = job_db::get_job($jobID);
         
-        include('views/jobAppApproval.php');
+        include('views/declineApplication.php');
         die();
         break; 
+    case 'finishAppDecline' :
+        $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        $openSlot = filter_input(INPUT_POST, 'openSlot');
+        $job = job_db::get_job($jobID);
+        $message = "";
+        
+        if ($openSlot !== null && $openSlot === "isChecked") {
+            $slots = $job->getApplicationSlots() + 1;
+            job_db::update_application_slot($job->getId(), $slots);
+            $message .= "Application slot was reopened!";
+        }
+        application_db::process_application($applicationID, 1);
+        
+        $message .= "Application successfully declined.";  
+        
+        $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
+        include('views/jobAppApproval.php');
+        die();
+        break;
 }
     
 

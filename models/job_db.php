@@ -102,14 +102,15 @@ class job_db {
         }
     }
     
-    public static function update_job($id, $jobT, $jobD, $jobR) {
+    public static function update_job($id, $jobT, $jobD, $jobR, $appSlot) {
         $db = Database::getDB();
         $query = 'Update job
               Set
                   
                   jobName = :jobT,
                   jobDescription = :jobD,
-                  jobRequirements = :jobR
+                  jobRequirements = :jobR,
+                  applicationSlots = :appSlot
                   WHERE jobID = :id' ;
                  
         try {
@@ -119,11 +120,30 @@ class job_db {
             $statement->bindValue(':jobT', $jobT);
             $statement->bindValue(':jobD', $jobD);
             $statement->bindValue(':jobR', $jobR);
+            $statement->bindValue(':appSlot', $appSlot);
            
             $statement->execute();
             $statement->closeCursor();
 
            
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+    
+    public static function update_application_slot($ID, $applicationSlots) {
+        $db = Database::getDB();
+        $query = $query = 'UPDATE job
+              SET applicationSlots = :applicationSlots
+                WHERE jobID = :ID';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':applicationSlots', $applicationSlots);
+            $statement->bindValue(':ID', $ID);
+            $row_count = $statement->execute();
+            $statement->closeCursor();
+            return $row_count;
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             display_db_error($error_message);

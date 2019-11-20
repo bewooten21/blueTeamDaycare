@@ -97,6 +97,28 @@
   </tbody>
 </table>
     
+    <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Position</th>
+      <th scope="col">Name of Employee</th>
+      <th scope="col">Date Hired</th>
+    </tr>
+  </thead>
+  <tbody>
+     <?php foreach ($employees as $employee) : ?>
+    <tr>
+      <th>
+          <a href="index.php?action=viewJob&amp;id=<?php echo $employee["jobID"]; ?>" target="_blank">
+            <?php  echo $employee["jobName"]; ?>
+          </a>
+      </th>
+      <td><?php echo htmlspecialchars($employee["fName"] . ' ' . $employee["lName"]); ?></td>
+      <td><?php echo htmlspecialchars($employee["hireDate"]); ?></td>     
+    </tr>
+    <?php endforeach; ?>
+      </tbody>
+</table>
 </body>
 </html>
 

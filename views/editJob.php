@@ -1,9 +1,4 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
         <meta charset="UTF-8">
@@ -52,6 +47,18 @@ and open the template in the editor.
       </div>
   </div>
   
+    <div class="form-group">
+    <label class="control-label col-sm-2" for="appSlot">Application Slots:</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="appSlot" name="appSlot" placeholder="Enter number of applications to recieve" value="<?php echo htmlspecialchars($job['applicationSlots']); ?>">
+    </div>
+    <div class="col-sm-2">
+          <p class="error">
+              <?php echo $aError; ?>
+          </p>
+      </div>
+  </div>
+    
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
       <button type="submit" class="btn btn-default">Submit</button>

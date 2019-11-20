@@ -81,7 +81,7 @@ if ($error_message['resume'] != '' || $error_message['coverLetter'] != '' || $er
         $applicationId = application_db::add_application($job->getId(), 0, 0, $coverLetter_file_name, $resume_file_name, $_SESSION['currentUser']->getID());
         if ($applicationId !== null && $applicationId !== '' && $applicationId !== false) {
             $applicationSlots = $job->getApplicationSlots() - 1;
-            job_db::take_application_slot($job->getId(), $applicationSlots);
+            job_db::update_application_slot($job->getId(), $applicationSlots);
             include('views/confirmation.php');
             exit();
 

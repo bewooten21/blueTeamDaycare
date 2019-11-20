@@ -7,8 +7,7 @@
     <body>
         <?php include ('nav.php'); ?>
 
-        <h1>Decline <?php echo htmlspecialchars($applicant["fName"] . ' ' . $applicant["lName"]); ?>&apos;s Application</h1>
-        <?php if($appInfo_arr !== null || $appInfo_arr !== '' ) : ?>
+        <h1>Decline <?php echo htmlspecialchars($applicant->getFName() . ' ' . $applicant->getLName()); ?>&apos;s Application</h1>
         <div class="jumbotron" >
             <div class="container"> 
 <table class="table table-dark">
@@ -22,34 +21,36 @@
   </thead>
   <tbody>
        
-      <?php foreach ($appInfo_arr as $appInfo) : ?>
     <tr>
       <th>
           <a href="index.php?action=viewJob&amp;id=<?php echo $job->getId(); ?>" target="_blank">
             <?php  echo $job->getJobName(); ?>
           </a>
       </th>
-      <td><?php echo htmlspecialchars($applicant["fName"] . ' ' . $applicant["lName"]); ?></td>
-      <td><?php echo htmlspecialchars($application["coverLetter"]); ?></td>
-      <td><?php echo htmlspecialchars($application["resume"]); ?></td>
-       
+      <td><?php echo htmlspecialchars($applicant->getFName() . ' ' . $applicant->getLName()); ?></td>
+      <td><?php echo htmlspecialchars($application->getCoverLetter()); ?></td>
+      <td><?php echo htmlspecialchars($application->getResume()); ?></td> 
     </tr>
-    <?php endforeach; ?>
   </tbody>
 </table>
         <form action="index.php" method="post">
-            <select name="list">
-         <option value="-1">Select One</option>
-         <option value="1">One</option>
-         <option value="2">Two</option>
-</select>
-<input type="submit" name="submit">
-</form>      
+            <input type="checkbox" name="openSlot" value="isChecked" /> Would you like to reopen this application slot?
+            <br>
+            <input type="hidden" name="applicationID"  value="<?php echo htmlspecialchars($application->getApplicationId()); ?>">
+            <input type="hidden" name="companyID"  value="<?php echo htmlspecialchars($job->getCompanyID()); ?>">
+            <input type="hidden" name="jobID"  value="<?php echo htmlspecialchars($job->getId()); ?>">
+            <input type="hidden" name="action" value="finishAppDecline">
+            
+            <input type="submit" class="btn btn-default" value="Confirm">
+        </form> 
+            <form action="index.php" method="post">
+                <input type="hidden" name="action" value="processApplications">
+                <input type="hidden" name="companyID" value="<?php echo htmlspecialchars($job->getCompanyId()); ?>">
+                <input type="hidden" name="jobID" value="<?php echo htmlspecialchars($job->getId()); ?>">
+                <input type="submit" class="btn btn-default" value="Cancel">
+            </form>
             </div>
         </div>
-            <?php else: ?>
-          <p> No applications pending at this time </p>
-       <?php endif; ?>  
     </body>
 </html>
 
