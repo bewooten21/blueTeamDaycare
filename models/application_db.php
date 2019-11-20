@@ -58,11 +58,11 @@ class application_db {
         $db = Database::getDB();
         $query='SELECT *
             from application JOIN job ON
-            application.jobID=job.id
+            application.jobID=job.jobID
             JOIN user ON
             application.userID=user.id
-            WHERE job.companyID = :companyID AND job.id = :jobID AND application.isProcessed = 0
-            ORDER by job.id asc';
+            WHERE job.companyID = :companyID AND job.jobID = :jobID AND application.isProcessed = 0
+            ORDER by user.lName asc';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':companyID', $companyID);

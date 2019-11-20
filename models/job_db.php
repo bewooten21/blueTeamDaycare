@@ -6,7 +6,7 @@ class job_db {
 
         $query='SELECT * from job JOIN company ON
             job.companyID=company.id
-            ORDER by job.id asc'
+            ORDER by job.jobID asc'
             ;
         $statement = $db->prepare($query);
         $statement->execute();
@@ -22,7 +22,7 @@ class job_db {
         $query = 'SELECT *
               FROM job JOIN company ON 
               job.companyID=companyID
-              WHERE job.id= :id';
+              WHERE job.jobID= :id';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $id);
@@ -47,17 +47,16 @@ class job_db {
         $statement->bindValue(':id', $id);
         $statement->execute();
         $rows = $statement->fetchAll();
+        $jobs = [];
+        
+        
+        foreach ($rows as $value) {
+            $jobs[$value['jobID']] = new job($value['jobID'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots']);
+
+        }
 
         $statement->closeCursor();
         
-        foreach ($rows as $value) {
-            $job = new job($value['id'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots']);
-
-            $jobs[] = $job;
-        }
-        
-       
-
         return $jobs;
     }
 
@@ -65,14 +64,14 @@ class job_db {
         $db = Database::getDB();
         $query = 'SELECT *
               FROM job
-              WHERE id= :jobId';
+              WHERE jobID= :jobId';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':jobId', $jobId);
         $statement->execute();
         $value = $statement->fetch();
 
-        $job = new job($value['id'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots']);
+        $job = new job($value['jobID'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots']);
         
         $statement->closeCursor();
         
@@ -82,7 +81,7 @@ class job_db {
     public static function add_job($id, $compId, $jobT, $jobD, $jobR) {
         $db = Database::getDB();
         $query = 'INSERT INTO job
-                 (id, companyID, jobName, jobDescription, jobRequirements)
+                 (jobID, companyID, jobName, jobDescription, jobRequirements)
               VALUES
                  (:id, :compId, :jobT, :jobD, :jobR)';
         try {
@@ -111,7 +110,7 @@ class job_db {
                   jobName = :jobT,
                   jobDescription = :jobD,
                   jobRequirements = :jobR
-                  WHERE id = :id' ;
+                  WHERE jobID = :id' ;
                  
         try {
             $statement = $db->prepare($query);
@@ -135,7 +134,7 @@ class job_db {
         $db = Database::getDB();
         $query = 
                 'DELETE from job
-                  WHERE id = :id';
+                  WHERE jobID = :id';
         
         try {
             $statement = $db->prepare($query);
@@ -153,72 +152,6 @@ class job_db {
         }
                 
                 
-    }
-    
-    public static function add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $fileName) {
-        
-        $fileLocation = "images/". $fileName;
-    }
-
-    public static function take_application_slot($ID, $applicationSlots) {
-        $db = Database::getDB();
-        $query = $query = 'UPDATE job
-              SET applicationSlots = :applicationSlots
-                WHERE ID = :ID';
-        try {
-            $statement = $db->prepare($query);
-            $statement->bindValue(':applicationSlots', $applicationSlots);
-            $statement->bindValue(':ID', $ID);
-            $row_count = $statement->execute();
-            $statement->closeCursor();
-            return $row_count;
-        } catch (PDOException $e) {
-            $error_message = $e->getMessage();
-            display_db_error($error_message);
-        }
-    }
-    
-    public static function update_user($ID, $fName, $lName, $email, $uName, $uImage) {
-        
-        $fileLocation = "images/".$uImage;
-        $db = Database::getDB();
-        $query = $query = 'UPDATE user
-              SET fName = :fName,
-                  lName = :lName,
-                  email = :email,
-                  uName = :uName,
-                  uImage = :uImage
-                WHERE ID = :ID';
-        try {
-            $statement = $db->prepare($query);
-            $statement->bindValue(':fName', $fName);
-            $statement->bindValue(':lName', $lName);
-            $statement->bindValue(':email', $email);
-            $statement->bindValue(':uName', $uName);
-            $statement->bindValue(':image', $fileLocation);
-            $statement->bindValue(':ID', $ID);
-            $row_count = $statement->execute();
-            $statement->closeCursor();
-            return $row_count;
-        } catch (PDOException $e) {
-            $error_message = $e->getMessage();
-            display_db_error($error_message);
-        }
-    }
-
-    public static function delete_by_ID($id) {
-        $db = Database::getDB();
-        $query = 'DELETE from user WHERE id= :id';
-        try {
-            $statement = $db->prepare($query);
-            $statement->bindValue(':id', $id);
-            $row_count = $statement->execute();
-            $statement->closeCursor();
-            return $row_count;
-        } catch (PDOException $e) {
-            $error_message = $e->getMessage();
-            display_db_error($error_message);
-        }
     }
 
 }

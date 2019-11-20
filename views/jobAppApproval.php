@@ -8,7 +8,7 @@
         <?php include ('nav.php'); ?>
 
         <h1>Applications for <?php echo htmlspecialchars($job->getJobName()); ?></h1>
-        <?php if($appInfo_arr !== null && $appInfo_arr !== "" ) : ?>
+        <?php if($appInfo_arr !== null || $appInfo_arr !== '' ) : ?>
         <div class="jumbotron" >
             <div class="container"> 
 <table class="table table-dark">
@@ -26,7 +26,7 @@
       <?php foreach ($appInfo_arr as $appInfo) : ?>
     <tr>
       <th>
-          <a href="index.php?action=viewJob&amp;id=<?php echo $job->getId(); ?>">
+          <a href="index.php?action=viewJob&amp;id=<?php echo $job->getId(); ?>" target="_blank">
             <?php  echo $job->getJobName(); ?>
           </a>
       </th>

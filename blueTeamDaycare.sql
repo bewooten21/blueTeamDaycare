@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.0.1
+-- version 4.8.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 10:49 PM
--- Server version: 10.3.15-MariaDB
--- PHP Version: 7.3.6
+-- Generation Time: Nov 20, 2019 at 07:19 PM
+-- Server version: 10.1.37-MariaDB
+-- PHP Version: 7.3.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -34,7 +34,7 @@ CREATE TABLE `application` (
   `applicationID` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
   `isProcessed` tinyint(1) NOT NULL,
-  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
+  `isApproved` tinyint(1) NOT NULL DEFAULT '0',
   `coverLetter` varchar(255) DEFAULT NULL,
   `resume` varchar(255) NOT NULL,
   `userID` int(11) NOT NULL
@@ -45,7 +45,9 @@ CREATE TABLE `application` (
 --
 
 INSERT INTO `application` (`applicationID`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
-(1, 1, 1, 1, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
+(1, 1, 1, 1, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
+(2, 1, 0, 0, 'bwooten-1-cover-letter.pdf', 'bwooten-1-resume.pdf', 2),
+(3, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -59,7 +61,7 @@ CREATE TABLE `comments` (
   `comment` tinytext NOT NULL,
   `commenterID` int(11) NOT NULL,
   `commenterUserName` varchar(50) NOT NULL,
-  `commentTime` timestamp NOT NULL DEFAULT current_timestamp()
+  `commentTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -93,7 +95,8 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
-(1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default.jpg');
+(1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default.jpg'),
+(2, 'Tinder Tots', 10, 35, 12, 4.2, 1, 'images/default.jpg');
 
 -- --------------------------------------------------------
 
@@ -111,7 +114,7 @@ CREATE TABLE `companyapproval` (
   `logo` varchar(255) DEFAULT NULL,
   `ownerID` int(11) NOT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `isProcessed` tinyint(1) NOT NULL DEFAULT 0
+  `isProcessed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -189,7 +192,7 @@ INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`) VALUES
 --
 
 CREATE TABLE `job` (
-  `id` int(11) NOT NULL,
+  `jobID` int(11) NOT NULL,
   `companyID` int(11) NOT NULL,
   `jobName` varchar(50) DEFAULT NULL,
   `jobDescription` varchar(500) DEFAULT NULL,
@@ -201,8 +204,9 @@ CREATE TABLE `job` (
 -- Dumping data for table `job`
 --
 
-INSERT INTO `job` (`id`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
-(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 0);
+INSERT INTO `job` (`jobID`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
+(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 14),
+(2, 1, 'Daycare Manager', 'Supervise daycare staff and aid in administrative work. ', 'At least 3 years of experience in child care. \r\nPrevious experience with leadership roles preferred. ', 5);
 
 -- --------------------------------------------------------
 
@@ -318,7 +322,7 @@ ALTER TABLE `feedback`
 -- Indexes for table `job`
 --
 ALTER TABLE `job`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`jobID`);
 
 --
 -- Indexes for table `role`
@@ -348,7 +352,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -360,7 +364,7 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `companyapproval`
@@ -390,7 +394,7 @@ ALTER TABLE `feedback`
 -- AUTO_INCREMENT for table `job`
 --
 ALTER TABLE `job`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `jobID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -418,7 +422,7 @@ ALTER TABLE `user`
 -- Constraints for table `application`
 --
 ALTER TABLE `application`
-  ADD CONSTRAINT `job_application_fk` FOREIGN KEY (`jobID`) REFERENCES `job` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `job_application_fk` FOREIGN KEY (`jobID`) REFERENCES `job` (`jobID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `user_application_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
