@@ -882,6 +882,18 @@ switch ($action) {
         include('views/jobAppApproval.php');
         die();
         break; 
+    case 'declineJobApp' :
+        $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        
+        $application = application_db::get_application_by_id($applicationID);
+        $applicant = user_db::get_user_by_id($application->getUserID()); 
+        $job = job_db::get_job($jobID);
+        
+        include('views/jobAppApproval.php');
+        die();
+        break; 
 }
     
 
