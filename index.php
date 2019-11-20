@@ -828,7 +828,7 @@ switch ($action) {
         include('views/confirmFeedback.php');
         die();
         break;
-        
+    
     case 'addStudent':
         $fName="";
         $lName="";
@@ -854,14 +854,12 @@ switch ($action) {
         include('views/editChild.php');
         die();
         break;
-    
-    case 'submitFeedback' :
-        $feedback = filter_input(INPUT_POST, 'feedback');
-        $rating = filter_input(INPUT_POST, 'rating');
-        $target = $_SESSION['profileID'];
-        $sender = $_SESSION['currentUser']->getID();
-        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
-        include('views/confirmFeedback.php');
+    case 'editChildVal':
+        $id = filter_input(INPUT_POST, 'stuId');
+        $child= child_db::get_child_byId($id);
+        include('models/editChildVal.php');
+        die();
+        break;  
      case 'processApplications' :
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
@@ -870,10 +868,18 @@ switch ($action) {
         include('views/jobAppApproval.php');
         die();
         break;
+        
     case 'approveJobApp' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        application_db::process_and_approve_application($applicationID, 1, 1);
+        
+        $job = job_db::get_job($jobID);
+        $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
+        include('views/jobAppApproval.php');
+        die();
+        break; 
     case 'editChildVal':
         $id = filter_input(INPUT_POST, 'stuId');
         $child= child_db::get_child_byId($id);
@@ -882,10 +888,17 @@ switch ($action) {
         break;
         
     
-        application_db::process_and_approve_application($applicationID, 1, 1);
         
+        
+    case 'declineJobApp' :
+        $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        
+        $application = application_db::get_application_by_id($applicationID);
+        $applicant = user_db::get_user_by_id($application->getUserID()); 
         $job = job_db::get_job($jobID);
-        $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
+        
         include('views/jobAppApproval.php');
         die();
         break; 
