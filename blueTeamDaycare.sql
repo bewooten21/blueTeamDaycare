@@ -43,9 +43,9 @@ CREATE TABLE `application` (
 --
 
 INSERT INTO `application` (`applicationID`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
-(1, 1, 1, 1, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
-(2, 1, 0, 0, 'bwooten-1-cover-letter.pdf', 'bwooten-1-resume.pdf', 2),
-(3, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
+(1, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
+(2, 1, 1, 1, 'bwooten-1-cover-letter.pdf', 'bwooten-1-resume.pdf', 2),
+(3, 2, 0, 0, 'tstading-2-cover-letter.pdf', 'tstading-2-resume.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -160,6 +160,13 @@ CREATE TABLE `employee` (
   `jobId` int(11) NOT NULL,
   `yearsWithCompany` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`empID`, `applicationID`, `hireDate`) VALUES
+(10000, 2, '2019-11-20 21:43:05');
 
 -- --------------------------------------------------------
 
@@ -309,7 +316,7 @@ ALTER TABLE `daycareopening`
 -- Indexes for table `employee`
 --
 ALTER TABLE `employee`
-  ADD UNIQUE KEY `empId` (`empID`);
+  ADD PRIMARY KEY (`empID`);
 
 --
 -- Indexes for table `feedback`
@@ -381,7 +388,7 @@ ALTER TABLE `daycareopening`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10001;
 
 --
 -- AUTO_INCREMENT for table `feedback`
