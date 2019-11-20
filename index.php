@@ -820,16 +820,24 @@ switch ($action) {
         break;
     
     case 'reviewUser' :
-            include 'views/review.php';
-            die();
-            break;
+        $_SESSION['targetType'] = 'user';
+        include 'views/review.php';
+        die();
+        break;
+    
+    case 'reviewCompany' :
+        $_SESSION['targetType'] = 'company';
+        include 'views/review.php';
+        die();
+        break;
         
     case 'submitFeedback' :
         $sender = $_SESSION['currentUser']->getID();
         $target = $_SESSION['profileID'];
+        $type = $_SESSION['targetType'];
         $feedback = filter_input(INPUT_POST, 'feedback');
         $rating = filter_input(INPUT_POST, 'rating');
-        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
         include('views/confirmFeedback.php');
         die();
         break;

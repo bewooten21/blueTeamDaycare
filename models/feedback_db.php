@@ -1,16 +1,17 @@
 <?php
 
 class feedback_db {
-    public static function submitFeedback($sender, $target, $feedback, $rating){
+    public static function submitFeedback($sender, $target, $feedback, $rating, $type){
         $db = Database::getDB();
-        $query = 'insert into feedback(sender, target, feedback, rating) '
-                . 'values(:sender, :target, :feedback, :rating)';
+        $query = 'insert into feedback(sender, target, feedback, rating, type) '
+                . 'values(:sender, :target, :feedback, :rating, :type)';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':sender', $sender);
             $statement->bindValue(':target', $target);
             $statement->bindValue(':feedback', $feedback);
             $statement->bindValue(':rating', $rating);
+            $statement->bindValue(':type', $type);
             $statement->execute();
             $statement->closeCursor();
         }
