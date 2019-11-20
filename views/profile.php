@@ -16,11 +16,13 @@
                 <h3><?php echo htmlspecialchars($_SESSION['currentUser']->getUName()); ?></h3> 
                 <p>Email: <?php echo htmlspecialchars($_SESSION['currentUser']->getEmail()); ?></p></br>
                 <h2>Children</h2>
+                <a href='index.php?action=addStudent'>Add child/student</a>
+                <?php if($children!=false){ ?>
                 <form  method="post">
                     <input type="hidden" name="action" value="editChild">
                 <select id="stuId" name="stuId">
                                     
-                   <?php if($children!=false){ ?>
+                   
                                   <?php foreach ($children as $c) : ?>
                                     <option value="<?php echo $c['studentId'] ?>"> <?php echo $c['stuFName']. " " . $c["stuLName"]. "  " . "Age:" . $c["age"];?> </option>
                                     <?php endforeach; ?>  
@@ -33,7 +35,7 @@
                    <?php } ?><br>
                    
                 
-                <a href='index.php?action=addStudent'>Add child/student</a>
+                
                 <table class="table table-dark">
                     <tr>
                         <th> Comments</th>

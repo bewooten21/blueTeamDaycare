@@ -443,6 +443,11 @@ switch ($action) {
             if (password_verify($pWord, $theUser->getPWord())) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
+                $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                if($company != false){
+                    $_SESSION['company']= $company;
+                }
+                
                 $role = $_SESSION['currentUser']->getRole();
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if($role->getID() != 4 ){
@@ -818,16 +823,24 @@ switch ($action) {
         break;
     
     case 'reviewUser' :
-            include 'views/review.php';
-            die();
-            break;
+        $_SESSION['targetType'] = 'user';
+        include 'views/review.php';
+        die();
+        break;
+    
+    case 'reviewCompany' :
+        $_SESSION['targetType'] = 'company';
+        include 'views/review.php';
+        die();
+        break;
         
     case 'submitFeedback' :
         $sender = $_SESSION['currentUser']->getID();
         $target = $_SESSION['profileID'];
+        $type = $_SESSION['targetType'];
         $feedback = filter_input(INPUT_POST, 'feedback');
         $rating = filter_input(INPUT_POST, 'rating');
-        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
         include('views/confirmFeedback.php');
         die();
         break;
@@ -877,8 +890,6 @@ switch ($action) {
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
-        
-        // Update application and add to employee table
         application_db::process_and_approve_application($applicationID, 1, 1);
         $newEmpID = employee_db::add_employee($applicationID);
         $message = "Congratulations on your new hire!"; 
@@ -888,6 +899,16 @@ switch ($action) {
         include('views/jobAppApproval.php');
         die();
         break; 
+    case 'editChildVal':
+        $id = filter_input(INPUT_POST, 'stuId');
+        $child= child_db::get_child_byId($id);
+        include('models/editChildVal.php');
+        die();
+        break;
+        
+    
+        
+        
     case 'declineJobApp' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
@@ -900,6 +921,18 @@ switch ($action) {
         include('views/declineApplication.php');
         die();
         break; 
+    
+    case 'editCompany':
+        $cNameError="";
+        $eCError="";
+        $cCError="";
+        $cEError="";
+        $cIError="";
+            
+        include('views/editCompany.php');
+        die();
+        break; 
+        
     case 'finishAppDecline' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);

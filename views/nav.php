@@ -31,15 +31,34 @@
             >Jobs<span class="caret"></span
           ></a>
           <ul class="dropdown-menu">
-            <li><a href="index.php?action=addJob">Add Job</a></li>
+            
             <li><a href="index.php?action=viewJobs">View Jobs</a></li>
-            <li><a href="index.php?action=ourJobs">Our Jobs</a></li>
+            
             
           </ul>
         </li>
         <li><a href='index.php?action=viewChildcareOpenings'>Childcare Openings</a></li>
         <li><a href='index.php?action=displayAllUsers'>All Users</a></li>
         <li><a href='index.php?action=viewCompanies'>All Companies</a></li>
+        <?php if(isset($_SESSION['company'])) { ?>
+        <li class="dropdown">
+          <a
+            href="#"
+            class="dropdown-toggle"
+            data-toggle="dropdown"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            ><?php echo $_SESSION['company']['companyName'] ;?><span class="caret"></span
+        ><?php } ?></a>
+          <ul class="dropdown-menu">
+            <li><a href="index.php?action=addJob">Add Job</a></li>
+            <li><a href="index.php?action=editCompany">Edit Company</a></li>
+            <li><a href="index.php?action=ourJobs">Our Jobs</a></li>
+            
+          </ul>
+        </li>
+        
         
         <?php if (isset($_SESSION['currentUser'])):?>
         <li><a href='index.php?action=displayProfile'>Profile</a></li>

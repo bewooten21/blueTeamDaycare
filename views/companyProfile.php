@@ -96,7 +96,14 @@
   
   </tbody>
 </table>
+    <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $owner) : ?>
     
+    <form action="index.php" method="post">
+        <input type="hidden" name="action" value="reviewCompany">
+        <input type="submit" class="btn btn-default" value="Leave a Review"><br>
+    </form>
+    <?php endif;
+    endif; ?>
     <table class="table table-dark">
   <thead>
     <tr>
