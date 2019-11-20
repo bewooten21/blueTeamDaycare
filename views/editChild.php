@@ -13,9 +13,10 @@ and open the template in the editor.
     <body>
         <?php include('nav.php'); ?> 
         <div class="container">
-  <h2>Add Child</h2>
+  <h2>Edit <?php echo $child["stuFName"]. " " . $child["stuLName"]; ?></h2>
 <form class="form-horizontal" method="post">
-    <input type="hidden" name="action" value="addStuVal">
+    <input type="hidden" name="action" value="editChildVal">
+    <input type="hidden" name="stuId" value="<?php echo $child["studentId"]; ?>">
   <div class="form-group">
     <label class="control-label col-sm-2" for="fName">Child First Name:</label>
     <div class="col-sm-4">

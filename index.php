@@ -874,6 +874,13 @@ switch ($action) {
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+    case 'editChildVal':
+        $id = filter_input(INPUT_POST, 'stuId');
+        $child= child_db::get_child_byId($id);
+        include('models/editChildVal.php');
+        die();
+        break;
+        
         
         application_db::process_and_approve_application($applicationID, 1, 1);
         
