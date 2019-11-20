@@ -40,7 +40,7 @@ if($isValid===false){
 
 if($isValid===true){
     
-    child_db::add_child('', $_SESSION['currentUser']->getID(), $fName, $lName, $age);
+    child_db::edit_child($child['studentId'],$fName, $lName, $age);
     header("Location: index.php?action=displayProfile");
 }
 

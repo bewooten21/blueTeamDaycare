@@ -881,7 +881,7 @@ switch ($action) {
         die();
         break;
         
-        
+    
         application_db::process_and_approve_application($applicationID, 1, 1);
         
         $job = job_db::get_job($jobID);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2019 at 07:19 PM
+-- Generation Time: Nov 20, 2019 at 08:22 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
-CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `daycare`;
 
 -- --------------------------------------------------------
 
