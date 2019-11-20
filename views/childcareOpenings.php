@@ -22,13 +22,10 @@
   <tbody>
       <?php foreach ($openings as $o) : ?>
     <tr>
-      
-      
+
       <td><?php echo $o['companyName'] ; ?></td>
       <td><?php echo $o['childCapacity'] - $o['childrenEnrolled'] ?></td>
-      
-          
-          
+
     </tr>
     <?php endforeach; ?>
   

@@ -849,6 +849,14 @@ switch ($action) {
         include('views/editChild.php');
         die();
         break;
+    
+    case 'editChildVal':
+        $id = filter_input(INPUT_POST, 'stuId');
+        $child= child_db::get_child_byId($id);
+        include('models/editChildVal.php');
+        die();
+        break;
+        
         
         
         
