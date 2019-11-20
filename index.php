@@ -828,7 +828,7 @@ switch ($action) {
         include('views/confirmFeedback.php');
         die();
         break;
-        
+    
     case 'addStudent':
         $fName="";
         $lName="";
@@ -854,14 +854,12 @@ switch ($action) {
         include('views/editChild.php');
         die();
         break;
-    
-    case 'submitFeedback' :
-        $feedback = filter_input(INPUT_POST, 'feedback');
-        $rating = filter_input(INPUT_POST, 'rating');
-        $target = $_SESSION['profileID'];
-        $sender = $_SESSION['currentUser']->getID();
-        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
-        include('views/confirmFeedback.php');
+    case 'editChildVal':
+        $id = filter_input(INPUT_POST, 'stuId');
+        $child= child_db::get_child_byId($id);
+        include('models/editChildVal.php');
+        die();
+        break;  
      case 'processApplications' :
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
@@ -870,17 +868,11 @@ switch ($action) {
         include('views/jobAppApproval.php');
         die();
         break;
+        
     case 'approveJobApp' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
-    case 'editChildVal':
-        $id = filter_input(INPUT_POST, 'stuId');
-        $child= child_db::get_child_byId($id);
-        include('models/editChildVal.php');
-        die();
-        break;
-        
         
         application_db::process_and_approve_application($applicationID, 1, 1);
         
