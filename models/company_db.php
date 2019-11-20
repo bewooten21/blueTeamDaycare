@@ -53,7 +53,12 @@ class company_db {
 
         $statement->closeCursor();
 
-        return $company;
+        if ($statement->rowCount() > 0){
+           return $company; 
+        }else{
+            return false;
+        }
+        
     }
     
     

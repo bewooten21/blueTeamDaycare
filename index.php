@@ -442,6 +442,11 @@ switch ($action) {
             if (password_verify($pWord, $theUser->getPWord())) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
+                $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                if($company != false){
+                    $_SESSION['company']= $company;
+                }
+                
                 $role = $_SESSION['currentUser']->getRole();
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if($role->getID() != 4 ){
@@ -902,6 +907,18 @@ switch ($action) {
         include('views/jobAppApproval.php');
         die();
         break; 
+    
+    case 'editCompany':
+        $cNameError="";
+        $eCError="";
+        $cCError="";
+        $cEError="";
+        $cIError="";
+            
+        include('views/editCompany.php');
+        die();
+        break; 
+        
 }
     
 
