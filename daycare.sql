@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.4
+-- version 4.9.0.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2019 at 08:22 PM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.3.0
+-- Generation Time: Nov 20, 2019 at 09:42 PM
+-- Server version: 10.3.15-MariaDB
+-- PHP Version: 7.3.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -32,7 +32,7 @@ CREATE TABLE `application` (
   `applicationID` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
   `isProcessed` tinyint(1) NOT NULL,
-  `isApproved` tinyint(1) NOT NULL DEFAULT '0',
+  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
   `coverLetter` varchar(255) DEFAULT NULL,
   `resume` varchar(255) NOT NULL,
   `userID` int(11) NOT NULL
@@ -59,7 +59,7 @@ CREATE TABLE `comments` (
   `comment` tinytext NOT NULL,
   `commenterID` int(11) NOT NULL,
   `commenterUserName` varchar(50) NOT NULL,
-  `commentTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `commentTime` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -112,7 +112,7 @@ CREATE TABLE `companyapproval` (
   `logo` varchar(255) DEFAULT NULL,
   `ownerID` int(11) NOT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `isProcessed` tinyint(1) NOT NULL DEFAULT '0'
+  `isProcessed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -172,16 +172,17 @@ CREATE TABLE `feedback` (
   `sender` int(11) NOT NULL,
   `target` int(11) NOT NULL,
   `feedback` varchar(255) NOT NULL,
-  `rating` float NOT NULL
+  `rating` float NOT NULL,
+  `type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `feedback`
 --
 
-INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`) VALUES
-(1, 3, 1, 'Test', 3.2),
-(2, 3, 2, 'test 2', 3.2);
+INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`, `type`) VALUES
+(3, 2, 3, 'Test', 3.2, 'company'),
+(4, 2, 1, 'Test', 3.2, 'user');
 
 -- --------------------------------------------------------
 
@@ -386,7 +387,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `job`
