@@ -11,7 +11,7 @@ class application_db {
         $applications = [];
 
         foreach ($rows as $value) {
-            $applications[$value['id']] = new application($value['applicationId'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
+            $applications[$value['applicationID']] = new application($value['applicationId'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
         }
         $statement->closeCursor();
 
@@ -22,14 +22,14 @@ class application_db {
         $db = Database::getDB();
         $query = 'SELECT *
               FROM application
-              WHERE ID= :id';
+              WHERE applicationID= :id';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $id);
         $statement->execute();
         $value = $statement->fetch();
         
-        $applications = new application($value['applicationId'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
+        $applications = new application($value['applicationID'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
         
         $statement->closeCursor();
 
@@ -47,11 +47,32 @@ class application_db {
         $statement->execute();
         $value = $statement->fetch();
 
-        $applications = new application($value['applicationId'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
+        $applications = new application($value['applicationID'], $value['jobID'], $value['isProcessed'], $value['isApproved'],$value['coverLetter'], $value['resume'], $value['userID']);
         
         $statement->closeCursor();
 
         return $applications;
+    }
+    
+    public static function get_applications_by_companyID($companyID, $jobID) {
+        $db = Database::getDB();
+        $query='SELECT *
+            from application JOIN job ON
+            application.jobID=job.jobID
+            JOIN user ON
+            application.userID=user.id
+            WHERE job.companyID = :companyID AND job.jobID = :jobID AND application.isProcessed = 0
+            ORDER by user.lName asc';
+
+        $statement = $db->prepare($query);
+        $statement->bindValue(':companyID', $companyID);
+        $statement->bindValue(':jobID', $jobID);
+        $statement->execute();
+        $value = $statement->fetchAll();
+        
+        $statement->closeCursor();
+
+        return $value;
     }
 
     public static function check_for_duplicate($jobId, $userId) {
@@ -102,11 +123,11 @@ class application_db {
         $db = Database::getDB();
         $query = $query = 'UPDATE application
               SET isProcessed = :isProcessed
-              WHERE applicationId = :applicationD';
+              WHERE applicationID = :applicationID';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':isProcessed', $isProcessed);
-            $statement->bindValue(':application', $applicationId);
+            $statement->bindValue(':applicationID', $applicationId);
             $row_count = $statement->execute();
             $statement->closeCursor();
             return $row_count;
@@ -120,7 +141,7 @@ class application_db {
         $db = Database::getDB();
         $query = $query = 'UPDATE application
               SET isApproved = :isApproved
-              WHERE applicationId = :applicationId';
+              WHERE applicationID = :applicationId';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':isApproved', $isApproved);
@@ -139,7 +160,7 @@ class application_db {
         $query = $query = 'UPDATE application
               SET isProcessed = :isProcessed,
                   isApproved = :isApproved
-              WHERE applicationId = :applicationId';
+              WHERE applicationID = :applicationId';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':isProcessed', $isProcessed);
@@ -156,7 +177,7 @@ class application_db {
 
     public static function delete_by_ID($id) {
         $db = Database::getDB();
-        $query = 'DELETE from application WHERE applicationId= :id';
+        $query = 'DELETE from application WHERE applicationID= :id';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);

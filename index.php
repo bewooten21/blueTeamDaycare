@@ -16,6 +16,7 @@ require_once 'models/job_db.php';
 require_once 'models/child_db.php';
 require_once 'models/opening_db.php';
 require_once 'models/companyApproval_db.php';
+require_once 'models/feedback_db.php';
 session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
@@ -756,6 +757,7 @@ switch ($action) {
         $_SESSION['companyID'] = $id;
         $c = company_db::get_company_by_id($id);
         $jobs = job_db::get_job_by_Companyid($id);
+        $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
         include('views/companyProfile.php');
         die();
         break;
@@ -813,17 +815,20 @@ switch ($action) {
         break;
     
     case 'reviewUser' :
-        if(isset($_SESSION['currentUser'])){
             include 'views/review.php';
             die();
             break;
-        }
-        else{
-            $error_message['uName'] = 'You must be logged in to post feedback';
-            include'views/login.php';
-            die();
-            break;           
-        }
+        
+    case 'submitFeedback' :
+        $sender = $_SESSION['currentUser']->getID();
+        $target = $_SESSION['profileID'];
+        $feedback = filter_input(INPUT_POST, 'feedback');
+        $rating = filter_input(INPUT_POST, 'rating');
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        include('views/confirmFeedback.php');
+        die();
+        break;
+        
     case 'addStudent':
         $fName="";
         $lName="";
@@ -850,6 +855,25 @@ switch ($action) {
         die();
         break;
     
+    case 'submitFeedback' :
+        $feedback = filter_input(INPUT_POST, 'feedback');
+        $rating = filter_input(INPUT_POST, 'rating');
+        $target = $_SESSION['profileID'];
+        $sender = $_SESSION['currentUser']->getID();
+        feedback_db::submitFeedback($sender, $target, $feedback, $rating);
+        include('views/confirmFeedback.php');
+     case 'processApplications' :
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        $job = job_db::get_job($jobID);
+        $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
+        include('views/jobAppApproval.php');
+        die();
+        break;
+    case 'approveJobApp' :
+        $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
     case 'editChildVal':
         $id = filter_input(INPUT_POST, 'stuId');
         $child= child_db::get_child_byId($id);
@@ -858,9 +882,13 @@ switch ($action) {
         break;
         
         
+        application_db::process_and_approve_application($applicationID, 1, 1);
         
-        
-        
+        $job = job_db::get_job($jobID);
+        $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
+        include('views/jobAppApproval.php');
+        die();
+        break; 
 }
     
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 18, 2019 at 06:30 PM
+-- Generation Time: Nov 20, 2019 at 07:19 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
+CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -29,7 +31,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `application` (
-  `id` int(11) NOT NULL,
+  `applicationID` int(11) NOT NULL,
   `jobID` int(11) NOT NULL,
   `isProcessed` tinyint(1) NOT NULL,
   `isApproved` tinyint(1) NOT NULL DEFAULT '0',
@@ -42,8 +44,10 @@ CREATE TABLE `application` (
 -- Dumping data for table `application`
 --
 
-INSERT INTO `application` (`id`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
-(1, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
+INSERT INTO `application` (`applicationID`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
+(1, 1, 1, 1, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
+(2, 1, 0, 0, 'bwooten-1-cover-letter.pdf', 'bwooten-1-resume.pdf', 2),
+(3, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -91,7 +95,8 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
-(1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default.jpg');
+(1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default.jpg'),
+(2, 'Tinder Tots', 10, 35, 12, 4.2, 1, 'images/default.jpg');
 
 -- --------------------------------------------------------
 
@@ -109,15 +114,16 @@ CREATE TABLE `companyapproval` (
   `logo` varchar(255) DEFAULT NULL,
   `ownerID` int(11) NOT NULL,
   `isApproved` tinyint(1) DEFAULT NULL,
-  `isProccessed` tinyint(1) NOT NULL DEFAULT '0'
+  `isProcessed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `companyapproval`
 --
 
-INSERT INTO `companyapproval` (`ID`, `name`, `maxChildren`, `currentEmp`, `currentChildren`, `rating`, `logo`, `ownerID`, `isApproved`, `isProccessed`) VALUES
-(1, 'bob\'s', 20, 3, 10, 3.5, 'images/', 0, NULL, 0);
+INSERT INTO `companyapproval` (`ID`, `name`, `maxChildren`, `currentEmp`, `currentChildren`, `rating`, `logo`, `ownerID`, `isApproved`, `isProcessed`) VALUES
+(1, 'bob\'s', 20, 3, 10, 3.5, 'images/', 0, 1, 1),
+(2, 'Bob\'s Daycare', 20, 2, 5, 3.5, NULL, 0, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -160,11 +166,33 @@ CREATE TABLE `employee` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `feedback`
+--
+
+CREATE TABLE `feedback` (
+  `ID` int(11) NOT NULL,
+  `sender` int(11) NOT NULL,
+  `target` int(11) NOT NULL,
+  `feedback` varchar(255) NOT NULL,
+  `rating` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`) VALUES
+(1, 3, 1, 'Test', 3.2),
+(2, 3, 2, 'test 2', 3.2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `job`
 --
 
 CREATE TABLE `job` (
-  `id` int(11) NOT NULL,
+  `jobID` int(11) NOT NULL,
   `companyID` int(11) NOT NULL,
   `jobName` varchar(50) DEFAULT NULL,
   `jobDescription` varchar(500) DEFAULT NULL,
@@ -176,8 +204,9 @@ CREATE TABLE `job` (
 -- Dumping data for table `job`
 --
 
-INSERT INTO `job` (`id`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
-(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 0);
+INSERT INTO `job` (`jobID`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
+(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 14),
+(2, 1, 'Daycare Manager', 'Supervise daycare staff and aid in administrative work. ', 'At least 3 years of experience in child care. \r\nPrevious experience with leadership roles preferred. ', 5);
 
 -- --------------------------------------------------------
 
@@ -249,7 +278,9 @@ INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `uName`, `pWord`, `image`, 
 -- Indexes for table `application`
 --
 ALTER TABLE `application`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`applicationID`),
+  ADD KEY `job_application_fk` (`jobID`),
+  ADD KEY `user_application_fk` (`userID`);
 
 --
 -- Indexes for table `comments`
@@ -282,10 +313,16 @@ ALTER TABLE `employee`
   ADD UNIQUE KEY `empId` (`empID`);
 
 --
+-- Indexes for table `feedback`
+--
+ALTER TABLE `feedback`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `job`
 --
 ALTER TABLE `job`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`jobID`);
 
 --
 -- Indexes for table `role`
@@ -315,7 +352,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `comments`
@@ -327,13 +364,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `companyapproval`
 --
 ALTER TABLE `companyapproval`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `daycareopening`
@@ -348,10 +385,16 @@ ALTER TABLE `employee`
   MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `feedback`
+--
+ALTER TABLE `feedback`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `job`
 --
 ALTER TABLE `job`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `jobID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -370,6 +413,17 @@ ALTER TABLE `student`
 --
 ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `application`
+--
+ALTER TABLE `application`
+  ADD CONSTRAINT `job_application_fk` FOREIGN KEY (`jobID`) REFERENCES `job` (`jobID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `user_application_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

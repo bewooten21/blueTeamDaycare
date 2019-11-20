@@ -4,7 +4,7 @@ class companyApproval_db {
     public static function addCompany($name, $maxChild, $curEmp, $curChild, $rating)
     {
         $db = Database::getDB();
-        $query = 'insert into companyapproval(name, maxChildren, currentEmp, currentChildren, rating) '
+        $query = 'insert into companyapproval(name, maxChildren, currentEmp, currentChildren, rating)'
                 . 'values(:name, :maxChild, :curEmp, :curChild, :rating)';
         try {
             $statement = $db->prepare($query);
