@@ -30,9 +30,9 @@ and open the template in the editor.
       </div>
   </div>
     <div class="form-group">
-    <label class="control-label col-sm-2" for="jobD">Employee Count:</label>
+    <label class="control-label col-sm-2" for="empC">Employee Count:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="jobD" name="jobD" placeholder="Enter job description" value="<?php echo htmlspecialchars($_SESSION['company']['employeeCount']); ?>">
+      <input type="text" class="form-control" id="empC" name="empC" placeholder="Enter job description" value="<?php echo htmlspecialchars($_SESSION['company']['employeeCount']); ?>">
     </div>
     <div class="col-sm-2">
           <p class="error">
@@ -41,9 +41,9 @@ and open the template in the editor.
       </div>
   </div>
     <div class="form-group">
-    <label class="control-label col-sm-2" for="jobR">Child Capacity:</label>
+    <label class="control-label col-sm-2" for="cCap">Child Capacity:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="jobR" name="jobR" placeholder="Enter job requirements" value="<?php echo htmlspecialchars($_SESSION['company']['childCapacity']); ?>">
+      <input type="text" class="form-control" id="cCap" name="cCap" placeholder="Enter job requirements" value="<?php echo htmlspecialchars($_SESSION['company']['childCapacity']); ?>">
     </div>
     <div class="col-sm-2">
           <p class="error">
@@ -52,9 +52,9 @@ and open the template in the editor.
       </div>
   </div>
     <div class="form-group">
-    <label class="control-label col-sm-2" for="jobR">Children Enrolled:</label>
+    <label class="control-label col-sm-2" for="cEn">Children Enrolled:</label>
     <div class="col-sm-4">
-      <input type="text" class="form-control" id="jobR" name="jobR" placeholder="Enter job requirements" value="<?php echo htmlspecialchars($_SESSION['company']['childrenEnrolled']); ?>">
+      <input type="text" class="form-control" id="cEn" name="cEn" placeholder="Enter job requirements" value="<?php echo htmlspecialchars($_SESSION['company']['childrenEnrolled']); ?>">
     </div>
     <div class="col-sm-2">
           <p class="error">

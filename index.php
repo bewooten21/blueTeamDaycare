@@ -939,6 +939,11 @@ switch ($action) {
         die();
         break; 
     
+    case 'editCompanyVal':
+        include('models/editCompanyVal.php');
+        die();
+        break; 
+    
     case 'viewThread':
         
         $id = filter_input(INPUT_GET, 'id');
