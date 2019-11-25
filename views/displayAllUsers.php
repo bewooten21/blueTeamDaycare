@@ -7,8 +7,6 @@
     </head>
     <body>
         <?php include ('nav.php'); ?>
-        <main>
-            <header>Blue&apos;s Daycare Users</header>
             <div id="formWrap">
                 <h1>Blue&apos;s Daycare Users</h1>
                 <table class="table table-dark">
@@ -36,9 +34,6 @@
                 </table><br>
 
             </div>
-        </main>
-        <footer>
-            <p>Blue Team Daycare @2019</p>
-        </footer>
+        <?php include ('footer.php'); ?>
     </body>
 </html>

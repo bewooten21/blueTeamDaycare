@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
+CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -155,10 +157,8 @@ INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID
 
 CREATE TABLE `employee` (
   `empID` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `companyId` int(11) NOT NULL,
-  `jobId` int(11) NOT NULL,
-  `yearsWithCompany` decimal(10,0) NOT NULL
+  `applicationID` int(11) NOT NULL,
+  `hireDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --

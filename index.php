@@ -225,6 +225,7 @@ switch ($action) {
 
             $currentUser = user_db::validate_user_login($uName);
             $_SESSION['currentUser'] = $currentUser;
+            $confirmationMessage = "Thank you ".  $_SESSION['currentUser']->getFName() . " for registering for Blue&apos;s Daycare! We thank you for using our services and look forward to helping you find what you&apos;re looking for!";
             include 'views/confirmation.php';
         }
         die();
@@ -700,6 +701,7 @@ switch ($action) {
             if ($cImage === '' || $cImage === null) {
                 companyApproval_db::addCompany($cName, $maxChild, $empCount, $childCount, $cRate);
                 $uName = $_SESSION['currentUser']->getUName();
+                $confirmationMessage = "You&apos;re information has been successfully updated ".  $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
                 include'views/confirmation.php';
                 exit;   
             }
@@ -707,11 +709,12 @@ switch ($action) {
             {
                 companyApproval_db::addCompanyWithLogo($cName, $maxChild, $empCount, $childCount, $cRate, $file_name);
                 $uName = $_SESSION['currentUser'];
+                $confirmationMessage = "You&apos;re information and profile image have been successfully updated ".  $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
                 include'views/confirmation.php';
                 exit;
             }
             $uName = SESS;
-
+            $confirmationMessage = "You&apos;re information has been successfully updated ".  $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
             include'views/confirmation.php';
 
             exit();
@@ -895,6 +898,8 @@ switch ($action) {
         $message = "Congratulations on your new hire!"; 
         
         $job = job_db::get_job($jobID);
+        $applicationSlots = $job->getApplicationSlots() - 1;
+        job_db::update_application_slot($job->getId(), $applicationSlots);
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
         include('views/jobAppApproval.php');
         die();
@@ -944,7 +949,7 @@ switch ($action) {
         if ($openSlot !== null && $openSlot === "isChecked") {
             $slots = $job->getApplicationSlots() + 1;
             job_db::update_application_slot($job->getId(), $slots);
-            $message .= "Application slot was reopened!";
+            $message .= "Application slot was reopened! ";
         }
         application_db::process_application($applicationID, 1);
         
@@ -952,6 +957,15 @@ switch ($action) {
         
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
         include('views/jobAppApproval.php');
+        die();
+        break;
+    case 'viewAppDoc':
+        $type = filter_input(INPUT_POST, 'type');
+        $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
+        $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
+        $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
+        $file = filter_input(INPUT_POST, 'file');
+        include('views/applicationDocuments.php');
         die();
         break;
 }

@@ -61,9 +61,7 @@
                 </form>
 
             </div>
-            <footer>
-                <p>Team Blue @2019</p>
-            </footer>
         </main>
+        <?php include ('footer.php'); ?>
     </body>
 </html>

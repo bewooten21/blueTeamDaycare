@@ -27,7 +27,7 @@ class employee_db {
             JOIN user ON
             application.userID=user.id
             WHERE job.companyID = :companyID
-            ORDER by user.lName asc';
+            ORDER by job.jobName asc, user.lName asc';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':companyID', $companyID);

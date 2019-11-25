@@ -13,6 +13,7 @@
         <input type="text" class="form-control" name="rating">
         <input type="hidden" name="action" value="submitFeedback">
         <input type="submit" value="submit">
+        <?php include ('footer.php'); ?>
 </body>
 </html>
 

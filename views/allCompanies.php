@@ -63,9 +63,6 @@
             <?php endforeach; ?>
         </div>
         </div>
-
-        
-        
-        <?php var_dump($companies); ?>
+        <?php include ('footer.php'); ?>
     </body>
 </html>

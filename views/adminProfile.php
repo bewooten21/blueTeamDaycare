@@ -12,5 +12,6 @@
         <tr><p><?php  echo $string;?></p></tr> <form action="index.php" method="post"><input type="hidden" name="id" value="<?php echo $company[0];  ?>"><input type="hidden" name="action" value="approveCompany"><input type="submit"  value="Approve"></form>
     <form action="index.php" method="post"><input type="hidden" name="action" value="declineCompany"><input type="hidden" name="id" value="<?php echo $company[0]?>"><input type="submit"  value="Decline"></form>
     <?php } ?></table>
+    <?php include ('footer.php'); ?>
 </body>
 </html>
