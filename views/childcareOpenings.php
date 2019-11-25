@@ -26,6 +26,11 @@
       <td><?php echo $o['companyName'] ; ?></td>
       <td><?php echo $o['childCapacity'] - $o['childrenEnrolled'] ?></td>
 
+      <td><form action="index.php" method="post">
+                  <input type="hidden" name="action" value="applyToChildcare">
+                  <input type="hidden" name="companyId"  value="<?php echo htmlspecialchars($o['id']); ?>">
+                  <input type="submit" value="Apply">
+              </form></td>
     </tr>
     <?php endforeach; ?>
   

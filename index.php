@@ -926,6 +926,15 @@ switch ($action) {
         include('views/editCompany.php');
         die();
         break; 
+    
+    case 'viewThread':
+        
+        $id = filter_input(INPUT_GET, 'id');
+        $thread = job_db::get_job_by_id($id);
+        $posts;
+        include ('views/viewJob.php');
+        die();
+        break;
         
 }
     
