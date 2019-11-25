@@ -18,6 +18,7 @@ require_once 'models/opening_db.php';
 require_once 'models/companyApproval_db.php';
 require_once 'models/feedback_db.php';
 require_once 'models/employee_db.php';
+require_once 'models/childcareapp_db.php';
 session_start();
 $action = filter_input(INPUT_POST, 'action');
 if ($action === null) {
@@ -977,6 +978,44 @@ switch ($action) {
         include('views/applicationDocuments.php');
         die();
         break;
+    
+    case 'applyToChildcare':
+        if(!isset($_SESSION['currentUser'])){
+            header("Location: index.php?action=viewLogin");
+        }else if(isset($_SESSION['currentUser'])){
+        $companyName=filter_input(INPUT_POST, 'companyName');
+        $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
+        
+        $companyId=filter_input(INPUT_POST, 'companyId');
+        include('views/applyToChildcare.php');
+        die();
+        break;
+        }
+        
+    case 'applyChild':
+        $studentId=filter_input(INPUT_POST, 'stuId');
+        $student= child_db::get_child_byId($studentId);
+        $companyId=filter_input(INPUT_POST, 'companyId');
+        $company= company_db::get_company_by_id($companyId);
+        $checkChild=childcareapp_db::checkforchild_byId($companyId, $studentId);
+        if($checkChild === true){
+            childcareapp_db::addApplication('', $companyId, $studentId, $_SESSION['currentUser']->getID());
+        $message="You have successly applied " . $student['stuFName']. " " . $student['stuLName']. " to ". $company->getCompanyName();
+        $success="Success!";
+        }else{
+            $message= "You have already applied " . $student['stuFName']. " " . $student['stuLName']. " to ". $company->getCompanyName();
+            $success="Error";
+        }
+        
+        include('views/applyChildSuccess.php');
+        die();
+        break;
+        
+    case 'editCompanyVal':
+        
+        
+        
+        
 }
     
 
