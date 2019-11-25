@@ -32,12 +32,10 @@
     
   
   </tbody>
-  <tr>
-      <input type="submit" value="Logout"><br>
-  </tr>
 </table>
             </div>
         </div>
+            <?php include ('footer.php'); ?>
     </body>
 </html>
 

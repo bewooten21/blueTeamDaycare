@@ -19,7 +19,6 @@
       <ul class="nav navbar-nav navbar-right">
         <li><a href='index.php?action=about'>About</a></li>
         
-        <li><a href="#">Contact</a></li>
         <li class="dropdown">
           <a
             href="#"
@@ -50,15 +49,16 @@
             aria-haspopup="true"
             aria-expanded="false"
             ><?php echo $_SESSION['company']['companyName'] ;?><span class="caret"></span
-        ><?php } ?></a>
+        ></a>
           <ul class="dropdown-menu">
+              <li><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo htmlspecialchars($_SESSION['company']['id']); ?>">Company Profile</a></li>
             <li><a href="index.php?action=addJob">Add Job</a></li>
             <li><a href="index.php?action=editCompany">Edit Company</a></li>
             <li><a href="index.php?action=ourJobs">Our Jobs</a></li>
             
           </ul>
         </li>
-        
+        <?php } ?>
         
         <?php if (isset($_SESSION['currentUser'])):?>
         <li><a href='index.php?action=displayProfile'>Profile</a></li>

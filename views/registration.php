@@ -86,9 +86,7 @@
                         <input type="submit" value="Login"><br>
                     </form>
             </div>
-            <footer>
-                <p>Blue Team Daycare @2019</p>
-            </footer>
         </main>
+        <?php include ('footer.php'); ?>
     </body>
 </html>

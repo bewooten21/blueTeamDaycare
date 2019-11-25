@@ -119,6 +119,7 @@ class application_db {
         }
     }
     
+    
     public static function process_application($applicationId, $isProcessed) {
         $db = Database::getDB();
         $query = $query = 'UPDATE application

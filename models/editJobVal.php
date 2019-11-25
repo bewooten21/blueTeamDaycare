@@ -4,9 +4,11 @@ $cName= filter_input(INPUT_POST, 'cName');
 $jobT= filter_input(INPUT_POST, 'jobT');
 $jobD=filter_input(INPUT_POST, 'jobD');
 $jobR=filter_input(INPUT_POST, 'jobR');
+$appSlot=filter_input(INPUT_POST, 'appSlot', FILTER_VALIDATE_INT);
 $tError="";
 $dError="";
 $rError="";
+$aError="";
 $job= job_db::get_job_by_id($id);
 $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
 
@@ -27,13 +29,18 @@ if($jobR===""){
     $isValid=false;
 }
 
+if($appSlot === null || $appSlot === "") {
+    $aError="Enter a valid number of applications you would like to recieve";
+    $isValid=false;
+}
+
 if($isValid===false){
     include('views/editJob.php');
     exit();
 }
 
 if($isValid===true){
-    job_db::update_job($id, $jobT, $jobD, $jobR);
+    job_db::update_job($id, $jobT, $jobD, $jobR, $appSlot);
     header("Location: index.php?action=ourJobs");
    
     

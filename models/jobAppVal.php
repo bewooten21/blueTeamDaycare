@@ -28,10 +28,10 @@ if ($_FILES['coverLetter']['name'] != '') {
     $temp = end($temp);
     $file_ext = strtolower($temp);
 
-    $extensions = array("pdf", "doc", "docx", "rtf");
+    $extensions = array("pdf");
 
     if (in_array($file_ext, $extensions) === false) {
-        $error_message['coverLetter'] = "file extension not in whitelist: " . join(',', $extensions);
+        $error_message['coverLetter'] = "Uploads must be PDFs";
     } elseif ($file_size === 0) {
 
         $error_message['coverLetter'] = "Your file needs to be smaller than 2M";
@@ -53,10 +53,10 @@ if ($_FILES['resume']['name'] != '') {
     $temp = end($temp);
     $file_ext = strtolower($temp);
 
-    $extensions = array("pdf", "doc", "docx", "rtf");
+    $extensions = array("pdf");
 
     if (in_array($file_ext, $extensions) === false) {
-        $error_message['resume'] = "file extension not in whitelist: " . join(',', $extensions);
+        $error_message['resume'] = "Uploads must be PDFs";
     } elseif ($file_size === 0) {
 
         $error_message['resume'] = "Your file needs to be smaller than 2M";
@@ -81,14 +81,10 @@ if ($error_message['resume'] != '' || $error_message['coverLetter'] != '' || $er
         $applicationId = application_db::add_application($job->getId(), 0, 0, $coverLetter_file_name, $resume_file_name, $_SESSION['currentUser']->getID());
         if ($applicationId !== null && $applicationId !== '' && $applicationId !== false) {
             $applicationSlots = $job->getApplicationSlots() - 1;
-            job_db::take_application_slot($job->getId(), $applicationSlots);
+            job_db::update_application_slot($job->getId(), $applicationSlots);
+            $confirmationMessage = "You&apos;re application submitted successfully ".  $_SESSION['currentUser']->getFName() . "! Good luck!";
             include('views/confirmation.php');
             exit();
-
-            // later for downloading files for viewing - https://www.allphptricks.com/trigger-download-file-when-clicking-link/
-            //https://stackoverflow.com/questions/20929920/display-docx-doc-on-browser-without-downloading-in-php
-            //https://stackoverflow.com/questions/18040386/how-to-display-pdf-in-php
-            //https://www.php.net/manual/en/faq.html.php
         } else {
             include('views/jobApplication.php');
             exit();
