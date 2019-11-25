@@ -7,86 +7,104 @@
     </head>
     <body>
         <?php include ('nav.php'); ?>
-        <main>
-            <header>Blue&apos;s Daycare</header>
-            <div id="formWrap">
-                <h1>Register</h1>
-                <form action="index.php" method="post" enctype="multipart/form-data">
-                    <input type="hidden" name="action" value="register">
-                    <div id="data">
-                        <div id="formTable">
-                            <table id="formTable">
-                                <tr style="background-color: white;">
-                                    <td><label>First Name: </label></td>
-                                    <td><input type="text" name="fName" value="<?php echo htmlspecialchars($fName) ?>"></td>
-                                    <td><div id="error"><?php echo htmlspecialchars($error_message['fName']); ?></div></td>
-                                </tr>
-
-                                <tr>
-                                    <td><label>Last Name: </label></td>
-                                    <td><input type="text" name="lName" value="<?php echo htmlspecialchars($lName) ?>"></td>
-                                    <td><div id="error"><?php echo htmlspecialchars($error_message['lName']); ?></div></td>
-                                </tr>
-                                <tr style="background-color: white;">
-                                    <td><label>Email: </label></td>
-                                    <td><input type="email" name="email" value="<?php echo htmlspecialchars($email) ?>"></td>
-                                    <td><div id="error"><?php echo htmlspecialchars($error_message['email']); ?></div></td>
-                                </tr>
-                                <tr>
-
-                                    <td><label>User Name: </label></td>
-                                    <td><input type="text" name="uName" value="<?php echo htmlspecialchars($uName) ?>"></td>
-                                    <td><div id="error"><?php echo htmlspecialchars($error_message['uName']); ?></div></td>
-                                </tr>
-                                <tr style="background-color: white;">
-                                    <td><label>Password: </label></td>
-                                    <td><input type="password" name="password" value="<?php echo htmlspecialchars($password) ?>"></td>
-                                    <td><div id="error" class="align-right">
-                                            <?php echo htmlspecialchars($error_message['password']) ?>
-                                            <?php echo htmlspecialchars($error_message['pwMessage']) ?>
-                                            <ul>
-                                                <!--http://php.net/manual/en/function.htmlspecialchars-decode.php -->
-                                                <?php echo htmlspecialchars_decode($error_message['requirements'], ENT_NOQUOTES); ?>
-                                            </ul>
-                                        </div></td>
-                                </tr>
-                                <tr>
-                                    <td><label>Confirm: </label></td>
-                                    <td><input type="password" name="confirmPassword"></td>
-                                    <td><div id="error"><?php ?></div></td>
-                                </tr>
-                                <tr style="background-color: white;">
-                                    <td><label>Your Picture: </label></td>
-                                    <td><input type="file" name="image" /></td>
-                                    <td><div id="error"><?php echo htmlspecialchars($error_message['image']); ?></div></td>
-                                </tr>
-                            </table>
+        <div class="container">
+            <h2>Register</h2>
+            <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="action" value="register">
+                <div class="form-group <?php echo $error_message['fName'] !== '' ? 'has-error' : '';  ?>">
+                    <label class="control-label col-sm-2">First Name: </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="fName" value="<?php echo htmlspecialchars($fName) ?>">
+                        <div class="col-sm-12">
+                            <span class="help-block">
+                                <?php echo htmlspecialchars($error_message['fName']); ?>
+                            </span>
                         </div>
                     </div>
-
-                    <div id="buttons">
-                        <label>&nbsp</label>
-                        <input type="submit" value="Submit"><br>
+                </div>
+                <div class="form-group <?php echo $error_message['lName'] !== '' ? 'has-error' : '';  ?>">
+                    <label class="control-label col-sm-2">Last Name: </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="lName" value="<?php echo htmlspecialchars($lName) ?>">
+                        <div class="col-sm-12">
+                            <span class="help-block">
+                                <?php echo htmlspecialchars($error_message['lName']); ?>
+                            </span>
+                        </div>
                     </div>
-                </form>
+                </div>
+                <div class="form-group <?php echo $error_message['email'] !== '' ? 'has-error' : '';  ?>">
+                    <label class="control-label col-sm-2">Email: </label>
+                    <div class="col-sm-4">
+                        <input type="email" class="form-control" name="email" value="<?php echo htmlspecialchars($email) ?>">
+                        <div class="col-sm-12">
+                            <span class="help-block">
+                                <?php echo htmlspecialchars($error_message['email']); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group <?php echo $error_message['uName'] !== '' ? 'has-error' : '';  ?>">
+                    <label class="control-label col-sm-2">User Name: </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" name="uName" value="<?php echo htmlspecialchars($uName) ?>">
+                        <div class="col-sm-12">
+                            <span class="help-block">
+                                <?php echo htmlspecialchars($error_message['uName']); ?>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group <?php if ($error_message['password'] !== ''  || $error_message['pwMessage'] !== '' ):?> has-error <?php endif;?>">
+                    <label class="control-label col-sm-2">Password: </label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control" name="password" value="<?php echo htmlspecialchars($password) ?>">
+                        <div class="col-sm-12">
+                        <span class="help-block">
+                            <?php echo htmlspecialchars($error_message['password']) ?>
+                            <?php echo htmlspecialchars($error_message['pwMessage']) ?>
+                            <ul>
+                                <!--http://php.net/manual/en/function.htmlspecialchars-decode.php -->
+                                <?php echo htmlspecialchars_decode($error_message['requirements'], ENT_NOQUOTES); ?>
+                            </ul>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2">Confirm: </label>
+                    <div class="col-sm-4">
+                        <input type="password" class="form-control" name="confirmPassword" >
+                    </div>
+                </div>
+                <div class="form-group <?php echo $error_message['image'] !== '' ? 'has-error' : '';  ?>">
+                    <label class="control-label col-sm-2">Your Picture: </label>
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-default">
+                                    Browse&hellip; <input type="file" style="display: none;" name="image" multiple>
+                                </span>
+                            </label>
+                            <input type="text" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <span class="help-block">
+                            <?php echo htmlspecialchars($error_message['image']); ?>
+                        </span>
+                    </div>
 
-                <form action="index.php" method="post">
-                    <input type="hidden" name="action" value="displayAllUsers">
-                    <label>&nbsp</label>
-                    <input type="submit" value="Display All Users"><br>
-                </form>
-                <form action="index.php" method="Post">
-                    <input type="hidden" name="action" value="displayProfile">
-                    <label>&nbsp;</label>
-                    <input type="submit" value="Profile Page"></br>
-                </form>
-                    <form action="index.php" method="post">
-                        <input type="hidden" name="action" value="viewLogin">
-                        <label>&nbsp</label>
-                        <input type="submit" value="Login"><br>
-                    </form>
-            </div>
-        </main>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default" value="">Register</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
         <?php include ('footer.php'); ?>
     </body>
 </html>

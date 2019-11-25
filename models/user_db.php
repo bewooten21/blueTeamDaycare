@@ -150,6 +150,25 @@ class user_db {
             display_db_error($error_message);
         }
     }
+    
+    public static function update_user_role($id, $roleID) {
+        
+        $db = Database::getDB();
+        $query = $query = 'UPDATE user
+              SET roleID = :roleID
+                WHERE id = :id';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':roleID', $roleID);
+            $statement->bindValue(':id', $id);
+            $row_count = $statement->execute();
+            $statement->closeCursor();
+            return $row_count;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
 
     public static function delete_by_ID($id) {
         $db = Database::getDB();

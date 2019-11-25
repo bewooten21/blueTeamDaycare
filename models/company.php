@@ -12,6 +12,7 @@ class company {
         $this->childrenEnrolled = $childrenEnrolled;
         $this->overallRating = $overallRating;
         $this->ownerID = $ownerID;
+        $this->image = $image;
     }
     
     function getID() {

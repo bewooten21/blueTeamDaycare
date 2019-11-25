@@ -11,7 +11,7 @@
             <div class="container">
                 <h1>Welcome to your profile page <?php echo htmlspecialchars($_SESSION['currentUser']->getFName()); ?>!</h1>
                 <div id="profileImg">
-                    <p><img src="<?php echo htmlspecialchars($_SESSION['currentUser']->getImage()); ?>" width="200" height="200" class="center"></p>
+                    <p><img src="<?php echo htmlspecialchars($_SESSION['currentUser']->getImage()); ?>" width="200"></p>
                 </div>
                 <h3><?php echo htmlspecialchars($_SESSION['currentUser']->getUName()); ?></h3> 
                 <p>Email: <?php echo htmlspecialchars($_SESSION['currentUser']->getEmail()); ?></p></br>
@@ -59,7 +59,7 @@
                         </div>
                     <div class="col-sm-2">
                 <form action="index.php" method="post">
-                    <input type="hidden" name="action" value="register business">
+                    <input type="hidden" name="action" value="registerBusiness">
                     <input type="submit" class="btn btn-default" value="Register Business"><br>
                 </form>
                     </div>
