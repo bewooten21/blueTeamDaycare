@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
+CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -69,7 +71,7 @@ INSERT INTO `childcareapp` (`appId`, `companyId`, `studentId`, `parentId`) VALUE
 (6, 1, 4, 2),
 (7, 2, 3, 2),
 (8, 2, 4, 2),
-(9, 3, 4, 2);
+(9, 4, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -102,24 +104,26 @@ INSERT INTO `comments` (`commentID`, `profileID`, `comment`, `commenterID`, `com
 --
 
 CREATE TABLE `company` (
-  `id` int(11) NOT NULL,
+  `companyID` int(11) NOT NULL,
   `companyName` varchar(100) NOT NULL,
-  `employeeCount` int(11) NOT NULL,
-  `childCapacity` int(11) NOT NULL,
-  `childrenEnrolled` int(11) NOT NULL,
-  `overallRating` float DEFAULT NULL,
+  `employeeCount` int(11) NOT NULL DEFAULT 1,
+  `childCapacity` int(11) NOT NULL DEFAULT 0,
+  `childrenEnrolled` int(11) NOT NULL DEFAULT 0,
+  `overallRating` float DEFAULT 0,
   `ownerID` int(11) NOT NULL,
-  `companyImage` varchar(50) DEFAULT NULL
+  `companyImage` varchar(50) DEFAULT 'images/default-company.jpg'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `company`
 --
+INSERT INTO `company` (`companyID`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
+(1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default-company.jpg'),
+(2, 'Tinder Tots', 10, 35, 12, 4.2, 1, 'images/default-company.jpg'),
+(3, 'Sprouts', 1, 0, 0, 0, 1, 'images/default-company.jpg'),
+(4, 'Daycare Care', 15, 27, 24, 3, 2, 'images/default-company.jpg');
 
-INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
-(1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default.jpg'),
-(2, 'Tinder Tots', 10, 35, 12, 4.2, 1, 'images/default.jpg'),
-(3, 'Daycare Care', 15, 27, 24, 3, 2, NULL);
+
 
 -- --------------------------------------------------------
 
@@ -128,25 +132,20 @@ INSERT INTO `company` (`id`, `companyName`, `employeeCount`, `childCapacity`, `c
 --
 
 CREATE TABLE `companyapproval` (
-  `ID` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `maxChildren` int(11) NOT NULL,
-  `currentEmp` int(11) DEFAULT NULL,
-  `currentChildren` int(11) DEFAULT NULL,
-  `rating` float DEFAULT NULL,
-  `logo` varchar(255) DEFAULT NULL,
-  `ownerID` int(11) NOT NULL,
-  `isApproved` tinyint(1) DEFAULT NULL,
-  `isProcessed` tinyint(1) NOT NULL DEFAULT '0'
+  `compApprovalID` int(11) NOT NULL,
+  `companyID` int(11) NOT NULL,
+  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
+  `isProcessed` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `companyapproval`
 --
 
-INSERT INTO `companyapproval` (`ID`, `name`, `maxChildren`, `currentEmp`, `currentChildren`, `rating`, `logo`, `ownerID`, `isApproved`, `isProcessed`) VALUES
-(1, 'bob\'s', 20, 3, 10, 3.5, 'images/', 0, 1, 1),
-(2, 'Bob\'s Daycare', 20, 2, 5, 3.5, NULL, 0, 0, 1);
+INSERT INTO `companyapproval` (`compApprovalID`, `companyID`, `isApproved`, `isProcessed`) VALUES
+(1, 1, 1, 1),
+(2, 2, 1, 1),
+(3, 3, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -180,11 +179,16 @@ INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID
 
 CREATE TABLE `employee` (
   `empID` int(11) NOT NULL,
-  `userId` int(11) NOT NULL,
-  `companyId` int(11) NOT NULL,
-  `jobId` int(11) NOT NULL,
-  `yearsWithCompany` decimal(10,0) NOT NULL
+  `applicationID` int(11) NOT NULL,
+  `hireDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`empID`, `applicationID`, `hireDate`) VALUES
+(10000, 2, '2019-11-20 21:43:05');
 
 -- --------------------------------------------------------
 
@@ -197,16 +201,17 @@ CREATE TABLE `feedback` (
   `sender` int(11) NOT NULL,
   `target` int(11) NOT NULL,
   `feedback` varchar(255) NOT NULL,
-  `rating` float NOT NULL
+  `rating` float NOT NULL,
+  `type` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `feedback`
 --
 
-INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`) VALUES
-(1, 3, 1, 'Test', 3.2),
-(2, 3, 2, 'test 2', 3.2);
+INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`, `type`) VALUES
+(3, 2, 3, 'Test', 3.2, 'company'),
+(4, 2, 1, 'Test', 3.2, 'user');
 
 -- --------------------------------------------------------
 
@@ -230,7 +235,7 @@ CREATE TABLE `job` (
 INSERT INTO `job` (`jobID`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`) VALUES
 (1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 14),
 (2, 1, 'Daycare Manager', 'Supervise daycare staff and aid in administrative work. ', 'At least 3 years of experience in child care. \r\nPrevious experience with leadership roles preferred. ', 5),
-(3, 3, 'Manager', 'Manage tinder tots', 'Associates', NULL);
+(3, 3, 'Manager', 'Manage tinder tots', 'Associates', 4);
 
 -- --------------------------------------------------------
 
@@ -298,7 +303,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `uName`, `pWord`, `image`, `roleID`) VALUES
-(1, 'Tyler', 'Stading', 'ts526610@southeast.edu', 'tstading', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 1),
+(1, 'Tyler', 'Stading', 'ts526610@southeast.edu', 'tstading', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3),
 (2, 'Brad', 'Wooten', 'bwooten@gmail.com', 'bwooten', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 2),
 (3, 'Cody', 'Sterup', 'csterup@hotmail.net', 'csterup', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3),
 (4, 'Glenn', 'Ray', 'gray@my.southeast.edu', 'gray', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 4);
@@ -334,13 +339,13 @@ ALTER TABLE `comments`
 -- Indexes for table `company`
 --
 ALTER TABLE `company`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`companyID`);
 
 --
 -- Indexes for table `companyapproval`
 --
 ALTER TABLE `companyapproval`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`compApprovalID`);
 
 --
 -- Indexes for table `daycareopening`
@@ -412,13 +417,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `companyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `companyapproval`
 --
 ALTER TABLE `companyapproval`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `compApprovalID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `daycareopening`
@@ -430,7 +435,7 @@ ALTER TABLE `daycareopening`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10001;
 
 --
 -- AUTO_INCREMENT for table `feedback`
@@ -477,7 +482,7 @@ ALTER TABLE `application`
 -- Constraints for table `childcareapp`
 --
 ALTER TABLE `childcareapp`
-  ADD CONSTRAINT `companyIdfk` FOREIGN KEY (`companyId`) REFERENCES `company` (`id`),
+  ADD CONSTRAINT `companyIdfk` FOREIGN KEY (`companyId`) REFERENCES `company` (`companyID`),
   ADD CONSTRAINT `parentIdfk` FOREIGN KEY (`parentId`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `studentIdfk` FOREIGN KEY (`studentId`) REFERENCES `student` (`studentId`);
 COMMIT;
