@@ -20,7 +20,7 @@ and open the template in the editor.
     <label class="control-label col-sm-2" for="email">Company:</label>
     <div class="col-sm-4">
       <input type="text" class="form-control" id="cName" name="cName" placeholder="Enter company name" value="<?php echo htmlspecialchars($company['companyName']); ?>">
-      <input type="hidden" name="cId" value="<?php echo htmlspecialchars($company['id']); ?>">
+      <input type="hidden" name="cId" value="<?php echo htmlspecialchars($company['companyID']); ?>">
     </div>
     
   </div>

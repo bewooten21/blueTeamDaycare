@@ -16,7 +16,7 @@ and open the template in the editor.
   <h2>Login</h2>
 <form class="form-horizontal" method="post">
     <input type="hidden" name="action" value="editCompanyVal">
-    <input type="hidden" name="companyId" value="<?php echo $_SESSION['company']['id'] ?>">
+    <input type="hidden" name="companyId" value="<?php echo $_SESSION['company']['companyID'] ?>">
   
   <div class="form-group">
     <label class="control-label col-sm-2" for="cName">Company Name:</label>

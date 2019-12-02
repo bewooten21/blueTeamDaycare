@@ -51,7 +51,7 @@
             ><?php echo $_SESSION['company']['companyName'] ;?><span class="caret"></span
         ></a>
           <ul class="dropdown-menu">
-              <li><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo htmlspecialchars($_SESSION['company']['id']); ?>">Company Profile</a></li>
+              <li><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo $_SESSION['company']['companyID']; ?>">Company Profile</a></li>
             <li><a href="index.php?action=addJob">Add Job</a></li>
             <li><a href="index.php?action=editCompany">Edit Company</a></li>
             <li><a href="index.php?action=ourJobs">Our Jobs</a></li>
