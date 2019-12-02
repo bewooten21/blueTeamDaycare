@@ -55,7 +55,7 @@
                         <p>
                         </p>
                     </div>
-                    <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $owner) : ?>
+                    <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $owner->getID()) : ?>
 
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="reviewCompany">
@@ -69,6 +69,7 @@
             </div>
         </div>
         <?php if (isset($_SESSION['currentUser'])) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
+        <?php if ($_SESSION['currentUser']->getID() == $owner->getID()) : ?>
         <h3>Active Positions At Our Company</h3>
         <table class="table table-dark">
             <thead>
@@ -109,6 +110,7 @@
             </tbody>
         </table>
         <?php endif;
+        endif;
         endif;?>
         
         <h3>Our Employees</h3>

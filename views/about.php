@@ -9,8 +9,8 @@
             <div class="container" style='text-align: center'> 
                 <br>
                 <div style="position:relative;">
-                   <div style='background-color: black; position:absolute; margin-top: 130px; height: 30px; border-radius: 10px; z-index: -1; width:100%;'><br></div> 
-                <img width="200px" height="150px" style='z-index: 5;' src="images/parent-child-stock.jpeg" alt="Photo by Vidal Balielo Jr. from Pexels"><img width="300px" src="images/default-company.jpg" alt="logo"><img width="200px" height="150px" src="images/bike-stock.jpeg" alt="Photo by Agung Pandit Wiguna from Pexels"> 
+                   <div class="background-bar"><br></div> 
+                <img class="about-image" width="200px" height="150px" src="images/parent-child-stock.jpeg" alt="Photo by Vidal Balielo Jr. from Pexels"><img width="300px" src="images/default-company.jpg" alt="logo"><img class="about-image" width="200px" height="150px" src="images/bike-stock.jpeg" alt="Photo by Agung Pandit Wiguna from Pexels"> 
                 </div>
                 <br>
                 <p>We have been connecting parents with experienced daycare professionals since August, 2019.</p>
