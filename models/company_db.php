@@ -199,4 +199,35 @@ class company_db {
         return $rows;
     }
     
+    public static function getRating($id){
+        $db = Database::getDB();
+        $query = 'select overallRating from company where companyID = :id';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $id);
+            $statement->execute();
+            $rating = $statement->fetch();
+            $statement->closeCursor();
+            return $rating;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            include('database_error.php');
+        }
+    }
+    
+    public static function updateRating($id, $rating){
+        $db = Database::getDB();
+        $query = 'update company set overallRating = :rating where companyID = :id';
+        //try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':rating', $rating);
+            $statement->execute();
+            $statement->closeCursor();
+        //} catch (PDOException $e) {
+         //   $error_message = $e->getMessage();
+         //   include('database_error.php');
+        //}
+    }
+    
 }

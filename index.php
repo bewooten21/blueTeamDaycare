@@ -506,6 +506,8 @@ switch ($action) {
             } else {
                 $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
                 include 'views/adminProfile.php';
+                die();
+                break;
             }
         } else {
             $users = user_db::newest_users();
@@ -783,6 +785,15 @@ switch ($action) {
         $jobs = job_db::get_job_by_Companyid($id);
         $employees = employee_db::get_employees_by_companyID($id);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
+        $cRating = company_db::getRating($_SESSION['companyID']);
+        $feedback = feedback_db::getFeedbackByID($_SESSION['companyID'], 'company');
+        $count = 1;
+        foreach($feedback as $entry){
+            $cRating[0] = $cRating[0] + $entry;
+            $count++;
+        }
+        $newRating[0] = $cRating[0] / $count;
+        company_db::updateRating($_SESSION['companyID'], $newRating);
         include('views/companyProfile.php');
         die();
         break;
@@ -862,10 +873,23 @@ switch ($action) {
             $target = $_SESSION['profileID'];
         }
         else if($type === 'company'){
+            
             $target = $_SESSION['companyID'];
         }
         $feedback = filter_input(INPUT_POST, 'feedback');
         $rating = filter_input(INPUT_POST, 'rating');
+        if($type === 'company'){
+            $cRating = company_db::getRating($_SESSION['companyID']);
+            $feedback = feedback_db::getFeedbackByID($_SESSION['companyID'], 'company');
+            $count = 1;
+            foreach($feedback as $entry){
+                $cRating[0] = $cRating[0] + $entry;
+                $count++;
+            }
+            $cRating[0] = $cRating[0] + $rating;
+            $newRating = $cRating[0] / $count;
+            company_db::updateRating($_SESSION['companyID'], $newRating);
+        }   
         feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
         include('views/confirmFeedback.php');
         die();
