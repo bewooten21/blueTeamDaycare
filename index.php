@@ -839,8 +839,13 @@ switch ($action) {
         
     case 'submitFeedback' :
         $sender = $_SESSION['currentUser']->getID();
-        $target = $_SESSION['profileID'];
         $type = $_SESSION['targetType'];
+        if($type === 'user'){
+            $target = $_SESSION['profileID'];
+        }
+        else if($type === 'company'){
+            $target = $_SESSION['companyID'];
+        }
         $feedback = filter_input(INPUT_POST, 'feedback');
         $rating = filter_input(INPUT_POST, 'rating');
         feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
@@ -1023,6 +1028,38 @@ switch ($action) {
         break;
         
     case 'editCompanyVal':
+        die();
+        break;
+        
+    case'feedbackEntries':
+        $users = feedback_db::getNegativeUsers();
+        $companies = feedback_db::getNegativeCompanies();
+        include('views/viewFeedbackEntries.php');
+        die();
+        break;
+    
+    case 'processFeedback':
+        $_SESSION['targetType'] = filter_input(INPUT_POST, 'type');
+        $_SESSION['targetID'] = filter_input(INPUT_POST, 'id');
+        if($_SESSION['targetType'] === 'user'){
+            $_SESSION['currentTarget'] = user_db::get_user_by_id($_SESSION['targetID']);
+        }
+        else if($_SESSION['targetType'] === 'company'){
+            $_SESSION['currentTarget'] = company_db::get_company_by_id($_SESSION['targetID']);
+        }
+        $feedback = feedback_db::getFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        include('views/processFeedback.php');
+        die();
+        break;
+        
+    case'removeFeedback':
+        $id = filter_input(INPUT_POST, 'id');
+        feedback_db::removeFeedbackByID($id);
+        $feedback = feedback_db::getFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        include('views/processFeedback.php');
+        die();
+        break;
+        
         
         
         

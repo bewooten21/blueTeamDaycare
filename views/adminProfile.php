@@ -62,7 +62,14 @@
         <br>
         <p><strong> No applications pending at this time! </strong></p>
        <?php endif; ?>  
-    
+    <div class="row">
+        <div class="col-sm-2">
+        <form action="index.php" method="post">
+            <input type="hidden" name="action" value="feedbackEntries">
+            <input type="submit" class="btn btn-default" value="View Feedback Entries"><br>
+        </form>
+        </div>
+    </div>
     <?php include ('footer.php'); ?>
 </body>
 </html>
