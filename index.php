@@ -762,7 +762,7 @@ switch ($action) {
     case 'viewCompanies':
         $i = 0;
         $companies = company_db::select_all();
-        $companyID = companyApproval_db::getUnprocessedCompanyIDs();
+        $companyID = companyApproval_db::getUnapprovedCompanyIDs();
         foreach($companies as $key=>$value){
             foreach($companyID as $cID){
                 if($cID["companyID"] === $value->getID()){
