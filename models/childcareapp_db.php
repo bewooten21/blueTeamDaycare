@@ -42,5 +42,23 @@ public static function addApplication($appId,$companyId, $studentId,$parentId ){
     
 }
 
+public static function getAppsByCompanyId($id){
+    $db = Database::getDB();
+    
+    $query = 'SELECT * from childcareapp JOIN
+             student ON childcareapp.studentId = student.studentId
+             WHERE childcareapp.companyId = :id';
+    
+    
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    
+    $rows= $statement->fetchAll();
+    $statement->closeCursor();
+    return $rows;
+}
+
+
 }
 

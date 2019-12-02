@@ -1077,6 +1077,26 @@ switch ($action) {
         include('views/processFeedback.php');
         die();
         break;
+    
+    case 'viewChildApps':
+        $apps= childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
+        include('views/childcareApps.php');
+        die();
+        break;
+    
+    case 'approveChildApp':
+        $id = filter_input(INPUT_POST, 'id');
+        
+        die();
+        break;
+    
+    case 'denyChildApp':
+        $id = filter_input(INPUT_POST, 'id');
+        die();
+        break;
+        
+ 
+        
         
         
         

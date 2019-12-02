@@ -199,4 +199,56 @@ class company_db {
         return $rows;
     }
     
+    public static function updateCompany_noImage($cn, $ec, $cc, $ce, $id){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE company
+                  SET companyName = :cn,
+                  employeeCount = :ec,
+                  childCapacity = :cc,
+                  childrenEnrolled = :ce
+                  WHERE companyID = :id
+                  ';
+        
+       
+            $statement = $db->prepare($query);
+            $statement->bindValue(':cn', $cn);
+            $statement->bindValue(':ec', $ec);
+            $statement->bindValue(':cc', $cc);
+            $statement->bindValue(':ce', $ce);
+            $statement->bindValue(':id', $id);
+             $statement->execute();
+            $statement->closeCursor();
+            
+        
+        
+    }
+    
+    public static function updateCompany_withImage($cn, $ec, $cc, $ce, $image, $id){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE company
+                  SET companyName = :cn,
+                  employeeCount = :ec,
+                  childCapacity = :cc,
+                  childrenEnrolled = :ce,
+                  companyImage= :image
+                  WHERE companyID = :id
+                  ';
+        
+       
+            $statement = $db->prepare($query);
+            $statement->bindValue(':cn', $cn);
+            $statement->bindValue(':ec', $ec);
+            $statement->bindValue(':cc', $cc);
+            $statement->bindValue(':ce', $ce);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':image', $image);
+             $statement->execute();
+            $statement->closeCursor();
+        
+    }
+    
 }

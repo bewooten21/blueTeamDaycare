@@ -14,7 +14,7 @@ and open the template in the editor.
         <?php include('nav.php'); ?> 
         <div class="container">
   <h2>Login</h2>
-<form class="form-horizontal" method="post">
+  <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
     <input type="hidden" name="action" value="editCompanyVal">
     <input type="hidden" name="companyId" value="<?php echo $_SESSION['company']['companyID'] ?>">
   
@@ -63,9 +63,9 @@ and open the template in the editor.
       </div>
   </div>
     <div class="form-group">
-    <label class="control-label col-sm-2" for="jobR">Company Image:</label>
+    <label class="control-label col-sm-2" for="image">Company Image:</label>
     <div class="col-sm-4">
-      <input type="file" name="image" />
+      <input type="file"  id="image"  name="image" >
     </div>
     <div class="col-sm-2">
           <p class="error">
