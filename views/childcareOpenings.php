@@ -28,7 +28,7 @@
 
       <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="applyToChildcare">
-                  <input type="hidden" name="companyId"  value="<?php echo htmlspecialchars($o['id']); ?>">
+                  <input type="hidden" name="companyId"  value="<?php echo htmlspecialchars($o['companyID']); ?>">
                   <input type="hidden" name="companyName" value="<?php echo $o['companyName'] ;?>">
                   <input type="submit" value="Apply">
               </form></td>

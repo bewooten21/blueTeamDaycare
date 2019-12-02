@@ -789,7 +789,7 @@ switch ($action) {
     
     case 'ourJobs':
         $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-        $jobs = job_db::get_job_by_Companyid($company['id']);
+        $jobs = job_db::get_job_by_Companyid($company['companyID']);
 
         include('views/ourJobs.php');
         die();
