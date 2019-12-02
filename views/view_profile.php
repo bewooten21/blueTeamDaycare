@@ -29,7 +29,7 @@
                         </tr>
 <?php endforeach; ?>
                 </table>
-                <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $users->getID()) : ?>
+                <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $users->getID()) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
                         <h4>Leave a comment!</h4>
                         <form action="index.php" method="post">
                             <input type="hidden" name="action" value="submitComment">
@@ -47,6 +47,7 @@
                         </form>
                     <?php
                     endif;
+                endif;
                 endif;
                 ?>
                 

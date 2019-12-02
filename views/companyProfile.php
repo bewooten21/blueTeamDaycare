@@ -68,6 +68,7 @@
                 </div>
             </div>
         </div>
+        <?php if (isset($_SESSION['currentUser'])) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
         <h3>Active Positions At Our Company</h3>
         <table class="table table-dark">
             <thead>
@@ -107,6 +108,8 @@
 
             </tbody>
         </table>
+        <?php endif;
+        endif;?>
         
         <h3>Our Employees</h3>
         <table class="table table-dark">

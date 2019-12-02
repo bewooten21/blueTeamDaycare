@@ -321,5 +321,33 @@ class user_db {
         
         return $comopanyID;
     }
+    
+    public static function restrictUser($id){
+        $db = Database::getDB();
+        $query = 'update user set restricted = 1 where ID = :id';
+        try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $statement->closeCursor();
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+    
+    public static function removeRestriction($id){
+        $db = Database::getDB();
+        $query = 'update user set restricted = 0 where ID = :id';
+        try {
+        $statement = $db->prepare($query);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        $statement->closeCursor();
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
 //put your code here
 }

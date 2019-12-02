@@ -453,6 +453,15 @@ switch ($action) {
                 $role = $_SESSION['currentUser']->getRole();
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if($role->getID() != 4 ){
+                    $reviewCount = feedback_db::getReviewCount($theUser->getID(), 'user');
+                    if($reviewCount[0] >= 5){
+                        user_db::restrictUser($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(1);
+                    }
+                    else if($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
+                        user_db::removeRestriction($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(0);
+                    }
                     include 'views/profile.php';
                 }
                 else {
@@ -479,6 +488,15 @@ switch ($action) {
         if (isset($_SESSION['currentUser'])) {
             $role = $_SESSION['currentUser']->getRole();
             if($role->getID() != 4 ){
+                $reviewCount = feedback_db::getReviewCount($_SESSION['currentUser']->getID(), 'user');
+                    if($reviewCount[0] >= 5){
+                        user_db::restrictUser($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(1);
+                    }
+                    else if($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
+                        user_db::removeRestriction($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(0);
+                    }
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
