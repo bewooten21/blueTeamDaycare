@@ -767,7 +767,7 @@ switch ($action) {
         $_SESSION['companyID'] = $id;
         $c = company_db::get_company_by_id($id);
         $jobs = job_db::get_job_by_Companyid($id);
-        $employees = employee_db::get_employees_by_companyID($id);
+        //$employees = employee_db::get_employees_by_companyID($id);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
         include('views/companyProfile.php');
         die();
