@@ -21,7 +21,7 @@ class job_db {
         $db = Database::getDB();
         $query = 'SELECT *
               FROM job JOIN company ON 
-              job.companyID=companyID
+              job.companyID= company.companyID
               WHERE job.jobID= :id';
 
         $statement = $db->prepare($query);

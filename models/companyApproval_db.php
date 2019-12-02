@@ -39,12 +39,12 @@ class companyApproval_db {
         }
     }
     
-    public static function getUnprocessedCompanyIDs()
+    public static function getUnapprovedCompanyIDs()
     {
         $db = Database::getDB();
         $query = 'select companyapproval.companyID from companyapproval JOIN company ON '
                 . 'companyapproval.companyID = company.companyID '
-                . 'where isProcessed = 0';
+                . 'where isApproved = 0';
         try {
             $statement = $db->prepare($query);
             $statement->execute();

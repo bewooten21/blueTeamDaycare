@@ -393,12 +393,14 @@ switch ($action) {
             if ($imageChanged != TRUE) {
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
+                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
                 include 'views/profile.php';
             } else {
 
                 $file_name = "images/" . $file_name;
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
+                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
                 include 'views/profile.php';
             }
         }
@@ -445,9 +447,9 @@ switch ($action) {
             if (password_verify($pWord, $theUser->getPWord())) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
-                $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-                if($company != false){
-                    $_SESSION['company']= $company;
+                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                if($userCompany != false){
+                    $_SESSION['company']= $userCompany;
                 }
                 
                 $role = $_SESSION['currentUser']->getRole();
@@ -468,7 +470,7 @@ switch ($action) {
                     $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
                      include('views/adminProfile.php');
                 }
-            } else {
+            } else {$userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
                 $error_message['uName'] = '';
                 $error_message['pWord'] = 'Incorrect Password';
                 include 'views/login.php';
@@ -500,6 +502,7 @@ switch ($action) {
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
+                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
                 include 'views/profile.php';
                 die();
                 break;
@@ -713,7 +716,7 @@ switch ($action) {
             exit();
         } else {
             if ($cImage === null || $cImage === '') {
-                $companyID = company_db::addCompany($cName, $empCount, $maxChild, $childCount, 0, $_SESSION['currentUser']->getID());
+                $companyID = company_db::add_company($cName, $empCount, $maxChild, $childCount, 0, $_SESSION['currentUser']->getID());
                 companyApproval_db::addCompany($companyID);
                 $confirmationMessage = "You&apos;re business has been successfully requested ".  $_SESSION['currentUser']->getFName() . ". Please wait as your application is approved. This process should take no more than 5 business days. We hope you are enjoying you&apos;re experience!";
                 include'views/confirmation.php';
@@ -764,7 +767,7 @@ switch ($action) {
     case 'viewCompanies':
         $i = 0;
         $companies = company_db::select_all();
-        $companyID = companyApproval_db::getUnprocessedCompanyIDs();
+        $companyID = companyApproval_db::getUnapprovedCompanyIDs();
         foreach($companies as $key=>$value){
             foreach($companyID as $cID){
                 if($cID["companyID"] === $value->getID()){

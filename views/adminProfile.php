@@ -26,10 +26,10 @@
             <?php  echo htmlspecialchars($company["companyName"]); ?>
       </th>
       <td>
-          <?php echo htmlspecialchars($company["childCapacity"]); ?>
+          <?php echo htmlspecialchars($company["employeeCount"]); ?>
       </td>
       <td>
-          <?php echo htmlspecialchars($company["employeeCount"]) ?>
+          <?php echo htmlspecialchars($company["childCapacity"]) ?>
       </td>
       <td>
           <?php echo htmlspecialchars($company["childrenEnrolled"]) ?>

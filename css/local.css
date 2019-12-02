@@ -1,0 +1,21 @@
+.navbar {
+  margin-bottom: 0;
+}
+
+.error{
+    color:red;
+}
+.background-bar {
+    background-color: black; 
+    position:absolute;
+    margin-top: 130px; 
+    height: 30px; 
+    border-radius: 10px; 
+    z-index: -1; 
+    width:100%;
+}
+@media only screen and (max-width: 800px) {
+  .about-image {
+    display: none;
+  }
+}
