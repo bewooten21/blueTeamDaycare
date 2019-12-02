@@ -6,7 +6,7 @@
     </head>
     <body>
         <?php include('nav.php') ?>
-
+        <div style='text-align: center;'><img  height="200px" src="<?php echo htmlspecialchars($c->getImage()); ?>"></div>
         <div class="jumbotron">
             <div class="container">
                 <div class="row">
@@ -28,7 +28,6 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2">
-                        <span class="<?php echo $c->getImage(); ?>" aria-hidden="true"></span>
                         <h3><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo $c->getID(); ?>"><?php echo $c->getCompanyName(); ?></a></h3>
                         <p>
 
@@ -69,6 +68,7 @@
                 </div>
             </div>
         </div>
+        <?php if (isset($_SESSION['currentUser'])) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
         <h3>Active Positions At Our Company</h3>
         <table class="table table-dark">
             <thead>
@@ -108,6 +108,8 @@
 
             </tbody>
         </table>
+        <?php endif;
+        endif;?>
         
         <h3>Our Employees</h3>
         <table class="table table-dark">

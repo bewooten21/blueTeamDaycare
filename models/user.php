@@ -1,7 +1,7 @@
 <?php
 require_once("role.php");
 class user {
-    private $ID, $fName, $lName, $email, $uName, $image, $pWord, $role;
+    private $ID, $fName, $lName, $email, $uName, $image, $pWord, $role, $restricted;
     function __construct($ID, $fName, $lName, $email, $uName, $pWord, $image, role $role = null) {
         
         $this->ID = $ID;
@@ -14,7 +14,14 @@ class user {
         $this->role = $role ?: role(1,'user');
         
     }
-    
+    function getRestricted() {
+        return $this->restricted;
+    }
+
+    function setRestricted($restricted) {
+        $this->restricted = $restricted;
+    }
+
     function getID() {
         return $this->ID;
     }

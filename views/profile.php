@@ -10,12 +10,14 @@
         <main>
             <div class="container">
                 <h1>Welcome to your profile page <?php echo htmlspecialchars($_SESSION['currentUser']->getFName()); ?>!</h1>
+                <?php if ($_SESSION['currentUser']->getRestricted() === 1) {?> <h2> Your account is currently restricted pending administrator review!</h2> <?php }?>
                 <div id="profileImg">
-                    <p><img src="<?php echo htmlspecialchars($_SESSION['currentUser']->getImage()); ?>" width="200" height="200" class="center"></p>
+                    <p><img src="<?php echo htmlspecialchars($_SESSION['currentUser']->getImage()); ?>" width="200"></p>
                 </div>
                 <h3><?php echo htmlspecialchars($_SESSION['currentUser']->getUName()); ?></h3> 
                 <p>Email: <?php echo htmlspecialchars($_SESSION['currentUser']->getEmail()); ?></p></br>
                 <h2>Children</h2>
+                <?php if (isset($_SESSION['currentUser'])) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
                 <a href='index.php?action=addStudent'>Add child/student</a>
                 <?php if($children!=false){ ?>
                 <form  method="post">
@@ -32,7 +34,9 @@
                     
                     <input type="submit" class="btn btn-default" value="Edit Child"><br>
                 </form>
-                   <?php } ?><br>
+                   <?php } endif;
+                   endif;?><br>
+                   
                    
                 
                 
@@ -50,6 +54,7 @@
                         </tr>
                     <?php endforeach; ?>
                 </table><br>
+                <?php if (isset($_SESSION['currentUser'])) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
                 <div class="row">
                     <div class="col-sm-2">
                 <form action="index.php" method="post">
@@ -59,11 +64,13 @@
                         </div>
                     <div class="col-sm-2">
                 <form action="index.php" method="post">
-                    <input type="hidden" name="action" value="register business">
+                    <input type="hidden" name="action" value="registerBusiness">
                     <input type="submit" class="btn btn-default" value="Register Business"><br>
                 </form>
                     </div>
                     </div>
+                <?php endif;
+                endif;?>
             </div>
         </main>
         <?php include ('footer.php'); ?>

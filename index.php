@@ -453,6 +453,15 @@ switch ($action) {
                 $role = $_SESSION['currentUser']->getRole();
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if($role->getID() != 4 ){
+                    $reviewCount = feedback_db::getReviewCount($theUser->getID(), 'user');
+                    if($reviewCount[0] >= 5){
+                        user_db::restrictUser($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(1);
+                    }
+                    else if($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
+                        user_db::removeRestriction($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(0);
+                    }
                     include 'views/profile.php';
                 }
                 else {
@@ -461,7 +470,7 @@ switch ($action) {
                 }
             } else {
                 $error_message['uName'] = '';
-                $error_message['pWord'] = '';
+                $error_message['pWord'] = 'Incorrect Password';
                 include 'views/login.php';
             }
         } else {
@@ -479,6 +488,15 @@ switch ($action) {
         if (isset($_SESSION['currentUser'])) {
             $role = $_SESSION['currentUser']->getRole();
             if($role->getID() != 4 ){
+                $reviewCount = feedback_db::getReviewCount($_SESSION['currentUser']->getID(), 'user');
+                    if($reviewCount[0] >= 5){
+                        user_db::restrictUser($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(1);
+                    }
+                    else if($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
+                        user_db::removeRestriction($_SESSION['currentUser']->getID());
+                        $_SESSION['currentUser']->setRestricted(0);
+                    }
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
@@ -582,7 +600,7 @@ switch ($action) {
         die();
         break;
 
-    case 'register business':
+    case 'registerBusiness':
 
         if (!isset($cName)) {
             $cName = '';
@@ -615,19 +633,17 @@ switch ($action) {
             $error_message['maxChild'] = '';
             $error_message['empCount'] = '';
             $error_message['childCount'] = '';
-            $error_message['cRate'] = '';
             $error_message['image'] = '';
         }
         include'views/businessRegistration.php';
         die();
         break;
-    case 'validate business':
+    case 'validateBusiness':
         // get the data from the registration form
         $cName = filter_input(INPUT_POST, 'cName');
         $maxChild = filter_input(INPUT_POST, 'maxChild', FILTER_VALIDATE_INT);
         $childCount = filter_input(INPUT_POST, 'childCount', FILTER_VALIDATE_INT);
         $empCount = filter_input(INPUT_POST, 'empCount', FILTER_VALIDATE_INT);
-        $cRate = filter_input(INPUT_POST, 'cRate', FILTER_VALIDATE_FLOAT);
         $cImage = filter_input(INPUT_POST, 'image');
         $error_message = [];
         $error_message['cName'] = '';
@@ -635,7 +651,6 @@ switch ($action) {
         $error_message['maxChild'] = '';
         $error_message['empCount'] = '';
         $error_message['childCount'] = '';
-        $error_message['cRate'] = '';
         $error_message['image'] = '';
         $file_name = '';
 
@@ -665,10 +680,6 @@ switch ($action) {
         if ($childCount === null || $childCount === '' || $childCount === false) {
             $error_message['childCount'] = 'Number of Enrolled Children must be filled out and must be a number';
         }
-// validate company rating
-        if ($cRate === null || $cRate === '' || $cRate === false) {
-            $error_message['cRate'] = 'Company Rating must be filled out and must be a number';
-        }
 // validate image
         if ($_FILES['image']['name'] != '') {
 
@@ -695,32 +706,25 @@ switch ($action) {
             }
         }
 // if an error message exists, go to the index page
-        if ($error_message['image'] != '' || $error_message['cName'] != '' || $error_message['maxChild'] != '' || $error_message['empCount'] != '' || $error_message['childCount'] != '' || $error_message['cRate'] != '') {
+        if ($error_message['image'] != '' || $error_message['cName'] != '' || $error_message['maxChild'] != '' || $error_message['empCount'] != '' || $error_message['childCount'] != '') {
             include 'views/businessRegistration.php';
             exit();
         } else {
-            if ($cImage === '' || $cImage === null) {
-                companyApproval_db::addCompany($cName, $maxChild, $empCount, $childCount, $cRate);
-                $uName = $_SESSION['currentUser']->getUName();
-                $confirmationMessage = "You&apos;re information has been successfully updated ".  $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
+            if ($cImage === null || $cImage === '') {
+                $companyID = company_db::addCompany($cName, $empCount, $maxChild, $childCount, 0, $_SESSION['currentUser']->getID());
+                companyApproval_db::addCompany($companyID);
+                $confirmationMessage = "You&apos;re business has been successfully requested ".  $_SESSION['currentUser']->getFName() . ". Please wait as your application is approved. This process should take no more than 5 business days. We hope you are enjoying you&apos;re experience!";
                 include'views/confirmation.php';
-                exit;   
+                exit();   
             }
             else
             {
-                companyApproval_db::addCompanyWithLogo($cName, $maxChild, $empCount, $childCount, $cRate, $file_name);
-                $uName = $_SESSION['currentUser'];
+                $companyID = company_db::add_company_with_image($cName, $empCount, $maxChild, $childCount, 0, $_SESSION['currentUser']->getID(), $file_name);
+                companyApproval_db::addCompany($companyID);
                 $confirmationMessage = "You&apos;re information and profile image have been successfully updated ".  $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
                 include'views/confirmation.php';
-                exit;
+                exit();
             }
-            $uName = SESS;
-            $confirmationMessage = "You&apos;re information has been successfully updated ".  $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
-            include'views/confirmation.php';
-
-            exit();
-
-            exit;
         }
         die();
         break;
@@ -758,6 +762,16 @@ switch ($action) {
     case 'viewCompanies':
         $i = 0;
         $companies = company_db::select_all();
+        $companyID = companyApproval_db::getUnprocessedCompanyIDs();
+        foreach($companies as $key=>$value){
+            foreach($companyID as $cID){
+                if($cID["companyID"] === $value->getID()){
+                    //https://stackoverflow.com/questions/2852344/unset-array-element-inside-a-foreach-loop
+                    unset($companies[$key]);
+                    break;
+                }
+            }
+        }
         include('views/allCompanies.php');
         die();
         break;
@@ -812,7 +826,10 @@ switch ($action) {
         
     case 'approveCompany' :
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        $ownerID = filter_input(INPUT_POST, 'ownerID', FILTER_VALIDATE_INT);
         companyApproval_db::approveCompany($id);
+        $applicant = user_db::get_user_by_id($ownerID);
+        user_db::update_user_role($applicant->getID(), 3);  
         $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
         include('views/adminProfile.php');
         die();
@@ -840,8 +857,13 @@ switch ($action) {
         
     case 'submitFeedback' :
         $sender = $_SESSION['currentUser']->getID();
-        $target = $_SESSION['profileID'];
         $type = $_SESSION['targetType'];
+        if($type === 'user'){
+            $target = $_SESSION['profileID'];
+        }
+        else if($type === 'company'){
+            $target = $_SESSION['companyID'];
+        }
         $feedback = filter_input(INPUT_POST, 'feedback');
         $rating = filter_input(INPUT_POST, 'rating');
         feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
@@ -898,9 +920,16 @@ switch ($action) {
         $newEmpID = employee_db::add_employee($applicationID);
         $message = "Congratulations on your new hire!"; 
         
+        // update job in the database
         $job = job_db::get_job($jobID);
         $applicationSlots = $job->getApplicationSlots() - 1;
         job_db::update_application_slot($job->getId(), $applicationSlots);
+        
+        $applicant = user_db::get_user_by_id(application_db::get_application_by_id($applicationID)->getUserID());
+        // check if user is a basic user if not other roles supercede
+        if($applicant->getRole()->getID() === 1){
+          user_db::update_user_role($applicant->getUserID(), 2);  
+        }
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
         include('views/jobAppApproval.php');
         die();
@@ -1017,6 +1046,38 @@ switch ($action) {
         break;
         
     case 'editCompanyVal':
+        die();
+        break;
+        
+    case'feedbackEntries':
+        $users = feedback_db::getNegativeUsers();
+        $companies = feedback_db::getNegativeCompanies();
+        include('views/viewFeedbackEntries.php');
+        die();
+        break;
+    
+    case 'processFeedback':
+        $_SESSION['targetType'] = filter_input(INPUT_POST, 'type');
+        $_SESSION['targetID'] = filter_input(INPUT_POST, 'id');
+        if($_SESSION['targetType'] === 'user'){
+            $_SESSION['currentTarget'] = user_db::get_user_by_id($_SESSION['targetID']);
+        }
+        else if($_SESSION['targetType'] === 'company'){
+            $_SESSION['currentTarget'] = company_db::get_company_by_id($_SESSION['targetID']);
+        }
+        $feedback = feedback_db::getFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        include('views/processFeedback.php');
+        die();
+        break;
+        
+    case'removeFeedback':
+        $id = filter_input(INPUT_POST, 'id');
+        feedback_db::removeFeedbackByID($id);
+        $feedback = feedback_db::getFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        include('views/processFeedback.php');
+        die();
+        break;
+        
         
         
         

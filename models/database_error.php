@@ -2,7 +2,7 @@
 <html>
     <!-- the head section -->
     <head>
-        <title>Movies!</title>
+        <title>DB Error</title>
     </head>
 
     <!-- the body section -->

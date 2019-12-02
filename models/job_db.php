@@ -5,7 +5,7 @@ class job_db {
         $db = Database::getDB();
 
         $query='SELECT * from job JOIN company ON
-            job.companyID=company.id
+            job.companyID=company.companyID
             ORDER by job.jobID asc'
             ;
         $statement = $db->prepare($query);
@@ -40,7 +40,7 @@ class job_db {
         $db = Database::getDB();
         $query = 'SELECT *
               FROM job JOIN company ON 
-              job.companyID=company.id
+              job.companyID=company.companyID
               WHERE job.companyID= :id';
 
         $statement = $db->prepare($query);

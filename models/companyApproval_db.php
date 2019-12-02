@@ -1,18 +1,14 @@
 <?php
 
 class companyApproval_db {
-    public static function addCompany($name, $maxChild, $curEmp, $curChild, $rating)
+    public static function addCompany($companyID)
     {
         $db = Database::getDB();
-        $query = 'insert into companyapproval(name, maxChildren, currentEmp, currentChildren, rating)'
-                . 'values(:name, :maxChild, :curEmp, :curChild, :rating)';
+        $query = 'insert into companyapproval(companyID)'
+                . 'values(:companyID)';
         try {
             $statement = $db->prepare($query);
-            $statement->bindValue(':name', $name);
-            $statement->bindValue(':maxChild', $maxChild);
-            $statement->bindValue(':curEmp', $curEmp);
-            $statement->bindValue(':curChild', $curChild);
-            $statement->bindValue(':rating', $rating);
+            $statement->bindValue(':companyID', $companyID);
             $statement->execute();
             $statement->closeCursor();
         }
@@ -23,45 +19,44 @@ class companyApproval_db {
             
     }
     
-    public static function addCompanyWithLogo($name, $maxChild, $curEmp, $curChild, $rating, $logo)
-    {
-        $db = Database::getDB();
-        $fileLocation = "images/". $logo;
-        $query = 'insert into companyapproval(name, maxChildren, currentEmp, currentChildren, rating, logo) '
-                . 'values(:name, :maxChild, :curEmp, :curChild, :rating, :fileLocation)';
-        try {
-            $statement = $db->prepare($query);
-            $statement->bindValue(':name', $name);
-            $statement->bindValue(':maxChild', $maxChild);
-            $statement->bindValue(':curEmp', $curEmp);
-            $statement->bindValue(':curChild', $curChild);
-            $statement->bindValue(':rating', $rating);
-            $statement->bindValue(':fileLocation', $fileLocation);
-            $statement->execute();
-            $statement->closeCursor();
-        }
-        catch (PDOException $e) {
-            $error_message = $e->getMessage();
-            display_db_error($error_message);
-        }
-    }
-    
     public static function getUnprocessedCompanies()
     {
         $db = Database::getDB();
-        $query = 'select * from companyapproval '
+        $query = 'select * from companyapproval JOIN company ON '
+                . 'companyapproval.companyID = company.companyID '
                 . 'where isProcessed = 0';
         try {
             $statement = $db->prepare($query);
             $statement->execute();
             $rows = $statement->fetchAll();
             $statement->closeCursor();
+            
+            return $rows;
         } 
         catch (Exception $e) {
            $error_message = $e->getMessage();
-           display_db_error($error_message);
+           include('database_error.php');
         }
-        return $rows;
+    }
+    
+    public static function getUnprocessedCompanyIDs()
+    {
+        $db = Database::getDB();
+        $query = 'select companyapproval.companyID from companyapproval JOIN company ON '
+                . 'companyapproval.companyID = company.companyID '
+                . 'where isProcessed = 0';
+        try {
+            $statement = $db->prepare($query);
+            $statement->execute();
+            $rows = $statement->fetchAll();
+            $statement->closeCursor();
+            
+            return $rows;
+        } 
+        catch (Exception $e) {
+           $error_message = $e->getMessage();
+           include('database_error.php');
+        }
     }
     
     public static function approveCompany($id)
@@ -70,7 +65,7 @@ class companyApproval_db {
         $query = 'update companyapproval '
                 . 'set isApproved = 1, '
                 . 'isProcessed = 1 '
-                . 'where ID = :id';
+                . 'where compApprovalID = :id';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);
@@ -89,7 +84,7 @@ class companyApproval_db {
         $query = 'update companyapproval '
                 . 'set isApproved = 0, '
                 . 'isProcessed = 1 '
-                . 'where ID = :id';
+                . 'where compApprovalID = :id';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);
