@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2019 at 09:57 PM
+-- Generation Time: Dec 02, 2019 at 06:36 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
-CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -106,10 +104,10 @@ INSERT INTO `comments` (`commentID`, `profileID`, `comment`, `commenterID`, `com
 CREATE TABLE `company` (
   `companyID` int(11) NOT NULL,
   `companyName` varchar(100) NOT NULL,
-  `employeeCount` int(11) NOT NULL DEFAULT 1,
-  `childCapacity` int(11) NOT NULL DEFAULT 0,
-  `childrenEnrolled` int(11) NOT NULL DEFAULT 0,
-  `overallRating` float DEFAULT 0,
+  `employeeCount` int(11) NOT NULL DEFAULT '1',
+  `childCapacity` int(11) NOT NULL DEFAULT '0',
+  `childrenEnrolled` int(11) NOT NULL DEFAULT '0',
+  `overallRating` float DEFAULT '0',
   `ownerID` int(11) NOT NULL,
   `companyImage` varchar(50) DEFAULT 'images/default-company.jpg'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -117,13 +115,12 @@ CREATE TABLE `company` (
 --
 -- Dumping data for table `company`
 --
+
 INSERT INTO `company` (`companyID`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
 (1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default-company.jpg'),
 (2, 'Tinder Tots', 10, 35, 12, 4.2, 1, 'images/default-company.jpg'),
 (3, 'Sprouts', 1, 0, 0, 0, 1, 'images/default-company.jpg'),
 (4, 'Daycare Care', 15, 27, 24, 3, 2, 'images/default-company.jpg');
-
-
 
 -- --------------------------------------------------------
 
@@ -134,8 +131,8 @@ INSERT INTO `company` (`companyID`, `companyName`, `employeeCount`, `childCapaci
 CREATE TABLE `companyapproval` (
   `compApprovalID` int(11) NOT NULL,
   `companyID` int(11) NOT NULL,
-  `isApproved` tinyint(1) NOT NULL DEFAULT 0,
-  `isProcessed` tinyint(1) NOT NULL DEFAULT 0
+  `isApproved` tinyint(1) NOT NULL DEFAULT '0',
+  `isProcessed` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -180,7 +177,7 @@ INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID
 CREATE TABLE `employee` (
   `empID` int(11) NOT NULL,
   `applicationID` int(11) NOT NULL,
-  `hireDate` timestamp NOT NULL DEFAULT current_timestamp()
+  `hireDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -211,7 +208,12 @@ CREATE TABLE `feedback` (
 
 INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`, `type`) VALUES
 (3, 2, 3, 'Test', 3.2, 'company'),
-(4, 2, 1, 'Test', 3.2, 'user');
+(16, 3, 1, 'test', 1, 'company'),
+(17, 1, 2, 'test', 2.5, 'user'),
+(18, 1, 2, 'test', 2.5, 'user'),
+(19, 1, 2, 'test', 2.5, 'user'),
+(20, 1, 2, 'test1234567899876543210', 2.5, 'user'),
+(21, 1, 2, 'test', 2.5, 'user');
 
 -- --------------------------------------------------------
 
@@ -295,18 +297,19 @@ CREATE TABLE `user` (
   `uName` varchar(50) DEFAULT NULL,
   `pWord` varchar(120) DEFAULT NULL,
   `image` varchar(100) DEFAULT 'images/default.jpg',
-  `roleID` int(11) DEFAULT NULL
+  `roleID` int(11) DEFAULT NULL,
+  `Restricted` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `uName`, `pWord`, `image`, `roleID`) VALUES
-(1, 'Tyler', 'Stading', 'ts526610@southeast.edu', 'tstading', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3),
-(2, 'Brad', 'Wooten', 'bwooten@gmail.com', 'bwooten', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 2),
-(3, 'Cody', 'Sterup', 'csterup@hotmail.net', 'csterup', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3),
-(4, 'Glenn', 'Ray', 'gray@my.southeast.edu', 'gray', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 4);
+INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `uName`, `pWord`, `image`, `roleID`, `Restricted`) VALUES
+(1, 'Tyler', 'Stading', 'ts526610@southeast.edu', 'tstading', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3, 0),
+(2, 'Brad', 'Wooten', 'bwooten@gmail.com', 'bwooten', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 2, 1),
+(3, 'Cody', 'Sterup', 'csterup@hotmail.net', 'csterup', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3, 0),
+(4, 'Glenn', 'Ray', 'gray@my.southeast.edu', 'gray', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 4, 0);
 
 --
 -- Indexes for dumped tables
@@ -441,7 +444,7 @@ ALTER TABLE `employee`
 -- AUTO_INCREMENT for table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `job`
