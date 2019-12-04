@@ -42,5 +42,54 @@ public static function addApplication($appId,$companyId, $studentId,$parentId ){
     
 }
 
+public static function getAppsByCompanyId($id){
+    $db = Database::getDB();
+    
+    $query = 'SELECT * from childcareapp JOIN
+             student ON childcareapp.studentId = student.studentId
+             WHERE childcareapp.companyId = :id
+             AND student.companyId is NULL';
+    
+    
+    $statement = $db->prepare($query);
+    $statement->bindValue(':id', $id);
+    $statement->execute();
+    
+    $rows= $statement->fetchAll();
+    $statement->closeCursor();
+    return $rows;
+}
+
+public static function removeChildSuccess($studentId){
+    $db = Database::getDB();
+    
+    $query= 'DELETE from childcareapp
+              WHERE studentId= :studentId
+              ';
+    
+    $statement = $db->prepare($query);
+    $statement->bindValue(':studentId', $studentId);
+    $statement->execute();
+    $statement->closeCursor();
+    
+}
+
+public static function removeChildDeny($studentId, $companyId){
+    $db = Database::getDB();
+    
+    $query= 'DELETE from childcareapp
+              WHERE studentId= :studentId
+              AND companyId = :companyId';
+    
+    $statement = $db->prepare($query);
+    $statement->bindValue(':studentId', $studentId);
+    $statement->bindValue(':companyId', $companyId);
+    $statement->execute();
+    $statement->closeCursor();
+    
+}
+
+
+
 }
 

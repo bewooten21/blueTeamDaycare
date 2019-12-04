@@ -790,6 +790,7 @@ switch ($action) {
         $jobs = job_db::get_job_by_Companyid($id);
         $employees = employee_db::get_employees_by_companyID($id);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
+        $children= child_db::getChildrenByCompanyId($_SESSION['companyID']);
         
         include('views/companyProfile.php');
         die();
@@ -1130,9 +1131,58 @@ switch ($action) {
         
         
         
-}
+
     
 
 
      
 
+
+
+case 'viewChildApps':
+$message = "";
+$apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
+include('views/childcareApps.php');
+die();
+break;
+
+case 'approveChildApp':
+$id = filter_input(INPUT_POST, 'id');
+$child = child_db::get_child_byId($id);
+$company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+$_SESSION['company'] = $company;
+if ($_SESSION['company']['childrenEnrolled'] < $_SESSION['company']['childCapacity']) {
+child_db::approveChild($id, $_SESSION['company']['companyID']);
+company_db::updateChildCount($_SESSION['company']['companyID']);
+childcareapp_db::removeChildSuccess($id);
+$message = "You have approved: " . $child['stuFName'] . " " . $child['stuLName'];
+} else {
+$message = "No more room for child";
+}
+
+$apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
+include('views/childcareApps.php');
+die();
+break;
+
+case 'denyChildApp':
+$id = filter_input(INPUT_POST, 'id');
+$child = child_db::get_child_byId($id);
+childcareapp_db::removeChildDeny($id, $_SESSION['company']['companyID']);
+$message = "You have denied: " . $child['stuFName'] . " " . $child['stuLName'];
+$apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
+include('views/childcareApps.php');
+die();
+break;
+
+case 'removeChild':
+$studentId = filter_input(INPUT_POST, 'studentId');
+die();
+break;
+}
+
+
+
+
+
+    

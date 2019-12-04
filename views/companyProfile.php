@@ -136,6 +136,36 @@
 <?php endforeach; ?>
             </tbody>
         </table>
+        
+         <h3>Our Students</h3>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Age</th>
+                    
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <?php foreach ($children as $c) : ?>
+                <tbody>
+
+                    <tr>
+                        
+                        <td><?php echo $c['stuFName']. " ". $c['stuLName']; ?></td>
+                        <td> <?php echo $c['age']; ?></td>
+                        <td>
+                            <form action="index.php" method="post">
+                                <input type="hidden" name="action" value="removeChild">
+                                <input type="hidden" name="studentId" value="<?php echo htmlspecialchars($c['studentId']); ?>">
+                                <input type="submit" class="btn btn-default" value="Remove"><br>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
+            </tbody>
+        </table>
         <?php include ('footer.php'); ?>
     </body>
 </html>

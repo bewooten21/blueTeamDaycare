@@ -3,7 +3,8 @@ $cName = filter_input(INPUT_POST, 'cName');
 $empC = filter_input(INPUT_POST, 'empC');
 $cCap = filter_input(INPUT_POST, 'cCap');
 $cEn = filter_input(INPUT_POST, 'cEn');
-$cImage = filter_input(INPUT_POST, 'image');
+
+$extensions = array("jpeg", "jpg", "png", "gif");
 
 $isValid=true;
 
@@ -53,15 +54,56 @@ if($cEn===""){
     $cEError="";
 }
 
-if($cImage===""){
-    $cIError="Required";
+
+if((int)$cEn > (int)$cCap){
+    $cEError="# enrolled must be less than capacity";
     $isValid=false;
+}
+
+if (!empty($_FILES['image']['name'])) {
+    $image = $_FILES['image'];
+    $temp = $_FILES['image']['name'];
+    $temp = explode('.', $temp);
+    $temp = end($temp);
+    $file_ext = strtolower($temp);
+    $file_size = $_FILES['image']['size'];
+    $imageName = $_FILES['image']['name'];
+    $file_tmp = $_FILES['image']['tmp_name'];
+    if ($file_size > 128000000 || $file_size === 0) {
+        $isValid = false;
+        $cIError = 'Image uploaded is too large.';
+    } else if (in_array($file_ext, $extensions) === false) {
+        $isValid = false;
+        $cIError = "Use file extensions : " . join(',', $extensions);
+    } else {
+
+        $cIError = "";
+    }
+} else {
+    $cIError = "";
 }
 
 
 if($isValid===false){
+    
     include('views/editCompany.php');
     exit();
+}else if($isValid===true){
+    if ((empty($_FILES['image']['name']))) {
+        company_db::updateCompany_noImage($cName, $empC, $cCap, $cEn, $_SESSION['company']['companyID']);
+        $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        $_SESSION['company']= $company;
+       header("Location: index.php?action=editCompany");
+    } else if (($_FILES['image']['name'] != "")) {
+        $newName = $_SESSION['company']['companyID'] . '.' . $file_ext;
+        move_uploaded_file($file_tmp, "images/" . $newName);
+        $image = 'images/' . $newName;
+        company_db::updateCompany_withImage($cName, $empC, $cCap, $cEn, $image, $_SESSION['company']['companyID']);
+        
+        $company= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        $_SESSION['company']= $company;
+        header("Location: index.php?action=editCompany");
+    }
 }
 
  

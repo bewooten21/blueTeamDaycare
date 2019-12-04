@@ -218,16 +218,83 @@ class company_db {
     public static function updateRating($id, $rating){
         $db = Database::getDB();
         $query = 'update company set overallRating = :rating where companyID = :id';
-        //try {
+        try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);
             $statement->bindValue(':rating', $rating);
             $statement->execute();
             $statement->closeCursor();
-        //} catch (PDOException $e) {
-         //   $error_message = $e->getMessage();
-         //   include('database_error.php');
-        //}
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            include('database_error.php');
+        }
+    }
+    public static function updateCompany_noImage($cn, $ec, $cc, $ce, $id){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE company
+                  SET companyName = :cn,
+                  employeeCount = :ec,
+                  childCapacity = :cc,
+                  childrenEnrolled = :ce
+                  WHERE companyID = :id
+                  ';
+        
+       
+            $statement = $db->prepare($query);
+            $statement->bindValue(':cn', $cn);
+            $statement->bindValue(':ec', $ec);
+            $statement->bindValue(':cc', $cc);
+            $statement->bindValue(':ce', $ce);
+            $statement->bindValue(':id', $id);
+             $statement->execute();
+            $statement->closeCursor();
+            
+        
+        
+    }
+    
+    public static function updateCompany_withImage($cn, $ec, $cc, $ce, $image, $id){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE company
+                  SET companyName = :cn,
+                  employeeCount = :ec,
+                  childCapacity = :cc,
+                  childrenEnrolled = :ce,
+                  companyImage= :image
+                  WHERE companyID = :id
+                  ';
+        
+       
+            $statement = $db->prepare($query);
+            $statement->bindValue(':cn', $cn);
+            $statement->bindValue(':ec', $ec);
+            $statement->bindValue(':cc', $cc);
+            $statement->bindValue(':ce', $ce);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':image', $image);
+             $statement->execute();
+            $statement->closeCursor();
+        
+    }
+    
+    public static function updateChildCount($companyId){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE company
+                  SET childrenEnrolled = childrenEnrolled +1
+                  WHERE companyID = :companyId
+                  ';
+        
+       
+            $statement = $db->prepare($query);
+            $statement->bindValue(':companyId', $companyId);
+             $statement->execute();
+            $statement->closeCursor();
     }
     
 }

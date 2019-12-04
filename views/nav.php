@@ -55,6 +55,7 @@
             <li><a href="index.php?action=addJob">Add Job</a></li>
             <li><a href="index.php?action=editCompany">Edit Company</a></li>
             <li><a href="index.php?action=ourJobs">Our Jobs</a></li>
+            <li><a href="index.php?action=viewChildApps">Childcare Apps</a></li>
             
           </ul>
         </li>
