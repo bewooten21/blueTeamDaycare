@@ -2,7 +2,7 @@
 require_once("user.php");
 
 class company {
-    private $ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID, $image;
+    private $ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, $ownerID, $image, $ratingsCount;
     function __construct($ID, $companyName, $employeeCount, $childCapacity, $childrenEnrolled, $overallRating, user $ownerID = null, $image) {
         
         $this->ID = $ID;
@@ -13,8 +13,16 @@ class company {
         $this->overallRating = $overallRating;
         $this->ownerID = $ownerID;
         $this->image = $image;
+        $this->ratingsCount;
     }
-    
+    function getRatingsCount() {
+        return $this->ratingsCount;
+    }
+
+    function setRatingsCount($ratingsCount) {
+        $this->ratingsCount = $ratingsCount;
+    }
+
     function getID() {
         return $this->ID;
     }

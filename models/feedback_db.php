@@ -57,36 +57,45 @@ class feedback_db {
     
     public static function getReviewCount($target, $type){
         $db = Database::getDB();
-        $query = 'select count(target) from feedback where target = :target && type = :type';
+        $query = 'select count(target) as count '
+                . 'from feedback '
+                . 'where target = :target AND type = :type';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':target', $target);
             $statement->bindValue(':type', $type);
             $statement->execute();
-            $count = $statement->fetch();
+            $value = $statement->fetch();
+            $count = $value['count'];
             $statement->closeCursor();
+            return $count;
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             display_db_error($error_message);
         }
-        return $count;
     }
     
     public static function getFeedbackByID($target, $type){
         $db = Database::getDB();
-        $query = 'select feedback, rating, ID from feedback where target = :target && type = :type';
+        $query = 'select rating from feedback where target = :target AND type = :type';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':target', $target);
             $statement->bindValue(':type', $type);
             $statement->execute();
-            $feedback = $statement->fetchAll();
+            $rows = $statement->fetchAll();
+            $feedback = [];
+            
+            foreach($rows as $value){
+                array_push($feedback, (float)$value['rating']);
+            }
             $statement->closeCursor();
+            return $feedback;
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             display_db_error($error_message);
         }
-        return $feedback;
+        
     }
     
     public static function removeFeedbackByID($id){

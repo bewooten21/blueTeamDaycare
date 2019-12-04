@@ -769,6 +769,8 @@ switch ($action) {
         $companies = company_db::select_all();
         $companyID = companyApproval_db::getUnapprovedCompanyIDs();
         foreach($companies as $key=>$value){
+            $ratingsCount = feedback_db::getReviewCount($value->getID(), 'company');
+            $value->setRatingsCount($ratingsCount);
             foreach($companyID as $cID){
                 if($cID["companyID"] === $value->getID()){
                     //https://stackoverflow.com/questions/2852344/unset-array-element-inside-a-foreach-loop
@@ -788,15 +790,7 @@ switch ($action) {
         $jobs = job_db::get_job_by_Companyid($id);
         $employees = employee_db::get_employees_by_companyID($id);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
-        $cRating = company_db::getRating($_SESSION['companyID']);
-        $feedback = feedback_db::getFeedbackByID($_SESSION['companyID'], 'company');
-        $count = 1;
-        foreach($feedback as $entry){
-            $cRating[0] = $cRating[0] + $entry;
-            $count++;
-        }
-        $newRating[0] = $cRating[0] / $count;
-        company_db::updateRating($_SESSION['companyID'], $newRating);
+        
         include('views/companyProfile.php');
         die();
         break;
@@ -858,18 +852,39 @@ switch ($action) {
         break;
     
     case 'reviewUser' :
+        $error_message = [];
+        $error_message['rating'] = '';
+        $rating = 0;
+        $ratings_arr = array();
+        for($i=0; $i <= 5; $i+=0.25){
+            array_push($ratings_arr, $i);
+        }
+        
         $_SESSION['targetType'] = 'user';
         include 'views/review.php';
         die();
         break;
     
     case 'reviewCompany' :
+        $error_message = [];
+        $error_message['rating'] = '';
+        $rating = 0;
+        $ratings_arr = array();
+        for($i=0; $i <= 5; $i+=0.25){
+            array_push($ratings_arr, $i);
+        }
         $_SESSION['targetType'] = 'company';
         include 'views/review.php';
         die();
         break;
         
     case 'submitFeedback' :
+        $error_message = [];
+        $error_message['rating'] = '';
+        $ratings_arr = array();
+        for($i=0; $i <= 5; $i+=0.25){
+            array_push($ratings_arr, $i);
+        }
         $sender = $_SESSION['currentUser']->getID();
         $type = $_SESSION['targetType'];
         if($type === 'user'){
@@ -880,21 +895,27 @@ switch ($action) {
             $target = $_SESSION['companyID'];
         }
         $feedback = filter_input(INPUT_POST, 'feedback');
-        $rating = filter_input(INPUT_POST, 'rating');
-        if($type === 'company'){
-            $cRating = company_db::getRating($_SESSION['companyID']);
-            $feedback = feedback_db::getFeedbackByID($_SESSION['companyID'], 'company');
-            $count = 1;
-            foreach($feedback as $entry){
-                $cRating[0] = $cRating[0] + $entry;
-                $count++;
+        $rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_FLOAT);
+          
+        if ($rating !== NULL && $rating !== FALSE && $rating !== '') {
+            feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
+            if ($type === 'company') {
+                $cRating = 0;
+                $count = 0;
+                $db_ratings = feedback_db::getFeedbackByID($_SESSION['companyID'], 'company');
+
+                foreach ($db_ratings as $entry) {
+                    $cRating += $entry;
+                    $count++;
+                }
+                $newRating = $cRating / $count;
+                company_db::updateRating($_SESSION['companyID'], round($newRating,2));
             }
-            $cRating[0] = $cRating[0] + $rating;
-            $newRating = $cRating[0] / $count;
-            company_db::updateRating($_SESSION['companyID'], $newRating);
-        }   
-        feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
-        include('views/confirmFeedback.php');
+            include('views/confirmFeedback.php');
+        }else{
+            $error_message['rating'] = 'Must select a rating!';
+            include('views/review.php');
+        }
         die();
         break;
     

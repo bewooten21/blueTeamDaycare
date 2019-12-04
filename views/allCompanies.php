@@ -48,7 +48,7 @@
                     </div>
                     <div class="col-md-3">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getOverallRating(); ?></h3>
+                        <h3><?php echo $c->getOverallRating(); ?></h3><span> (# of ratings <?php echo $c->getRatingsCount(); ?>)</span>
                         <p>
                         </p>
                     </div>
