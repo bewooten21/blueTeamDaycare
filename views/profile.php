@@ -62,12 +62,14 @@
                     <input type="submit" class="btn btn-default" value="Change Profile"><br>
                 </form>
                         </div>
+                    <?php if($userCompany == false) : ?>
                     <div class="col-sm-2">
                 <form action="index.php" method="post">
                     <input type="hidden" name="action" value="registerBusiness">
                     <input type="submit" class="btn btn-default" value="Register Business"><br>
                 </form>
                     </div>
+                    <?php endif; ?>
                     </div>
                 <?php endif;
                 endif;?>

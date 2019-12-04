@@ -8,6 +8,7 @@
         <?php include ('nav.php'); ?>
         <main>
             <h1>Our Apps</h1>
+            <p class='error'> <?php echo $message; ?> </p>
         <div class="jumbotron" >
             <div class="container"> 
 <table class="table table-dark">

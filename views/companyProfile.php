@@ -55,7 +55,7 @@
                         <p>
                         </p>
                     </div>
-                    <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $owner) : ?>
+                    <?php if (isset($_SESSION['currentUser'])): if ($_SESSION['currentUser']->getID() !== $owner->getID()) : ?>
 
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="reviewCompany">
@@ -69,6 +69,7 @@
             </div>
         </div>
         <?php if (isset($_SESSION['currentUser'])) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
+        <?php if ($_SESSION['currentUser']->getID() == $owner->getID()) : ?>
         <h3>Active Positions At Our Company</h3>
         <table class="table table-dark">
             <thead>
@@ -109,6 +110,7 @@
             </tbody>
         </table>
         <?php endif;
+        endif;
         endif;?>
         
         <h3>Our Employees</h3>
@@ -132,6 +134,36 @@
                         <td><?php echo htmlspecialchars($employee["hireDate"]); ?></td>     
                     </tr>
 <?php endforeach; ?>
+            </tbody>
+        </table>
+        
+         <h3>Our Students</h3>
+        <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Age</th>
+                    
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <?php foreach ($children as $c) : ?>
+                <tbody>
+
+                    <tr>
+                        
+                        <td><?php echo $c['stuFName']. " ". $c['stuLName']; ?></td>
+                        <td> <?php echo $c['age']; ?></td>
+                        <td>
+                            <form action="index.php" method="post">
+                                <input type="hidden" name="action" value="removeChild">
+                                <input type="hidden" name="studentId" value="<?php echo htmlspecialchars($c['studentId']); ?>">
+                                <input type="submit" class="btn btn-default" value="Remove"><br>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+
             </tbody>
         </table>
         <?php include ('footer.php'); ?>
