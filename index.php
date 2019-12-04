@@ -790,6 +790,15 @@ switch ($action) {
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
         $children= child_db::getChildrenByCompanyId($_SESSION['companyID']);
         
+        $cRating = company_db::getRating($_SESSION['companyID']);
+        $feedback = feedback_db::getFeedbackByID($_SESSION['companyID'], 'company');
+        $count = 1;
+        foreach($feedback as $entry){
+            $cRating[0] = $cRating[0] + $entry;
+            $count++;
+        }
+        $newRating[0] = $cRating[0] / $count;
+        company_db::updateRating($_SESSION['companyID'], $newRating);
         include('views/companyProfile.php');
         die();
         break;
