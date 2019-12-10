@@ -2,14 +2,14 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Blue&apos;s Daycare</title>
+        <title>Users</title>
         <?php include ('css/css.php'); ?>   
     </head>
     <body>
         <?php include ('nav.php'); ?>
             <div id="formWrap">
                 <h1>Blue&apos;s Daycare Users</h1>
-                <table class="table table-dark">
+                <table class="table table-striped">
                     <tr>
                         <th>User Name</th>
                         <th>First Name</th>

@@ -455,7 +455,7 @@ switch ($action) {
                 $role = $_SESSION['currentUser']->getRole();
                 $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if($role->getID() != 4 ){
-                    $reviewCount = feedback_db::getReviewCount($theUser->getID(), 'user');
+                    $reviewCount = feedback_db::getUserReviewCount($theUser->getID());
                     if($reviewCount[0] >= 5){
                         user_db::restrictUser($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(1);
@@ -470,7 +470,7 @@ switch ($action) {
                     $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
                      include('views/adminProfile.php');
                 }
-            } else {$userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+            } else {
                 $error_message['uName'] = '';
                 $error_message['pWord'] = 'Incorrect Password';
                 include 'views/login.php';
@@ -490,7 +490,7 @@ switch ($action) {
         if (isset($_SESSION['currentUser'])) {
             $role = $_SESSION['currentUser']->getRole();
             if($role->getID() != 4 ){
-                $reviewCount = feedback_db::getReviewCount($_SESSION['currentUser']->getID(), 'user');
+                $reviewCount = feedback_db::getUserReviewCount($_SESSION['currentUser']->getID());
                     if($reviewCount[0] >= 5){
                         user_db::restrictUser($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(1);
@@ -769,7 +769,7 @@ switch ($action) {
         $companies = company_db::select_all();
         $companyID = companyApproval_db::getUnapprovedCompanyIDs();
         foreach($companies as $key=>$value){
-            $ratingsCount = feedback_db::getReviewCount($value->getID(), 'company');
+            $ratingsCount = feedback_db::getCompanyReviewCount($value->getID());
             $value->setRatingsCount($ratingsCount);
             foreach($companyID as $cID){
                 if($cID["companyID"] === $value->getID()){
@@ -880,30 +880,29 @@ switch ($action) {
         break;
         
     case 'submitFeedback' :
+        //Set all variables for manipulating feedback
+        $feedback = filter_input(INPUT_POST, 'feedback');
+        $rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_FLOAT);
+        $raterID = $_SESSION['currentUser']->getID();
+        $type = $_SESSION['targetType'];
+        // Prep errors
         $error_message = [];
         $error_message['rating'] = '';
         $ratings_arr = array();
         for($i=0; $i <= 5; $i+=0.25){
             array_push($ratings_arr, $i);
-        }
-        $sender = $_SESSION['currentUser']->getID();
-        $type = $_SESSION['targetType'];
-        if($type === 'user'){
-            $target = $_SESSION['profileID'];
-        }
-        else if($type === 'company'){
-            
-            $target = $_SESSION['companyID'];
-        }
-        $feedback = filter_input(INPUT_POST, 'feedback');
-        $rating = filter_input(INPUT_POST, 'rating', FILTER_VALIDATE_FLOAT);
+        }      
           
         if ($rating !== NULL && $rating !== FALSE && $rating !== '') {
-            feedback_db::submitFeedback($sender, $target, $feedback, $rating, $type);
-            if ($type === 'company') {
+            if ($type === 'user') {
+                $target = $_SESSION['profileID'];
+                feedback_db::submitUserFeedback($raterID, $target, $feedback, $rating);
+            } else if ($type === 'company') {
+                $target = $_SESSION['companyID'];
+                feedback_db::submitCompanyFeedback($raterID, $target, $feedback, $rating);
                 $cRating = 0;
                 $count = 0;
-                $db_ratings = feedback_db::getFeedbackByID($_SESSION['companyID'], 'company');
+                $db_ratings = feedback_db::getCompanyFeedbackByID($_SESSION['companyID']);
 
                 foreach ($db_ratings as $entry) {
                     $cRating += $entry;
@@ -912,6 +911,7 @@ switch ($action) {
                 $newRating = $cRating / $count;
                 company_db::updateRating($_SESSION['companyID'], round($newRating,2));
             }
+            
             include('views/confirmFeedback.php');
         }else{
             $error_message['rating'] = 'Must select a rating!';
@@ -1101,6 +1101,15 @@ switch ($action) {
     case'feedbackEntries':
         $users = feedback_db::getNegativeUsers();
         $companies = feedback_db::getNegativeCompanies();
+        $userReviews = [];
+        foreach($users as $user){
+            $userReviews[$user[0]] = feedback_db::getUserReviewCount($user[0]);
+        }
+        $companyReviews = [];
+        foreach($companies as $company){
+            $companyReviews[$company[0]] = feedback_db::getCompanyReviewCount($company[0]);
+        }
+        
         include('views/viewFeedbackEntries.php');
         die();
         break;
@@ -1108,77 +1117,75 @@ switch ($action) {
     case 'processFeedback':
         $_SESSION['targetType'] = filter_input(INPUT_POST, 'type');
         $_SESSION['targetID'] = filter_input(INPUT_POST, 'id');
+        $feedback = [];
         if($_SESSION['targetType'] === 'user'){
             $_SESSION['currentTarget'] = user_db::get_user_by_id($_SESSION['targetID']);
+            $feedback = feedback_db::getUserFeedbackByID($_SESSION['targetID']);
         }
         else if($_SESSION['targetType'] === 'company'){
             $_SESSION['currentTarget'] = company_db::get_company_by_id($_SESSION['targetID']);
+            $feedback = feedback_db::getCompanyFeedbackByID($_SESSION['targetID']);
         }
-        $feedback = feedback_db::getFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        
         include('views/processFeedback.php');
         die();
         break;
         
     case'removeFeedback':
         $id = filter_input(INPUT_POST, 'id');
-        feedback_db::removeFeedbackByID($id);
-        $feedback = feedback_db::getFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        $feedback = [];
+        if($_SESSION['targetType'] === 'user'){
+            feedback_db::removeUserFeedbackByID($id);
+            $feedback = feedback_db::getUserFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        } else if($_SESSION['targetType'] === 'company'){
+            feedback_db::removeCompanyFeedbackByID($id);
+            $feedback = feedback_db::getCompanyFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
+        }
+        
         include('views/processFeedback.php');
         die();
         break;
-        
-        
-        
-        
-        
 
-    
+    case 'viewChildApps':
+        $message = "";
+        $apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
+        include('views/childcareApps.php');
+        die();
+        break;
 
+    case 'approveChildApp':
+        $id = filter_input(INPUT_POST, 'id');
+        $child = child_db::get_child_byId($id);
+        $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        $_SESSION['company'] = $company;
+        if ($_SESSION['company']['childrenEnrolled'] < $_SESSION['company']['childCapacity']) {
+            child_db::approveChild($id, $_SESSION['company']['companyID']);
+            company_db::updateChildCount($_SESSION['company']['companyID']);
+            childcareapp_db::removeChildSuccess($id);
+            $message = "You have approved: " . $child['stuFName'] . " " . $child['stuLName'];
+        } else {
+            $message = "No more room for child";
+        }
 
-     
+        $apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
+        include('views/childcareApps.php');
+        die();
+        break;
 
+    case 'denyChildApp':
+        $id = filter_input(INPUT_POST, 'id');
+        $child = child_db::get_child_byId($id);
+        childcareapp_db::removeChildDeny($id, $_SESSION['company']['companyID']);
+        $message = "You have denied: " . $child['stuFName'] . " " . $child['stuLName'];
+        $apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
+        include('views/childcareApps.php');
+        die();
+        break;
 
-
-case 'viewChildApps':
-$message = "";
-$apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
-include('views/childcareApps.php');
-die();
-break;
-
-case 'approveChildApp':
-$id = filter_input(INPUT_POST, 'id');
-$child = child_db::get_child_byId($id);
-$company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-$_SESSION['company'] = $company;
-if ($_SESSION['company']['childrenEnrolled'] < $_SESSION['company']['childCapacity']) {
-child_db::approveChild($id, $_SESSION['company']['companyID']);
-company_db::updateChildCount($_SESSION['company']['companyID']);
-childcareapp_db::removeChildSuccess($id);
-$message = "You have approved: " . $child['stuFName'] . " " . $child['stuLName'];
-} else {
-$message = "No more room for child";
-}
-
-$apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
-include('views/childcareApps.php');
-die();
-break;
-
-case 'denyChildApp':
-$id = filter_input(INPUT_POST, 'id');
-$child = child_db::get_child_byId($id);
-childcareapp_db::removeChildDeny($id, $_SESSION['company']['companyID']);
-$message = "You have denied: " . $child['stuFName'] . " " . $child['stuLName'];
-$apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
-include('views/childcareApps.php');
-die();
-break;
-
-case 'removeChild':
-$studentId = filter_input(INPUT_POST, 'studentId');
-die();
-break;
+    case 'removeChild':
+        $studentId = filter_input(INPUT_POST, 'studentId');
+        die();
+        break;
 }
 
 

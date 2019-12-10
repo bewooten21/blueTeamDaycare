@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 02, 2019 at 06:36 AM
+-- Generation Time: Dec 10, 2019 at 05:02 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -120,7 +120,7 @@ CREATE TABLE `company` (
 
 INSERT INTO `company` (`companyID`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
 (1, 'Tots R Us', 4, 15, 2, 3.42, 3, 'images/default-company.jpg'),
-(2, 'Tinder Tots', 10, 35, 12, 4.2, 1, 'images/default-company.jpg'),
+(2, 'Tinder Tots', 10, 35, 12, 2.67, 1, 'images/default-company.jpg'),
 (3, 'Sprouts', 1, 0, 0, 0, 1, 'images/default-company.jpg'),
 (4, 'Daycare Care', 15, 27, 24, 3, 2, 'images/default-company.jpg');
 
@@ -149,26 +149,26 @@ INSERT INTO `companyapproval` (`compApprovalID`, `companyID`, `isApproved`, `isP
 -- --------------------------------------------------------
 
 --
--- Table structure for table `daycareopening`
+-- Table structure for table `companyfeedback`
 --
 
-CREATE TABLE `daycareopening` (
-  `daycareOpeningId` int(11) NOT NULL,
+CREATE TABLE `companyfeedback` (
+  `cFeedbackID` int(11) NOT NULL,
+  `raterID` int(11) NOT NULL,
   `companyID` int(11) NOT NULL,
-  `instanceOfTypeID` int(11) NOT NULL,
-  `type` varchar(50) NOT NULL,
-  `openingName` varchar(100) NOT NULL,
-  `description` varchar(10000) NOT NULL,
-  `availableCount` int(11) NOT NULL
+  `feedback` varchar(255) NOT NULL,
+  `rating` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `daycareopening`
+-- Dumping data for table `companyfeedback`
 --
 
-INSERT INTO `daycareopening` (`daycareOpeningId`, `companyID`, `instanceOfTypeID`, `type`, `openingName`, `description`, `availableCount`) VALUES
-(1, 1, 0, 'Employee', 'Daycare Worker', 'Come work for us at Tots R US! ', 1),
-(2, 1, 0, 'Student', 'Tots Tot', 'Our staff build strong connections with our tots, leading them in creative activities and even teaching them the basics of coding!', 13);
+INSERT INTO `companyfeedback` (`cFeedbackID`, `raterID`, `companyID`, `feedback`, `rating`) VALUES
+(1, 3, 1, 'test', 1),
+(2, 2, 3, 'Test', 3.2),
+(3, 3, 2, 'Test of the feedback system', 3.25),
+(4, 3, 2, 'test 2', 1.5);
 
 -- --------------------------------------------------------
 
@@ -188,34 +188,6 @@ CREATE TABLE `employee` (
 
 INSERT INTO `employee` (`empID`, `applicationID`, `hireDate`) VALUES
 (10000, 2, '2019-11-20 21:43:05');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `feedback`
---
-
-CREATE TABLE `feedback` (
-  `ID` int(11) NOT NULL,
-  `sender` int(11) NOT NULL,
-  `target` int(11) NOT NULL,
-  `feedback` varchar(255) NOT NULL,
-  `rating` float NOT NULL,
-  `type` varchar(10) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `feedback`
---
-
-INSERT INTO `feedback` (`ID`, `sender`, `target`, `feedback`, `rating`, `type`) VALUES
-(3, 2, 3, 'Test', 3.2, 'company'),
-(16, 3, 1, 'test', 1, 'company'),
-(17, 1, 2, 'test', 2.5, 'user'),
-(18, 1, 2, 'test', 2.5, 'user'),
-(19, 1, 2, 'test', 2.5, 'user'),
-(20, 1, 2, 'test1234567899876543210', 2.5, 'user'),
-(21, 1, 2, 'test', 2.5, 'user');
 
 -- --------------------------------------------------------
 
@@ -313,6 +285,31 @@ INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `uName`, `pWord`, `image`, 
 (3, 'Cody', 'Sterup', 'csterup@hotmail.net', 'csterup', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3, 0),
 (4, 'Glenn', 'Ray', 'gray@my.southeast.edu', 'gray', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 4, 0);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `userfeedback`
+--
+
+CREATE TABLE `userfeedback` (
+  `uFeedbackID` int(11) NOT NULL,
+  `raterID` int(11) NOT NULL,
+  `userID` int(11) NOT NULL,
+  `feedback` varchar(255) NOT NULL,
+  `rating` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `userfeedback`
+--
+
+INSERT INTO `userfeedback` (`uFeedbackID`, `raterID`, `userID`, `feedback`, `rating`) VALUES
+(1, 1, 2, 'test', 2.5),
+(2, 1, 2, 'test', 2.5),
+(3, 1, 2, 'test 3', 2.5),
+(4, 1, 2, 'test 4', 2.5),
+(5, 1, 2, 'test 5 (for denial of access)', 2.5);
+
 --
 -- Indexes for dumped tables
 --
@@ -338,37 +335,38 @@ ALTER TABLE `childcareapp`
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
-  ADD PRIMARY KEY (`commentID`);
+  ADD PRIMARY KEY (`commentID`),
+  ADD KEY `commentsProfile_user_fk` (`profileID`),
+  ADD KEY `commentsCommenter_user_fk` (`commenterID`);
 
 --
 -- Indexes for table `company`
 --
 ALTER TABLE `company`
-  ADD PRIMARY KEY (`companyID`);
+  ADD PRIMARY KEY (`companyID`),
+  ADD KEY `company_user_fk` (`ownerID`);
 
 --
 -- Indexes for table `companyapproval`
 --
 ALTER TABLE `companyapproval`
-  ADD PRIMARY KEY (`compApprovalID`);
+  ADD PRIMARY KEY (`compApprovalID`),
+  ADD KEY `companyapproval_company_fk` (`companyID`);
 
 --
--- Indexes for table `daycareopening`
+-- Indexes for table `companyfeedback`
 --
-ALTER TABLE `daycareopening`
-  ADD PRIMARY KEY (`daycareOpeningId`);
+ALTER TABLE `companyfeedback`
+  ADD PRIMARY KEY (`cFeedbackID`),
+  ADD KEY `cfeedback_user_fk` (`raterID`),
+  ADD KEY `cfeedback_company_fk` (`companyID`);
 
 --
 -- Indexes for table `employee`
 --
 ALTER TABLE `employee`
-  ADD UNIQUE KEY `empId` (`empID`);
-
---
--- Indexes for table `feedback`
---
-ALTER TABLE `feedback`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`empID`),
+  ADD KEY `employee_app_fk` (`applicationID`);
 
 --
 -- Indexes for table `job`
@@ -386,7 +384,9 @@ ALTER TABLE `role`
 -- Indexes for table `student`
 --
 ALTER TABLE `student`
-  ADD PRIMARY KEY (`studentId`);
+  ADD PRIMARY KEY (`studentId`),
+  ADD KEY `student_user_fk` (`parentId`),
+  ADD KEY `student_company_fk` (`companyId`);
 
 --
 -- Indexes for table `user`
@@ -394,7 +394,16 @@ ALTER TABLE `student`
 ALTER TABLE `user`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`),
-  ADD UNIQUE KEY `uName` (`uName`);
+  ADD UNIQUE KEY `uName` (`uName`),
+  ADD KEY `user_role_fk` (`roleID`);
+
+--
+-- Indexes for table `userfeedback`
+--
+ALTER TABLE `userfeedback`
+  ADD PRIMARY KEY (`uFeedbackID`),
+  ADD KEY `ufeedback_rater_fk` (`raterID`),
+  ADD KEY `ufeedback_user_fk` (`userID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -431,22 +440,16 @@ ALTER TABLE `companyapproval`
   MODIFY `compApprovalID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `daycareopening`
+-- AUTO_INCREMENT for table `companyfeedback`
 --
-ALTER TABLE `daycareopening`
-  MODIFY `daycareOpeningId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+ALTER TABLE `companyfeedback`
+  MODIFY `cFeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
   MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10001;
-
---
--- AUTO_INCREMENT for table `feedback`
---
-ALTER TABLE `feedback`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `job`
@@ -473,6 +476,12 @@ ALTER TABLE `user`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `userfeedback`
+--
+ALTER TABLE `userfeedback`
+  MODIFY `uFeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- Constraints for dumped tables
 --
 
@@ -490,6 +499,58 @@ ALTER TABLE `childcareapp`
   ADD CONSTRAINT `companyIdfk` FOREIGN KEY (`companyId`) REFERENCES `company` (`companyID`),
   ADD CONSTRAINT `parentIdfk` FOREIGN KEY (`parentId`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `studentIdfk` FOREIGN KEY (`studentId`) REFERENCES `student` (`studentId`);
+
+--
+-- Constraints for table `comments`
+--
+ALTER TABLE `comments`
+  ADD CONSTRAINT `commentsCommenter_user_fk` FOREIGN KEY (`commenterID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `commentsProfile_user_fk` FOREIGN KEY (`profileID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `company`
+--
+ALTER TABLE `company`
+  ADD CONSTRAINT `company_user_fk` FOREIGN KEY (`ownerID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `companyapproval`
+--
+ALTER TABLE `companyapproval`
+  ADD CONSTRAINT `companyapproval_company_fk` FOREIGN KEY (`companyID`) REFERENCES `company` (`companyID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `companyfeedback`
+--
+ALTER TABLE `companyfeedback`
+  ADD CONSTRAINT `cfeedback_company_fk` FOREIGN KEY (`companyID`) REFERENCES `company` (`companyID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cfeedback_user_fk` FOREIGN KEY (`raterID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `employee`
+--
+ALTER TABLE `employee`
+  ADD CONSTRAINT `employee_app_fk` FOREIGN KEY (`applicationID`) REFERENCES `application` (`applicationID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `student`
+--
+ALTER TABLE `student`
+  ADD CONSTRAINT `student_company_fk` FOREIGN KEY (`companyId`) REFERENCES `company` (`companyID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `student_user_fk` FOREIGN KEY (`parentId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `user`
+--
+ALTER TABLE `user`
+  ADD CONSTRAINT `user_role_fk` FOREIGN KEY (`roleID`) REFERENCES `role` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `userfeedback`
+--
+ALTER TABLE `userfeedback`
+  ADD CONSTRAINT `ufeedback_rater_fk` FOREIGN KEY (`raterID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ufeedback_user_fk` FOREIGN KEY (`userID`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
