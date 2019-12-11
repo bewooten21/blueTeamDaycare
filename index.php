@@ -1067,7 +1067,7 @@ switch ($action) {
             header("Location: index.php?action=viewLogin");
         }else if(isset($_SESSION['currentUser'])){
         $companyName=filter_input(INPUT_POST, 'companyName');
-        $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
+        $children= child_db::get_children_byParentIdNotNull($_SESSION['currentUser']->getID());
         
         $companyId=filter_input(INPUT_POST, 'companyId');
         include('views/applyToChildcare.php');
