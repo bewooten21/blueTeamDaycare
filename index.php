@@ -1185,6 +1185,8 @@ switch ($action) {
 
     case 'removeChild':
         $studentId = filter_input(INPUT_POST, 'studentId');
+        child_db::setCompanyIdToNull($studentId);
+        company_db::updateChildCountRemove($_SESSION['company']['companyID']);
         die();
         break;
 }

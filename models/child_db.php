@@ -140,4 +140,19 @@ class child_db {
         return $rows;
         
     }
+    
+    public static function setCompanyIdToNull($studentId){
+        $db = Database::getDB();
+        
+        $query = 'UPDATE  student 
+                  SET companyId= null
+                  WHERE studentId = :studentId';
+        
+        $statement = $db->prepare($query);
+            $statement->bindValue(':studentId', $studentId);
+            $statement->execute();
+            $statement->closeCursor();
+        
+        
+    }
 }

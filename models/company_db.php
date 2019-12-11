@@ -297,4 +297,20 @@ class company_db {
             $statement->closeCursor();
     }
     
+    public static function updateChildCountRemove($companyId){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE company
+                  SET childrenEnrolled = childrenEnrolled -1
+                  WHERE companyID = :companyId
+                  ';
+        
+       
+            $statement = $db->prepare($query);
+            $statement->bindValue(':companyId', $companyId);
+             $statement->execute();
+            $statement->closeCursor();
+    }
+    
 }
