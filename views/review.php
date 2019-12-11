@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>DeDiSystems</title>
+  <title>Submit Feedback</title>
   <?php include ('css/css.php'); ?> 
 </head>
 <body>

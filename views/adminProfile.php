@@ -6,7 +6,9 @@
 </head>
 <body>
 <?php include('nav.php'); ?>
+    <div class='container'>
     <?php if($pendingCompanies !== null && !empty($pendingCompanies) ) : ?>
+    <h2>Companies Pending Approval</h2>
 <table class="table table-dark">
   <thead>
     <tr>
@@ -70,6 +72,7 @@
         </form>
         </div>
     </div>
+        </div>
     <?php include ('footer.php'); ?>
 </body>
 </html>
