@@ -1142,6 +1142,7 @@ switch ($action) {
             $feedback = feedback_db::getCompanyFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
         }
         
+
         include('views/processFeedback.php');
         die();
         break;
