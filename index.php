@@ -1187,7 +1187,10 @@ switch ($action) {
         $studentId = filter_input(INPUT_POST, 'studentId');
         child_db::setCompanyIdToNull($studentId);
         company_db::updateChildCountRemove($_SESSION['company']['companyID']);
-        die();
+       $child= child_db::get_child_byId($studentId);
+       $message="You have removed " .$child['stuFName']. " ".$child['stuLName']. " from your child roster.";
+       include('views/removeChildSuccess.php');
+       die();
         break;
 }
 

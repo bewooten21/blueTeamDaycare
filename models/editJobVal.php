@@ -29,10 +29,7 @@ if($jobR===""){
     $isValid=false;
 }
 
-if($appSlot === null || $appSlot === "") {
-    $aError="Enter a valid number of applications you would like to recieve";
-    $isValid=false;
-}
+
 
 if($isValid===false){
     include('views/editJob.php');
