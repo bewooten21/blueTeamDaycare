@@ -110,6 +110,44 @@ class feedback_db {
         }
     }
     
+    public static function getUserNegativeReviewCount($userID){
+        $db = Database::getDB();
+        $query = 'select count(userID) as count '
+                . 'from userfeedback '
+                . 'where userID = :userID && rating < 3';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':userID', $userID);
+            $statement->execute();
+            $value = $statement->fetch();
+            $count = $value['count'];
+            $statement->closeCursor();
+            return $count;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+    
+    public static function getCompanyNegativeReviewCount($companyID){
+        $db = Database::getDB();
+        $query = 'select count(companyID) as count '
+                . 'from companyfeedback '
+                . 'where companyID = :companyID && rating < 3';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':companyID', $companyID);
+            $statement->execute();
+            $value = $statement->fetch();
+            $count = $value['count'];
+            $statement->closeCursor();
+            return $count;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+    }
+    
     public static function getUserFeedbackByID($userID){
         $db = Database::getDB();
         $query = 'select * from userfeedback where userID = :userID';
@@ -129,6 +167,39 @@ class feedback_db {
     public static function getCompanyFeedbackByID($companyID){
         $db = Database::getDB();
         $query = 'select * from companyfeedback where companyID = :companyID';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':companyID', $companyID);
+            $statement->execute();
+            $rows = $statement->fetchAll();
+
+            $statement->closeCursor();
+            return $rows;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        } 
+    }
+    
+     public static function getUserNegativeFeedbackByID($userID){
+        $db = Database::getDB();
+        $query = 'select * from userfeedback where userID = :userID && rating < 3';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':userID', $userID);
+            $statement->execute();
+            $rows = $statement->fetchAll();
+            
+            $statement->closeCursor();
+            return $rows;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        } 
+    }
+    public static function getCompanyNegativeFeedbackByID($companyID){
+        $db = Database::getDB();
+        $query = 'select * from companyfeedback where companyID = :companyID && rating < 3';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':companyID', $companyID);

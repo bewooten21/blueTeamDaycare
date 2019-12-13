@@ -905,7 +905,7 @@ switch ($action) {
                 $db_ratings = feedback_db::getCompanyFeedbackByID($_SESSION['companyID']);
 
                 foreach ($db_ratings as $entry) {
-                    $cRating += $entry;
+                    $cRating += $entry['rating'];
                     $count++;
                 }
                 $newRating = $cRating / $count;
@@ -1103,11 +1103,11 @@ switch ($action) {
         $companies = feedback_db::getNegativeCompanies();
         $userReviews = [];
         foreach($users as $user){
-            $userReviews[$user[0]] = feedback_db::getUserReviewCount($user[0]);
+            $userReviews[$user[0]] = feedback_db::getUserNegativeReviewCount($user[0]);
         }
         $companyReviews = [];
         foreach($companies as $company){
-            $companyReviews[$company[0]] = feedback_db::getCompanyReviewCount($company[0]);
+            $companyReviews[$company[0]] = feedback_db::getCompanyNegativeReviewCount($company[0]);
         }
         
         include('views/viewFeedbackEntries.php');
@@ -1120,11 +1120,11 @@ switch ($action) {
         $feedback = [];
         if($_SESSION['targetType'] === 'user'){
             $_SESSION['currentTarget'] = user_db::get_user_by_id($_SESSION['targetID']);
-            $feedback = feedback_db::getUserFeedbackByID($_SESSION['targetID']);
+            $feedback = feedback_db::getUserNegativeFeedbackByID($_SESSION['targetID']);
         }
         else if($_SESSION['targetType'] === 'company'){
             $_SESSION['currentTarget'] = company_db::get_company_by_id($_SESSION['targetID']);
-            $feedback = feedback_db::getCompanyFeedbackByID($_SESSION['targetID']);
+            $feedback = feedback_db::getCompanyNegativeFeedbackByID($_SESSION['targetID']);
         }
         
         include('views/processFeedback.php');
