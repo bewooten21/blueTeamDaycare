@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>About the Blue Team</title>
+        <title>Childcare Openings</title>
         <?php include ('css/css.php'); ?>   
     </head>
     <body>
         <?php include ('nav.php'); ?>
         <main>
+            
+        <div class="container" >
             <h1>Childcare Openings</h1>
-        <div class="jumbotron" >
-            <div class="container"> 
+            <div class="jumbotron"> 
 <table class="table table-dark">
   <thead>
     <tr>

@@ -8,7 +8,8 @@
     <body>
         <?php include('nav.php'); ?> 
         <div class="container">
-  <h2>Login</h2>
+  <h2>Edit Job</h2>
+  <div class="jumbotron">
 <form class="form-horizontal" method="post">
     <input type="hidden" name="action" value="editJobVal">
     <input type="hidden" name="jobId" value="<?php echo $id; ?>">
@@ -55,7 +56,8 @@
     </div>
   </div>
 </form>
-      
+        </div>
+    </div>
         <?php include ('footer.php'); ?>
     </body>
 </html>

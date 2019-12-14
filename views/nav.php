@@ -34,10 +34,11 @@
             <li><a href="index.php?action=viewJobs">View Jobs</a></li>
             
             
+            
           </ul>
         </li>
         <li><a href='index.php?action=viewChildcareOpenings'>Childcare Openings</a></li>
-        <li><a href='index.php?action=viewCompanies'>All Companies</a></li>
+        <li><a href='index.php?action=viewCompanies'>Companies</a></li>
         <?php if(isset($_SESSION['company'])) { ?>
         <li class="dropdown">
           <a
@@ -52,9 +53,10 @@
           <ul class="dropdown-menu">
               <li><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo $_SESSION['company']['companyID']; ?>">Company Profile</a></li>
             <li><a href="index.php?action=addJob">Add Job</a></li>
-            <li><a href="index.php?action=editCompany">Edit Company</a></li>
+            
             <li><a href="index.php?action=ourJobs">Our Jobs</a></li>
             <li><a href="index.php?action=viewChildApps">Childcare Apps</a></li>
+            <li><a href="index.php?action=editCompany">Edit Company</a></li>
             
           </ul>
         </li>

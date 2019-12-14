@@ -7,13 +7,14 @@ and open the template in the editor.
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Edit Job</title>
+        <title>Edit Company</title>
         <?php include ('css/css.php');  ?> 
     </head>
     <body>
         <?php include('nav.php'); ?> 
         <div class="container">
-  <h2>Login</h2>
+  <h2>Edit Company</h2>
+  <div class="jumbotron">
   <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
     <input type="hidden" name="action" value="editCompanyVal">
     <input type="hidden" name="companyId" value="<?php echo $_SESSION['company']['companyID'] ?>">
@@ -80,7 +81,8 @@ and open the template in the editor.
     </div>
   </div>
 </form>
-      
+        </div>
+    </div>
         <?php include ('footer.php'); ?>
     </body>
 </html>

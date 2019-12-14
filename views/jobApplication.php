@@ -9,6 +9,7 @@
         <?php include ('nav.php'); ?>
         <div class="container">
             <h2>You are applying for <?php echo htmlspecialchars($job->getJobName());?></h2>
+            <div class="jumbotron">
             <p><?php echo htmlspecialchars($job->getJobDescription());?></p>
             <div><?php echo $error_message['previousApplication'] !== '' ? $error_message['previousApplication'] : '' ?></div>
             <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
@@ -58,6 +59,7 @@
                     </div>
                 </div>
             </form>
+        </div>
         </div>
         <?php include ('footer.php'); ?>
     </body>

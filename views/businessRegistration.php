@@ -7,6 +7,8 @@
     <body>
         <?php include ('nav.php'); ?>
         <div class="container">
+            <br>
+            <div class="jumbotron">
             <h2>Register Business</h2>
             <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="validateBusiness">
@@ -81,6 +83,7 @@
 
             </form>
 
+        </div>
         </div>
         
         <?php include ('footer.php'); ?>

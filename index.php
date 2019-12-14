@@ -497,9 +497,9 @@ switch ($action) {
                 if ($reviewCount[0] >= 5) {
                     user_db::restrictUser($_SESSION['currentUser']->getID());
                     $_SESSION['currentUser']->setRestricted(1);
-                } else if ((int) $_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5) {
+                } else if ((int) $_SESSION['currentUser']->getRestricted() === 1) {
                     user_db::removeRestriction($_SESSION['currentUser']->getID());
-                    $_SESSION['currentUser']->setRestricted(0);
+                    $_SESSION['currentUser']->setRestricted(1);
                 }
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
@@ -1225,6 +1225,30 @@ switch ($action) {
         include('models/adminEditUserVal.php');
         die();
         break;
+    
+    case 'viewCompanyProfileUser':
+        $id = filter_input(INPUT_GET, 'id');
+        $_SESSION['companyID'] = $id;
+        $c = company_db::get_company_by_id($id);
+        $jobs = job_db::get_job_by_Companyid($id);
+        $employees = employee_db::get_employees_by_companyID($id);
+        $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
+        $children = child_db::getChildrenByCompanyId($_SESSION['companyID']);
+
+        
+        include('views/viewCompanyProfileUser.php');
+         die();
+        break;
+    
+    case'viewUserProfile':
+        $id = filter_input(INPUT_GET, 'id');
+        $user= user_db::get_user_by_id($id);
+        $comments = user_db::get_user_comments($user->getID());
+        $comment="";
+        include('views/viewUserProfile.php');
+        die();
+        break;
+        
         
 }
 

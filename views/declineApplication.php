@@ -7,9 +7,10 @@
     <body>
         <?php include ('nav.php'); ?>
 
-        <h1>Decline <?php echo htmlspecialchars($applicant->getFName() . ' ' . $applicant->getLName()); ?>&apos;s Application</h1>
-        <div class="jumbotron" >
-            <div class="container"> 
+        
+        <div class="container" >
+            <h1>Decline <?php echo htmlspecialchars($applicant->getFName() . ' ' . $applicant->getLName()); ?>&apos;s Application</h1>
+            <div class="jumbotron"> 
 <table class="table table-dark">
   <thead>
     <tr>
@@ -34,7 +35,7 @@
   </tbody>
 </table>
         <form action="index.php" method="post">
-            <input type="checkbox" name="openSlot" value="isChecked" /> Would you like to reopen this application slot?
+            
             <br>
             <input type="hidden" name="applicationID"  value="<?php echo htmlspecialchars($application->getApplicationId()); ?>">
             <input type="hidden" name="companyID"  value="<?php echo htmlspecialchars($job->getCompanyID()); ?>">
@@ -42,7 +43,9 @@
             <input type="hidden" name="action" value="finishAppDecline">
             
             <input type="submit" class="btn btn-default" value="Confirm">
+            
         </form> 
+                <br>
             <form action="index.php" method="post">
                 <input type="hidden" name="action" value="processApplications">
                 <input type="hidden" name="companyID" value="<?php echo htmlspecialchars($job->getCompanyId()); ?>">

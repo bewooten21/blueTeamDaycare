@@ -7,8 +7,8 @@
     <body>
         <?php include ('nav.php'); ?>
 
-        <div class="jumbotron" >
-            <div class="container"> 
+        <div class="container" ><br>
+            <div class="jumbotron"> 
                 <h2>Applications for <?php echo htmlspecialchars($job->getJobName()); ?> position</h2>
                 <p><?php echo $message; ?></p>
                 <?php if($appInfo_arr !== null && !empty($appInfo_arr) ) : ?>

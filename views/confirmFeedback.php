@@ -7,7 +7,12 @@
     </head>
     <body>
         <?php include ('nav.php'); ?>
-        <h1>Your Feedback has been submitted, Thank You!</h1>
+        <div class="container">
+        <br>
+            <div class="jumbotron">
+        <h3>Your Feedback has been submitted, Thank You!</h3>
+            </div>
+        </div>
         <?php include ('footer.php'); ?>
     </body>
 </html>

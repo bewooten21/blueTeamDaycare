@@ -8,6 +8,8 @@
     <body>
         <?php include ('nav.php'); ?>
         <div class="container">
+            <br>
+            <div class="jumbotron">
             <h2>Change Profile</h2>
             <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="commitChange">
@@ -93,6 +95,7 @@
 
             </form>
 
+        </div>
         </div>
         <?php include ('footer.php'); ?>
     </body>

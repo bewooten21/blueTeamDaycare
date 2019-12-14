@@ -7,6 +7,8 @@
     <body>
         <?php include('nav.php') ?>
         <div class="container">
+            <br>
+            <div class="jumbotron">
             <h2><?php echo htmlspecialchars($type); ?></h2>
             <br>
             <div style="text-align:center">
@@ -20,6 +22,7 @@
                   <input type="hidden" name="jobID"  value="<?php echo htmlspecialchars($jobID); ?>">
                   <input type="submit" class="btn btn-default" value="Back to Approval">
               </form>
+        </div>
         </div>
         <?php include ('footer.php'); ?>
     </body>

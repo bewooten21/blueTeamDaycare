@@ -9,6 +9,8 @@
         <?php include ('nav.php'); ?>
         <div class="container">
             <h2>Register</h2>
+            <div class="jumbotron">
+            
             <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="register">
                 <div class="form-group <?php echo $error_message['fName'] !== '' ? 'has-error' : '';  ?>">
@@ -104,6 +106,7 @@
 
             </form>
 
+        </div>
         </div>
         <?php include ('footer.php'); ?>
     </body>

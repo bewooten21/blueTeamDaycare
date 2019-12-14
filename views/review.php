@@ -7,7 +7,9 @@
 <body>
 <?php include('nav.php') ?>
     <div class="container">
+        
         <h2>Rate <?php echo $_SESSION['targetType'] ?></h2>
+        <div class="jumbotron">
     <form class="form-horizontal" action="index.php" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="feedback" class="control-label col-sm-2">Feedback</label>
@@ -38,6 +40,7 @@
         </div>
     </form>
         </div>
+    </div>
         <?php include ('footer.php'); ?>
 </body>
 </html>

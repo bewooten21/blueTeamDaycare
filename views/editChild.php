@@ -13,7 +13,9 @@ and open the template in the editor.
     <body>
         <?php include('nav.php'); ?> 
         <div class="container">
-  <h2>Edit <?php echo $child["stuFName"]. " " . $child["stuLName"]; ?></h2>
+           <h2>Edit <?php echo $child["stuFName"]. " " . $child["stuLName"]; ?></h2>
+            <div class="jumbotron">
+  
 <form class="form-horizontal" method="post">
     <input type="hidden" name="action" value="editChildVal">
     <input type="hidden" name="stuId" value="<?php echo $child["studentId"]; ?>">
@@ -59,6 +61,8 @@ and open the template in the editor.
     </div>
   </div>
 </form>
+        </div>
+    </div>
       
         <?php include ('footer.php'); ?>
     </body>

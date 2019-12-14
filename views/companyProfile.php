@@ -6,9 +6,9 @@
     </head>
     <body>
         <?php include('nav.php') ?>
-        <div style='text-align: center;'><img  height="200px" src="<?php echo htmlspecialchars($c->getImage()); ?>"></div>
-        <div class="jumbotron">
-            <div class="container">
+        <div style='text-align: center;'><img  height="200" src="<?php echo htmlspecialchars($c->getImage()); ?>"></div>
+        <div class="container">
+            <div class="jumbotron">
                 <div class="row">
                     <div class="col-md-2">
                         <h3></h3>
@@ -67,7 +67,7 @@
                     ?>
                 </div>
             </div>
-        </div>
+        
         <?php if (isset($_SESSION['currentUser'])) : if($_SESSION['currentUser']->getRestricted() != 1) :  ?>
         <?php if ($_SESSION['currentUser']->getID() == $owner->getID()) : ?>
         <h3>Active Positions At Our Company</h3>
@@ -76,7 +76,7 @@
                 <tr>
                     <th scope="col">Job Name</th>
                     <th scope="col">Applications Available</th>
-                    <th scope="col">Pending Applications</th>
+                    
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -87,7 +87,7 @@
                         <th scope="row"><a href="index.php?action=viewJob&amp;id=<?php echo $j->getId(); ?>">
                                 <?php echo $j->getJobName(); ?>
                             </a></th>
-                        <td><?php echo $j->getApplicationSlots(); ?></td>
+                       
                         <td>
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="processApplications">
@@ -158,7 +158,7 @@
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="removeChild">
                                 <input type="hidden" name="studentId" value="<?php echo htmlspecialchars($c['studentId']); ?>">
-                                <input type="submit" class="btn btn-default" value="Remove"><br>
+                                <input type="submit" class="btn btn-default" style="background-color: red;" value="Remove"><br>
                             </form>
                         </td>
                     </tr>
@@ -166,6 +166,7 @@
 
             </tbody>
         </table>
+         </div>
         <?php include ('footer.php'); ?>
     </body>
 </html>

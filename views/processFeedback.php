@@ -8,6 +8,7 @@
         <?php include('nav.php'); ?>   
         <div class='container'>
             <h2>Feedback for Review</h2>
+            <div class="jumbotron">
         <table class="table table-dark">
             <thead>
                 <tr>
@@ -48,6 +49,7 @@
             <input type="hidden" name="action" value="feedbackEntries">
             <input type="submit" class="btn btn-default" value="View Feedback Entries"><br>
         </form>
+        </div>
         </div>
         <?php include ('footer.php'); ?>
     </body>

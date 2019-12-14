@@ -6,10 +6,11 @@
     </head>
     <body>
         <?php include ('nav.php'); ?>
-        <main>
+        
+            
+        <div class="container" >
             <h1>Our Jobs</h1>
-        <div class="jumbotron" >
-            <div class="container"> 
+            <div class="jumbotron"> 
 <table class="table table-dark">
   <thead>
     <tr>
@@ -40,7 +41,7 @@
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="deleteJob">
                   <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j->getId()); ?>">
-                  <input type="submit" value="Delete">
+                  <input type="submit" value="Delete" >
               </form>
           </td>
     </tr>

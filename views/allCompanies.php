@@ -1,66 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>DeDiSystems</title>
+        <title>All Companies</title>
         <?php include ('css/css.php'); ?> 
     </head>
     <body>
         <?php include('nav.php') ?>
 
-        <div class="jumbotron">
-            <div class="container">
-            <div class="row">
-                <div class="col-md-2">
-                    <h3></h3>
-                </div>
-                <div class="col-md-3">
-                    <h3>Capacity</h3>
-                </div>
-                <div class="col-md-3">
-                    <h3># Enrolled</h3>
-                </div>
-                <div class="col-md-3">
-                    <h3>Rating</h3>
-                </div>
-                <div class="col-md-1">
-                    <h3>Openings</h3>
-                </div>
-            </div>
-            <?php foreach ($companies as $c) : ?>
-                <div class="row">
-                    <div class="col-md-2">
-                        <span class="<?php echo $c->getImage(); ?>" aria-hidden="true"></span>
-                        <h3><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo $c->getID(); ?>"><?php echo $c->getCompanyName(); ?></a></h3>
-                        <p>
-
-                        </p>
-                    </div>
-                    <div class="col-md-3">
-                        <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getChildCapacity(); ?></h3>
-                        <p></p>
-                    </div>
-                    <div class="col-md-3">
-                        <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getChildrenEnrolled(); ?></h3>
-                        <p>
-                        </p>
-                    </div>
-                    <div class="col-md-3">
-                        <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getOverallRating(); ?></h3><span> (# of ratings <?php echo $c->getRatingsCount(); ?>)</span>
-                        <p>
-                        </p>
-                    </div>
-                    <div class="col-md-1">
-                        <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getChildCapacity()- $c->getChildrenEnrolled(); ?></h3>
-                        <p>
-                        </p>
-                    </div>
-                </div>
-                <?php $i++; ?>
-            <?php endforeach; ?>
+        <div class="container">
+            <br>
+            <div class="jumbotron">
+                <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Capacity</th>
+      <th scope="col"># Enrolled</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Openings</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+      <?php foreach ($companies as $c) : ?>
+      <tr>
+          <td><a href="index.php?action=viewCompanyProfileUser&amp;id=<?php echo $c->getID(); ?>"><?php echo $c->getCompanyName(); ?></a></td>
+          <td><?php echo $c->getChildCapacity(); ?></td>
+          <td><?php echo $c->getChildrenEnrolled(); ?></td>
+          <td><?php echo $c->getOverallRating(); ?><span> (# of ratings <?php echo $c->getRatingsCount(); ?>)</span></td>
+          <td><?php echo $c->getChildCapacity()- $c->getChildrenEnrolled(); ?></td>
+          
+      </tr>
+      <?php endforeach; ?>
+  </tbody>
+                </table>
+            
         </div>
         </div>
         <?php include ('footer.php'); ?>

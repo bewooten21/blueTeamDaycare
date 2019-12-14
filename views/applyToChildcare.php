@@ -7,9 +7,10 @@
     <body>
         <?php include ('nav.php'); ?>
         <main>
+            
+        <div class="container" >
             <h1>Apply To <?php echo $companyName ; ?></h1>
-        <div class="jumbotron" >
-            <div class="container"> 
+            <div class="jumbotron"> 
 <?php if($children!=false){ ?>
                 <form  method="post">
                     <input type="hidden" name="action" value="applyChild">
