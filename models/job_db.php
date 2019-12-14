@@ -3,12 +3,15 @@ class job_db {
 
     public static function select_all() {
         $db = Database::getDB();
+        $status="open";
 
         $query='SELECT * from job JOIN company ON
             job.companyID=company.companyID
+            WHERE job.status = :status
             ORDER by job.jobID asc'
             ;
         $statement = $db->prepare($query);
+        $statement->bindValue(':status', $status);
         $statement->execute();
         $rows = $statement->fetchAll();
       
@@ -38,20 +41,22 @@ class job_db {
     
     public static function get_job_by_Companyid($id) {
         $db = Database::getDB();
+        
         $query = 'SELECT *
               FROM job JOIN company ON 
               job.companyID=company.companyID
-              WHERE job.companyID= :id';
+              WHERE job.companyID= :id ' ;
 
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $id);
+        
         $statement->execute();
         $rows = $statement->fetchAll();
         $jobs = [];
         
         
         foreach ($rows as $value) {
-            $jobs[$value['jobID']] = new job($value['jobID'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots']);
+            $jobs[$value['jobID']] = new job($value['jobID'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots'],$value['status']);
 
         }
 
@@ -71,7 +76,7 @@ class job_db {
         $statement->execute();
         $value = $statement->fetch();
 
-        $job = new job($value['jobID'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots']);
+        $job = new job($value['jobID'], $value['companyID'], $value['jobName'], $value['jobDescription'], $value['jobRequirements'], $value['applicationSlots'],$value['status']);
         
         $statement->closeCursor();
         
@@ -152,13 +157,43 @@ class job_db {
     
     public static function delete_job($id){
         $db = Database::getDB();
+        $status="filled";
         $query = 
-                'DELETE from job
+                'UPDATE job
+                    SET status = :status
                   WHERE jobID = :id';
         
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':id', $id);
+            $statement->bindValue(':status', $status);
+            
+            
+           
+            $statement->execute();
+            $statement->closeCursor();
+
+           
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            display_db_error($error_message);
+        }
+                
+                
+    }
+    
+    public static function open_job($id){
+        $db = Database::getDB();
+        $status="open";
+        $query = 
+                'UPDATE job
+                    SET status = :status
+                  WHERE jobID = :id';
+        
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $id);
+            $statement->bindValue(':status', $status);
             
             
            

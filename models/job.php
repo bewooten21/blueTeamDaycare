@@ -1,7 +1,7 @@
 <?php
 class job {
-    private $Id, $companyId, $jobName, $jobDescription, $jobRequirements, $applicationSlots;
-    function __construct($Id,$companyId, $jobName, $jobDescription, $jobRequirements, $applicationSlots) {
+    private $Id, $companyId, $jobName, $jobDescription, $jobRequirements, $applicationSlots, $status;
+    function __construct($Id,$companyId, $jobName, $jobDescription, $jobRequirements, $applicationSlots, $status) {
         
         $this->Id = $Id;
         $this->companyId=$companyId;
@@ -9,8 +9,17 @@ class job {
         $this->jobDescription=$jobDescription;
         $this->jobRequirements=$jobRequirements;
         $this->applicationSlots=$applicationSlots;
+        $this->status=$status;
     }
-    function getId() {
+    function getStatus() {
+        return $this->status;
+    }
+
+    function setStatus($status) {
+        $this->status = $status;
+    }
+
+        function getId() {
         return $this->Id;
     }
 

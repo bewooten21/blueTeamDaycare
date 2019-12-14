@@ -25,11 +25,14 @@ if ($action === null) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action === null) {
         $action = 'viewLogin';
+    } else if((int)$_SESSION['currentUser']->getRestricted() === 1 && $action!='logout' && $action!='displayProfile' && $action!='about'){
+        $action = 'restrictionPage';
     }
 }
 
 
 switch ($action) {
+    
     case 'about':
         include('views/about.php');
         die();
@@ -464,9 +467,9 @@ switch ($action) {
                     if ($reviewCount[0] >= 5) {
                         user_db::restrictUser($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(1);
-                    } else if ($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5) {
+                    } else if ($_SESSION['currentUser']->getRestricted() === 1 ) {
                         user_db::removeRestriction($_SESSION['currentUser']->getID());
-                        $_SESSION['currentUser']->setRestricted(0);
+                        $_SESSION['currentUser']->setRestricted(1);
                     }
                     include 'views/profile.php';
                 } else {
@@ -493,14 +496,7 @@ switch ($action) {
         if (isset($_SESSION['currentUser'])) {
             $role = $_SESSION['currentUser']->getRole();
             if ($role->getID() != 4) {
-                $reviewCount = feedback_db::getUserReviewCount($_SESSION['currentUser']->getID());
-                if ($reviewCount[0] >= 5) {
-                    user_db::restrictUser($_SESSION['currentUser']->getID());
-                    $_SESSION['currentUser']->setRestricted(1);
-                } else if ((int) $_SESSION['currentUser']->getRestricted() === 1) {
-                    user_db::removeRestriction($_SESSION['currentUser']->getID());
-                    $_SESSION['currentUser']->setRestricted(1);
-                }
+                
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 $children = child_db::get_children_byParentId($_SESSION['currentUser']->getID());
@@ -1246,6 +1242,18 @@ switch ($action) {
         $comments = user_db::get_user_comments($user->getID());
         $comment="";
         include('views/viewUserProfile.php');
+        die();
+        break;
+    
+    case'restrictionPage':
+        include('views/restrictionPage.php');
+        die();
+        break;
+    
+    case'openJob':
+        $id = filter_input(INPUT_POST, 'id');
+        job_db::open_job($id);
+        header("Location: index.php?action=ourJobs");
         die();
         break;
         

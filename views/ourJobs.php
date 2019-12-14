@@ -38,12 +38,22 @@
                   <input type="submit" value="Edit">
               </form>
           </td>
+          <?php if ($j->getStatus()==="open") { ?>
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="deleteJob">
                   <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j->getId()); ?>">
                   <input type="submit" value="Delete" >
               </form>
           </td>
+          <?php } ?>
+          <?php if ($j->getStatus()==="filled") { ?>
+          <td><form action="index.php" method="post">
+                  <input type="hidden" name="action" value="openJob">
+                  <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j->getId()); ?>">
+                  <input type="submit" value="Re-open" >
+              </form>
+          </td>
+          <?php } ?>
     </tr>
     <?php endforeach; ?>
   
