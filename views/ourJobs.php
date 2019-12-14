@@ -42,7 +42,7 @@
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="deleteJob">
                   <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j->getId()); ?>">
-                  <input type="submit" value="Delete" >
+                  <input type="submit" value="Close" >
               </form>
           </td>
           <?php } ?>

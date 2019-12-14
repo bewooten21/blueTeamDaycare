@@ -25,8 +25,11 @@ if ($action === null) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action === null) {
         $action = 'viewLogin';
-    } else if((int)$_SESSION['currentUser']->getRestricted() === 1 && $action!='logout' && $action!='displayProfile' && $action!='about'){
-        $action = 'restrictionPage';
+    } else if(isset($_SESSION['currentUser'])){
+        if((int)$_SESSION['currentUser']->getRestricted() === 1 && $action!='logout' && $action!='displayProfile' && $action!='about'){
+            $action = 'restrictionPage';
+        }
+        
     }
 }
 
@@ -733,7 +736,8 @@ switch ($action) {
         break;
 
     case 'applyToJob':
-        $jobId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
+        if((isset($_SESSION['currentUser']))){
+            $jobId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $job = job_db::get_job($jobId);
         if (!isset($jobId)) {
             $jobId = '';
@@ -754,6 +758,10 @@ switch ($action) {
             $error_message['previousApplication'] = '';
         }
         include'views/jobApplication.php';
+        }else{
+            header("Location: index.php?action=viewLogin");
+        }
+        
         die();
         break;
 
