@@ -31,7 +31,7 @@
                   <input type="hidden" name="action" value="applyToChildcare">
                   <input type="hidden" name="companyId"  value="<?php echo htmlspecialchars($o['companyID']); ?>">
                   <input type="hidden" name="companyName" value="<?php echo $o['companyName'] ;?>">
-                  <input type="submit" value="Apply">
+                  <input type="submit" class="btn btn-primary btn-sml" value="Apply">
               </form></td>
     </tr>
     <?php endforeach; ?>

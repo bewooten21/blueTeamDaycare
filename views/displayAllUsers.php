@@ -54,6 +54,8 @@
                 </table><br>
 
             </div>
+                            <a class="btn btn-primary btn-sml" href="index.php?action=displayProfile" role="button">Back To Portal</a>
+
             </div>
         </div>
         <?php include ('footer.php'); ?>

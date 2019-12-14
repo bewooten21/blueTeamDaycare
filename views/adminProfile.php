@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>DeDiSystems</title>
+  <title>Admin Portal</title>
   <?php include ('css/css.php'); ?> 
 </head>
 <body>
 <?php include('nav.php'); ?>
     <div class='container'>
-        <br>
+        <h2>Admin Portal</h2>
     <?php if($pendingCompanies !== null && !empty($pendingCompanies) ) : ?>
         <div class="jumbotron">
             

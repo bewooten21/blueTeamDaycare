@@ -38,7 +38,7 @@
                                         <input type="hidden" name="action" value="processFeedback">
                                         <input type="hidden" name="type"  value="user">
                                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($user[0]) ?>">
-                                        <input type="submit" class="btn btn-default" value="View">
+                                        <input type="submit" class="btn btn-primary btn-sml" value="View">
                                     </form>
                                 </td>
 
@@ -81,7 +81,7 @@
                                         <input type="hidden" name="action" value="processFeedback">
                                         <input type="hidden" name="type"  value="company">
                                         <input type="hidden" name="id" value="<?php echo htmlspecialchars($company[0]) ?>">
-                                        <input type="submit" class="btn btn-default" value="View">
+                                        <input type="submit" class="btn btn-primary btn-sml" value="View">
                                     </form>
                                 </td>
 
@@ -95,6 +95,7 @@
                 <br>
                 <p><strong> No companies have negative feedback at the moment! </strong></p>
         <?php endif; ?>  
+                <a class="btn btn-primary btn-sml" href="index.php?action=displayProfile" role="button">Back To Portal</a>
         </div>
 <?php include ('footer.php'); ?>
     </body>

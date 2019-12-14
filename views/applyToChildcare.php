@@ -25,7 +25,7 @@
                                 </select>
                
                     
-                    <input type="submit" class="btn btn-default" value="Apply"><br>
+                    <input type="submit" class="btn btn-primary btn-sml" value="Apply"><br>
                 </form>
                    <?php } ?><br>
             </div>

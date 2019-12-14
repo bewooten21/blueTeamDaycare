@@ -59,7 +59,7 @@
 
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="reviewCompany">
-                                <input type="submit" class="btn btn-default" style="margin-top: 15px" value="Leave a Review"><br>
+                                <input type="submit" class="btn btn-primary btn-sml" style="margin-top: 15px" value="Leave a Review"><br>
                             </form>
                         <?php
                         endif;
@@ -101,7 +101,7 @@
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="editJob">
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($j->getId()); ?>">
-                                <input type="submit" class="btn btn-default" value="Edit"><br>
+                                <input type="submit" class="btn btn-primary btn-sml" value="Edit"><br>
                             </form>
                         </td>
                     </tr>
