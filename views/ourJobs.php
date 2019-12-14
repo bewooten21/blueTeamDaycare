@@ -19,15 +19,17 @@
       <th scope="col">Job Title</th>
       <th scope="col">Job Description</th>
       <th scope="col">Job Requirements</th>
+      <th scope="col"></th>
+      
       
     </tr>
   </thead>
   <tbody>
       <?php foreach ($jobs as $j) : ?>
     <tr>
-      <th scope="row"><a href="index.php?action=viewJob&amp;id=<?php echo $j->getId(); ?>">
+      <td><a href="index.php?action=viewJob&amp;id=<?php echo $j->getId(); ?>">
                                 <?php  echo $j->getId(); ?>
-                            </a></th>
+                            </a></td>
       
       <td><?php echo $j->getJobName() ; ?></td>
       <td><?php echo $j->getJobDescription() ; ?></td>
