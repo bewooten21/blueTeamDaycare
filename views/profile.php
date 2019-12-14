@@ -32,7 +32,7 @@
                                 </select>
                
                     
-                    <input type="submit" class="btn btn-default" value="Edit Child"><br>
+                    <input type="submit" class="btn btn-primary btn-sml" value="Edit Child"><br>
                 </form>
                    <?php } endif;
                    endif;?><br>
@@ -59,14 +59,14 @@
                     <div class="col-sm-2">
                 <form action="index.php" method="post">
                     <input type="hidden" name="action" value="changeInfo">
-                    <input type="submit" class="btn btn-default" value="Change Profile"><br>
+                    <input type="submit" class="btn btn-primary btn-sml" value="Change Profile"><br>
                 </form>
                         </div>
                     <?php if($userCompany == false) : ?>
                     <div class="col-sm-2">
                 <form action="index.php" method="post">
                     <input type="hidden" name="action" value="registerBusiness">
-                    <input type="submit" class="btn btn-default" value="Register Business"><br>
+                    <input type="submit" class="btn btn-primary btn-sml" value="Register Business"><br>
                 </form>
                     </div>
                     <?php endif; ?>

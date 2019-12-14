@@ -42,7 +42,7 @@
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="deleteJob">
                   <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j->getId()); ?>">
-                  <input type="submit" value="Close" >
+                  <input type="submit" class="btn btn-primary" style="border-radius: 0% 0% 10% 10%; width: 100px; height: 25px; padding-top: 2px; background-color:red;" value="Close" >
               </form>
           </td>
           <?php } ?>
@@ -50,7 +50,7 @@
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="openJob">
                   <input type="hidden" name="id"  value="<?php echo htmlspecialchars($j->getId()); ?>">
-                  <input type="submit" value="Re-open" >
+                  <input type="submit" class="btn btn-primary" style="border-radius: 0% 0% 10% 10%; width: 100px; height: 25px; padding-top: 2px; background-color:green;" value="Re-open" >
               </form>
           </td>
           <?php } ?>
