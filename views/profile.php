@@ -59,7 +59,7 @@
                     <div class="col-sm-2">
                 <form action="index.php" method="post">
                     <input type="hidden" name="action" value="changeInfo">
-                    <input type="submit" class="btn btn-primary btn-sml" value="Change Profile"><br>
+                    <input type="submit" class="btn btn-primary btn-sml" value="Change Profile Info"><br>
                 </form>
                         </div>
                     <?php if($userCompany == false) : ?>

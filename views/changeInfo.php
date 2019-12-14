@@ -73,7 +73,7 @@
                     <div class="col-sm-4">
                         <div class="input-group">
                             <label class="input-group-btn">
-                                <span class="btn btn-default">
+                                <span class="btn btn-primary btn-sml">
                                     Browse&hellip; <input type="file" style="display: none;" name="image" multiple>
                                 </span>
                             </label>
@@ -89,7 +89,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-default" value="">Change Profile</button>
+                        <button type="submit" class="btn btn-primary btn-sml" value="">Update</button>
                     </div>
                 </div>
 

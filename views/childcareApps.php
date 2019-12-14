@@ -33,7 +33,7 @@
           <td><form action="index.php" method="post">
                   <input type="hidden" name="action" value="approveChildApp">
                   <input type="hidden" name="id"  value="<?php  echo $a['studentId'] ?>">
-                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 100px; height: 25px; padding-top: 2px; background-color:green;" value="Approve">
+                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 100px; height: 25px; padding-top: 2px;  background-color:green;" value="Approve">
               </form>
               <form action="index.php" method="post">
                   <input type="hidden" name="action" value="denyChildApp">
