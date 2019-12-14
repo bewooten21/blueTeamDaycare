@@ -349,5 +349,30 @@ class user_db {
             display_db_error($error_message);
         }
     }
-//put your code here
+    
+    public static function adminUpdateUser($fn, $ln, $roleId, $userId) {
+        $db = Database::getDB();
+        $query = 'UPDATE user
+              SET fName = :fn,
+                  lName = :ln,
+                  roleID = :roleId
+                
+                WHERE id = :userId';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':fn', $fn);
+            $statement->bindValue(':ln', $ln);
+            $statement->bindValue(':roleId', $roleId);
+            $statement->bindValue(':userId', $userId);
+           
+            $statement->execute();
+            $statement->closeCursor();
+
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            var_dump($e);
+//            display_db_error($error_message);
+        }
+    }
+
 }

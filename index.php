@@ -226,7 +226,7 @@ switch ($action) {
 
             $currentUser = user_db::validate_user_login($uName);
             $_SESSION['currentUser'] = $currentUser;
-            $confirmationMessage = "Thank you ".  $_SESSION['currentUser']->getFName() . " for registering for Blue&apos;s Daycare! We thank you for using our services and look forward to helping you find what you&apos;re looking for!";
+            $confirmationMessage = "Thank you " . $_SESSION['currentUser']->getFName() . " for registering for Blue&apos;s Daycare! We thank you for using our services and look forward to helping you find what you&apos;re looking for!";
             include 'views/confirmation.php';
         }
         die();
@@ -393,14 +393,14 @@ switch ($action) {
             if ($imageChanged != TRUE) {
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
-                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                $userCompany = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
                 header("Location: index.php?action=displayProfile");
             } else {
 
                 $file_name = "images/" . $file_name;
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
-                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                $userCompany = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
                 header("Location: index.php?action=displayProfile");
             }
         }
@@ -415,7 +415,8 @@ switch ($action) {
         break;
 
     case 'viewLogin';
-        $users = user_db::newest_users();
+        if(!isset($_SESSION['currentUser'])){
+            $users = user_db::newest_users();
 
         $message = '';
 
@@ -430,6 +431,10 @@ switch ($action) {
         }
 
         include 'views/login.php';
+        }else{
+            header("Location: index.php?action=displayProfile");
+        }
+        
         die();
         break;
 
@@ -447,28 +452,26 @@ switch ($action) {
             if (password_verify($pWord, $theUser->getPWord())) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
-                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-                if($userCompany != false){
-                    $_SESSION['company']= $userCompany;
+                $userCompany = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                if ($userCompany != false) {
+                    $_SESSION['company'] = $userCompany;
                 }
-                
+
                 $role = $_SESSION['currentUser']->getRole();
-                $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
-                if($role->getID() != 4 ){
+                $children = child_db::get_children_byParentId($_SESSION['currentUser']->getID());
+                if ($role->getID() != 4) {
                     $reviewCount = feedback_db::getUserReviewCount($theUser->getID());
-                    if($reviewCount[0] >= 5){
+                    if ($reviewCount[0] >= 5) {
                         user_db::restrictUser($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(1);
-                    }
-                    else if($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
+                    } else if ($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5) {
                         user_db::removeRestriction($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(0);
                     }
                     include 'views/profile.php';
-                }
-                else {
+                } else {
                     $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
-                     include('views/adminProfile.php');
+                    include('views/adminProfile.php');
                 }
             } else {
                 $error_message['uName'] = '';
@@ -486,23 +489,22 @@ switch ($action) {
 
 //display the profile page for user
     case 'displayProfile':
-        
+
         if (isset($_SESSION['currentUser'])) {
             $role = $_SESSION['currentUser']->getRole();
-            if($role->getID() != 4 ){
+            if ($role->getID() != 4) {
                 $reviewCount = feedback_db::getUserReviewCount($_SESSION['currentUser']->getID());
-                    if($reviewCount[0] >= 5){
-                        user_db::restrictUser($_SESSION['currentUser']->getID());
-                        $_SESSION['currentUser']->setRestricted(1);
-                    }
-                    else if((int)$_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
-                        user_db::removeRestriction($_SESSION['currentUser']->getID());
-                        $_SESSION['currentUser']->setRestricted(0);
-                    }
+                if ($reviewCount[0] >= 5) {
+                    user_db::restrictUser($_SESSION['currentUser']->getID());
+                    $_SESSION['currentUser']->setRestricted(1);
+                } else if ((int) $_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5) {
+                    user_db::removeRestriction($_SESSION['currentUser']->getID());
+                    $_SESSION['currentUser']->setRestricted(0);
+                }
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
-                $children= child_db::get_children_byParentId($_SESSION['currentUser']->getID());
-                $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                $children = child_db::get_children_byParentId($_SESSION['currentUser']->getID());
+                $userCompany = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
                 include 'views/profile.php';
                 die();
                 break;
@@ -554,7 +556,9 @@ switch ($action) {
     case 'logout':
         session_destroy();
         $users = user_db::newest_users();
-
+         unset($_SESSION['currentUser']);
+         unset($_SESSION['company']);
+        
         $message = "You have successfully logged out!";
 
         if (!isset($uName)) {
@@ -718,25 +722,23 @@ switch ($action) {
             if ($cImage === null || $cImage === '') {
                 $companyID = company_db::add_company($cName, $empCount, $maxChild, $childCount, 0, $_SESSION['currentUser']->getID());
                 companyApproval_db::addCompany($companyID);
-                $confirmationMessage = "You&apos;re business has been successfully requested ".  $_SESSION['currentUser']->getFName() . ". Please wait as your application is approved. This process should take no more than 5 business days. We hope you are enjoying you&apos;re experience!";
+                $confirmationMessage = "You&apos;re business has been successfully requested " . $_SESSION['currentUser']->getFName() . ". Please wait as your application is approved. This process should take no more than 5 business days. We hope you are enjoying you&apos;re experience!";
                 include'views/confirmation.php';
-                exit();   
-            }
-            else
-            {
+                exit();
+            } else {
                 $companyID = company_db::add_company_with_image($cName, $empCount, $maxChild, $childCount, 0, $_SESSION['currentUser']->getID(), $file_name);
                 companyApproval_db::addCompany($companyID);
-                $confirmationMessage = "You&apos;re information and profile image have been successfully updated ".  $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
+                $confirmationMessage = "You&apos;re information and profile image have been successfully updated " . $_SESSION['currentUser']->getFName() . ". We hope you are enjoying you&apos;re experience!";
                 include'views/confirmation.php';
                 exit();
             }
         }
         die();
         break;
-        
+
     case 'applyToJob':
         $jobId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        $job= job_db::get_job($jobId);
+        $job = job_db::get_job($jobId);
         if (!isset($jobId)) {
             $jobId = '';
         }
@@ -768,11 +770,11 @@ switch ($action) {
         $i = 0;
         $companies = company_db::select_all();
         $companyID = companyApproval_db::getUnapprovedCompanyIDs();
-        foreach($companies as $key=>$value){
+        foreach ($companies as $key => $value) {
             $ratingsCount = feedback_db::getCompanyReviewCount($value->getID());
             $value->setRatingsCount($ratingsCount);
-            foreach($companyID as $cID){
-                if($cID["companyID"] === $value->getID()){
+            foreach ($companyID as $cID) {
+                if ($cID["companyID"] === $value->getID()) {
                     //https://stackoverflow.com/questions/2852344/unset-array-element-inside-a-foreach-loop
                     unset($companies[$key]);
                     break;
@@ -790,12 +792,12 @@ switch ($action) {
         $jobs = job_db::get_job_by_Companyid($id);
         $employees = employee_db::get_employees_by_companyID($id);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
-        $children= child_db::getChildrenByCompanyId($_SESSION['companyID']);
-        
+        $children = child_db::getChildrenByCompanyId($_SESSION['companyID']);
+
         include('views/companyProfile.php');
         die();
         break;
-    
+
     case 'ourJobs':
         $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
         $jobs = job_db::get_job_by_Companyid($company['companyID']);
@@ -803,47 +805,47 @@ switch ($action) {
         include('views/ourJobs.php');
         die();
         break;
-    
+
     case 'editJob':
         $id = filter_input(INPUT_POST, 'id');
-        $job= job_db::get_job_by_id($id);
-        
+        $job = job_db::get_job_by_id($id);
+
         $tError = "";
         $dError = "";
         $rError = "";
         $aError = "";
-        
+
         include('views/editJob.php');
         die();
         break;
-    
+
     case 'deleteJob':
         include('models/deleteJob.php');
         die();
         break;
-    
+
     case 'editJobVal':
         include('models/editJobVal.php');
         die();
         break;
-    
+
     case 'viewChildcareOpenings' :
         $openings = opening_db::select_all();
         include('views/childcareOpenings.php');
         die();
         break;
-        
+
     case 'approveCompany' :
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $ownerID = filter_input(INPUT_POST, 'ownerID', FILTER_VALIDATE_INT);
         companyApproval_db::approveCompany($id);
         $applicant = user_db::get_user_by_id($ownerID);
-        user_db::update_user_role($applicant->getID(), 3);  
+        user_db::update_user_role($applicant->getID(), 3);
         $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
         include('views/adminProfile.php');
         die();
         break;
-    
+
     case 'declineCompany' :
         $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         companyApproval_db::declineCompany($id);
@@ -851,34 +853,34 @@ switch ($action) {
         include('views/adminProfile.php');
         die();
         break;
-    
+
     case 'reviewUser' :
         $error_message = [];
         $error_message['rating'] = '';
         $rating = 0;
         $ratings_arr = array();
-        for($i=0; $i <= 5; $i+=0.25){
+        for ($i = 0; $i <= 5; $i += 0.25) {
             array_push($ratings_arr, $i);
         }
-        
+
         $_SESSION['targetType'] = 'user';
         include 'views/review.php';
         die();
         break;
-    
+
     case 'reviewCompany' :
         $error_message = [];
         $error_message['rating'] = '';
         $rating = 0;
         $ratings_arr = array();
-        for($i=0; $i <= 5; $i+=0.25){
+        for ($i = 0; $i <= 5; $i += 0.25) {
             array_push($ratings_arr, $i);
         }
         $_SESSION['targetType'] = 'company';
         include 'views/review.php';
         die();
         break;
-        
+
     case 'submitFeedback' :
         //Set all variables for manipulating feedback
         $feedback = filter_input(INPUT_POST, 'feedback');
@@ -889,10 +891,10 @@ switch ($action) {
         $error_message = [];
         $error_message['rating'] = '';
         $ratings_arr = array();
-        for($i=0; $i <= 5; $i+=0.25){
+        for ($i = 0; $i <= 5; $i += 0.25) {
             array_push($ratings_arr, $i);
-        }      
-          
+        }
+
         if ($rating !== NULL && $rating !== FALSE && $rating !== '') {
             if ($type === 'user') {
                 $target = $_SESSION['profileID'];
@@ -909,128 +911,128 @@ switch ($action) {
                     $count++;
                 }
                 $newRating = $cRating / $count;
-                company_db::updateRating($_SESSION['companyID'], round($newRating,2));
+                company_db::updateRating($_SESSION['companyID'], round($newRating, 2));
             }
-            
+
             include('views/confirmFeedback.php');
-        }else{
+        } else {
             $error_message['rating'] = 'Must select a rating!';
             include('views/review.php');
         }
         die();
         break;
-    
+
     case 'addStudent':
-        $fName="";
-        $lName="";
-        $age="";
-        $fNError="";
-        $lNError="";
-        $ageError="";
+        $fName = "";
+        $lName = "";
+        $age = "";
+        $fNError = "";
+        $lNError = "";
+        $ageError = "";
         include('views/addStudent.php');
         die();
         break;
-    
+
     case 'addStuVal':
         include('models/addStuVal.php');
         die();
         break;
-    
+
     case 'editChild':
         $id = filter_input(INPUT_POST, 'stuId');
-        $child= child_db::get_child_byId($id);
-        $fNError="";
-        $lNError="";
-        $ageError="";
+        $child = child_db::get_child_byId($id);
+        $fNError = "";
+        $lNError = "";
+        $ageError = "";
         include('views/editChild.php');
         die();
         break;
     case 'editChildVal':
         $id = filter_input(INPUT_POST, 'stuId');
-        $child= child_db::get_child_byId($id);
+        $child = child_db::get_child_byId($id);
         include('models/editChildVal.php');
         die();
-        break;  
-     case 'processApplications' :
+        break;
+    case 'processApplications' :
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
-        $message = "";        
+        $message = "";
         $job = job_db::get_job($jobID);
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
         include('views/jobAppApproval.php');
         die();
         break;
-        
+
     case 'approveJobApp' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
         application_db::process_and_approve_application($applicationID, 1, 1);
         $newEmpID = employee_db::add_employee($applicationID);
-        $message = "Congratulations on your new hire!"; 
-        
+        $message = "Congratulations on your new hire!";
+
         // update job in the database
         $job = job_db::get_job($jobID);
         $applicationSlots = $job->getApplicationSlots() - 1;
         job_db::update_application_slot($job->getId(), $applicationSlots);
-        
+
         $applicant = user_db::get_user_by_id(application_db::get_application_by_id($applicationID)->getUserID());
         // check if user is a basic user if not other roles supercede
-        if($applicant->getRole()->getID() === 1){
-          user_db::update_user_role($applicant->getUserID(), 2);  
+        if ($applicant->getRole()->getID() === 1) {
+            user_db::update_user_role($applicant->getUserID(), 2);
         }
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
         include('views/jobAppApproval.php');
         die();
-        break; 
+        break;
     case 'editChildVal':
         $id = filter_input(INPUT_POST, 'stuId');
-        $child= child_db::get_child_byId($id);
+        $child = child_db::get_child_byId($id);
         include('models/editChildVal.php');
         die();
         break;
-        
-    
-        
-        
+
+
+
+
     case 'declineJobApp' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
         $jobID = filter_input(INPUT_POST, 'jobID', FILTER_VALIDATE_INT);
-        
+
         $application = application_db::get_application_by_id($applicationID);
-        $applicant = user_db::get_user_by_id($application->getUserID()); 
+        $applicant = user_db::get_user_by_id($application->getUserID());
         $job = job_db::get_job($jobID);
-        
+
         include('views/declineApplication.php');
         die();
-        break; 
-    
+        break;
+
     case 'editCompany':
-        $cNameError="";
-        $eCError="";
-        $cCError="";
-        $cEError="";
-        $cIError="";
-            
+        $cNameError = "";
+        $eCError = "";
+        $cCError = "";
+        $cEError = "";
+        $cIError = "";
+
         include('views/editCompany.php');
         die();
-        break; 
-    
+        break;
+
     case 'editCompanyVal':
         include('models/editCompanyVal.php');
         die();
-        break; 
-    
+        break;
+
     case 'viewThread':
-        
+
         $id = filter_input(INPUT_GET, 'id');
         $thread = job_db::get_job_by_id($id);
         $posts;
         include ('views/viewJob.php');
         die();
         break;
-        
+
     case 'finishAppDecline' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
@@ -1038,16 +1040,16 @@ switch ($action) {
         $openSlot = filter_input(INPUT_POST, 'openSlot');
         $job = job_db::get_job($jobID);
         $message = "";
-        
+
         if ($openSlot !== null && $openSlot === "isChecked") {
             $slots = $job->getApplicationSlots() + 1;
             job_db::update_application_slot($job->getId(), $slots);
             $message .= "Application slot was reopened! ";
         }
         application_db::process_application($applicationID, 1);
-        
-        $message .= "Application successfully declined.";  
-        
+
+        $message .= "Application successfully declined.";
+
         $appInfo_arr = application_db::get_applications_by_companyID($companyID, $jobID);
         include('views/jobAppApproval.php');
         die();
@@ -1061,87 +1063,86 @@ switch ($action) {
         include('views/applicationDocuments.php');
         die();
         break;
-    
+
     case 'applyToChildcare':
-        if(!isset($_SESSION['currentUser'])){
+        if (!isset($_SESSION['currentUser'])) {
             header("Location: index.php?action=viewLogin");
-        }else if(isset($_SESSION['currentUser'])){
-        $companyName=filter_input(INPUT_POST, 'companyName');
-        $children= child_db::get_children_byParentIdNotNull($_SESSION['currentUser']->getID());
-        
-        $companyId=filter_input(INPUT_POST, 'companyId');
-        include('views/applyToChildcare.php');
-        die();
-        break;
+        } else if (isset($_SESSION['currentUser'])) {
+            $companyName = filter_input(INPUT_POST, 'companyName');
+            $children = child_db::get_children_byParentIdNotNull($_SESSION['currentUser']->getID());
+
+            $companyId = filter_input(INPUT_POST, 'companyId');
+            include('views/applyToChildcare.php');
+            die();
+            break;
         }
-        
+
     case 'applyChild':
-        $studentId=filter_input(INPUT_POST, 'stuId');
-        $student= child_db::get_child_byId($studentId);
-        $companyId=filter_input(INPUT_POST, 'companyId');
-        $company= company_db::get_company_by_id($companyId);
-        $checkChild=childcareapp_db::checkforchild_byId($companyId, $studentId);
-        if($checkChild === true){
+        $studentId = filter_input(INPUT_POST, 'stuId');
+        $student = child_db::get_child_byId($studentId);
+        $companyId = filter_input(INPUT_POST, 'companyId');
+        $company = company_db::get_company_by_id($companyId);
+        $checkChild = childcareapp_db::checkforchild_byId($companyId, $studentId);
+        if ($checkChild === true) {
             childcareapp_db::addApplication('', $companyId, $studentId, $_SESSION['currentUser']->getID());
-        $message="You have successly applied " . $student['stuFName']. " " . $student['stuLName']. " to ". $company->getCompanyName();
-        $success="Success!";
-        }else{
-            $message= "You have already applied " . $student['stuFName']. " " . $student['stuLName']. " to ". $company->getCompanyName();
-            $success="Error";
+            $message = "You have successly applied " . $student['stuFName'] . " " . $student['stuLName'] . " to " . $company->getCompanyName();
+            $success = "Success!";
+        } else {
+            $message = "You have already applied " . $student['stuFName'] . " " . $student['stuLName'] . " to " . $company->getCompanyName();
+            $success = "Error";
         }
-        
+
         include('views/applyChildSuccess.php');
         die();
         break;
-        
+
     case 'editCompanyVal':
         die();
         break;
-        
+
     case'feedbackEntries':
         $users = feedback_db::getNegativeUsers();
         $companies = feedback_db::getNegativeCompanies();
         $userReviews = [];
-        foreach($users as $user){
+        foreach ($users as $user) {
             $userReviews[$user[0]] = feedback_db::getUserNegativeReviewCount($user[0]);
         }
         $companyReviews = [];
-        foreach($companies as $company){
+        foreach ($companies as $company) {
             $companyReviews[$company[0]] = feedback_db::getCompanyNegativeReviewCount($company[0]);
         }
-        
+
         include('views/viewFeedbackEntries.php');
         die();
         break;
-    
+
     case 'processFeedback':
         $_SESSION['targetType'] = filter_input(INPUT_POST, 'type');
         $_SESSION['targetID'] = filter_input(INPUT_POST, 'id');
         $feedback = [];
-        if($_SESSION['targetType'] === 'user'){
+        if ($_SESSION['targetType'] === 'user') {
             $_SESSION['currentTarget'] = user_db::get_user_by_id($_SESSION['targetID']);
             $feedback = feedback_db::getUserNegativeFeedbackByID($_SESSION['targetID']);
-        }
-        else if($_SESSION['targetType'] === 'company'){
+        } else if ($_SESSION['targetType'] === 'company') {
             $_SESSION['currentTarget'] = company_db::get_company_by_id($_SESSION['targetID']);
             $feedback = feedback_db::getCompanyNegativeFeedbackByID($_SESSION['targetID']);
         }
-        
+
         include('views/processFeedback.php');
         die();
         break;
-        
+
     case'removeFeedback':
         $id = filter_input(INPUT_POST, 'id');
         $feedback = [];
-        if($_SESSION['targetType'] === 'user'){
+        if ($_SESSION['targetType'] === 'user') {
             feedback_db::removeUserFeedbackByID($id);
             $feedback = feedback_db::getUserFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
-        } else if($_SESSION['targetType'] === 'company'){
+        } else if ($_SESSION['targetType'] === 'company') {
             feedback_db::removeCompanyFeedbackByID($id);
             $feedback = feedback_db::getCompanyFeedbackByID($_SESSION['targetID'], $_SESSION['targetType']);
         }
-        
+
 
         include('views/processFeedback.php');
         die();
@@ -1187,11 +1188,44 @@ switch ($action) {
         $studentId = filter_input(INPUT_POST, 'studentId');
         child_db::setCompanyIdToNull($studentId);
         company_db::updateChildCountRemove($_SESSION['company']['companyID']);
-       $child= child_db::get_child_byId($studentId);
-       $message="You have removed " .$child['stuFName']. " ".$child['stuLName']. " from your child roster.";
-       include('views/removeChildSuccess.php');
-       die();
+        $child = child_db::get_child_byId($studentId);
+        $message = "You have removed " . $child['stuFName'] . " " . $child['stuLName'] . " from your child roster.";
+        include('views/removeChildSuccess.php');
+        die();
         break;
+
+    case 'removeSuspension':
+        $userId = filter_input(INPUT_POST, 'userId');
+        user_db::removeRestriction($userId);
+        header("Location: index.php?action=displayAllUsers");
+        die();
+        break;
+
+    case 'suspend':
+        $userId = filter_input(INPUT_POST, 'userId');
+        user_db::restrictUser($userId);
+        header("Location: index.php?action=displayAllUsers");
+        die();
+        break;
+
+    case 'adminEditUser':
+        $roles = role_db::select_all();
+        $userId = filter_input(INPUT_POST, 'userId');
+        
+        $user = user_db::get_user_by_id($userId);
+        $roleName= role_db::get_role_by_id($user->getID());
+        $fnError = "";
+        $lnError = "";
+        $roleError = "";
+        include('views/adminEditUser.php');
+        die();
+        break;
+    
+    case'adminEditUserVal':
+        include('views/adminEditUserVal.php');
+        die();
+        break;
+        
 }
 
 

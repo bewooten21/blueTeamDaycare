@@ -37,7 +37,6 @@
           </ul>
         </li>
         <li><a href='index.php?action=viewChildcareOpenings'>Childcare Openings</a></li>
-        <li><a href='index.php?action=displayAllUsers'>All Users</a></li>
         <li><a href='index.php?action=viewCompanies'>All Companies</a></li>
         <?php if(isset($_SESSION['company'])) { ?>
         <li class="dropdown">

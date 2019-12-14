@@ -7,7 +7,10 @@
 <body>
 <?php include('nav.php'); ?>
     <div class='container'>
+        <br>
     <?php if($pendingCompanies !== null && !empty($pendingCompanies) ) : ?>
+        <div class="jumbotron">
+            
     <h2>Companies Pending Approval</h2>
 <table class="table table-dark">
   <thead>
@@ -60,6 +63,7 @@
   
   </tbody>
 </table>
+        </div>
               <?php else: ?>
         <br>
         <p><strong> No applications pending at this time! </strong></p>
@@ -72,7 +76,9 @@
         </form>
         </div>
     </div>
+        <a class="btn btn-primary btn-sml" href="index.php?action=displayAllUsers" role="button">All Users</a>
         </div>
+    
     <?php include ('footer.php'); ?>
 </body>
 </html>
