@@ -394,14 +394,14 @@ switch ($action) {
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
                 $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-                include 'views/profile.php';
+                header("Location: index.php?action=displayProfile");
             } else {
 
                 $file_name = "images/" . $file_name;
                 user_db::update_profile($_SESSION['currentUser']->getUName(), $fName, $lName, $email, $file_name, $hashedPW);
                 $_SESSION['currentUser'] = user_db::get_user_by_id($_SESSION['currentUser']->getID());
                 $userCompany= company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-                include 'views/profile.php';
+                header("Location: index.php?action=displayProfile");
             }
         }
 
@@ -495,7 +495,7 @@ switch ($action) {
                         user_db::restrictUser($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(1);
                     }
-                    else if($_SESSION['currentUser']->getRestricted() != 1 && $reviewCount[0] < 5){
+                    else if((int)$_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
                         user_db::removeRestriction($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(0);
                     }
