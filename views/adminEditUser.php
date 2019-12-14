@@ -14,6 +14,7 @@ and open the template in the editor.
         <?php include('nav.php'); ?> 
         <div class="container">
   <h2>Edit <?php echo $user->getFName(). " ". $user->getLName() ; ?></h2>
+  <div class="jumbotron">
   <form class="form-horizontal" action="index.php" method="post">
     <input type="hidden" name="action" value="adminEditUserVal">
     <input type="hidden" name="userId" value="<?php echo $userId ?>">
@@ -68,6 +69,7 @@ and open the template in the editor.
     </div>
   </div>
 </form>
+        </div>
         </div>
       
         <?php include ('footer.php'); ?>

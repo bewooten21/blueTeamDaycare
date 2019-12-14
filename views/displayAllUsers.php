@@ -34,7 +34,7 @@
               <form action="index.php" method="post">
                   <input type="hidden" name="action" value="removeSuspension">
                   <input type="hidden" name="userId"  value="<?php echo $single->getID(); ?>">
-                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 75px; height: 25px; padding-top: 2px; background-color:green;" value="Reinstate">
+                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 100px; height: 25px; padding-top: 2px; background-color:green;" value="Reinstate">
               </form></td>
                                 <?php }   ?> 
               <?php if((int)$single->getRestricted()!=1) { ?>
@@ -43,7 +43,7 @@
                   <input type="hidden" name="action" value="suspend">
                   <input type="hidden" name="userId"  value="<?php echo $single->getID(); ?>">
                   
-                  <input type="submit" class="btn btn-primary"  style="border-radius: 0% 0% 10% 10%; width: 75px; height: 25px; padding-top: 2px; background-color:red;" value="Suspend">
+                  <input type="submit" class="btn btn-primary"  style="border-radius: 0% 0% 10% 10%; width: 100px; height: 25px; padding-top: 2px; background-color:red;" value="Suspend">
               </form></td>
                                  <?php } ?>
                         </tr>

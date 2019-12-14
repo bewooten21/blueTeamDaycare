@@ -29,6 +29,9 @@ if($age===""){
     $ageError="Enter valid age";
     $age="";
     $isValid=false;
+}else if ($age <=0){
+    $ageError="Enter valid age";
+    $isValid=false;
 }else{
     $ageError="";
 }

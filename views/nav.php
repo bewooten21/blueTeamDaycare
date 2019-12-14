@@ -61,7 +61,11 @@
         <?php } ?>
         
         <?php if (isset($_SESSION['currentUser'])):?>
+        <?php if ($_SESSION['currentUser']->getRole()->getType()==="administrator") { ?>
+            <li><a href='index.php?action=displayProfile'>Admin Portal</a></li>
+       <?php } else {?> 
         <li><a href='index.php?action=displayProfile'>Profile</a></li>
+       <?php }?>
         <li><a href='index.php?action=logout'>Logout</a></li>
         <?php else: ?>
         <li><a href='index.php?action=viewLogin'>Login</a></li>

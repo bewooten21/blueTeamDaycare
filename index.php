@@ -1222,7 +1222,7 @@ switch ($action) {
         break;
     
     case'adminEditUserVal':
-        include('views/adminEditUserVal.php');
+        include('models/adminEditUserVal.php');
         die();
         break;
         

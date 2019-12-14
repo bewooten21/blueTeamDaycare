@@ -47,13 +47,13 @@
                   <input type="hidden" name="action" value="approveCompany">
                   <input type="hidden" name="ownerID"  value="<?php echo htmlspecialchars($company["ownerID"]); ?>">
                   <input type="hidden" name="id" value="<?php echo $company["compApprovalID"]?>">
-                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 75px; height: 25px; padding-top: 2px;" value="Approve">
+                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 90px;background-color:green; height: 25px; padding-top: 2px;" value="Approve">
               </form>
               <form action="index.php" method="post">
                   <input type="hidden" name="action" value="declineCompany">
                   <input type="hidden" name="ownerID"  value="<?php echo htmlspecialchars($company["ownerID"]); ?>">
                   <input type="hidden" name="id" value="<?php echo $company["compApprovalID"]?>">
-                  <input type="submit" class="btn btn-primary" style="border-radius: 0% 0% 10% 10%; width: 75px; height: 25px; padding-top: 2px;" value="Dismiss">
+                  <input type="submit" class="btn btn-primary" style="border-radius: 0% 0% 10% 10%; background-color:red;width: 90px; height: 25px; padding-top: 2px;" value="Dismiss">
               </form>
           </td>
        
@@ -72,11 +72,15 @@
         <div class="col-sm-2">
         <form action="index.php" method="post">
             <input type="hidden" name="action" value="feedbackEntries">
-            <input type="submit" class="btn btn-default" value="View Feedback Entries"><br>
+            <input type="submit" class="btn btn-primary btn-sml" value="View Feedback Entries"><br>
         </form>
         </div>
-    </div>
+    </div><br>
+        <div class="row">
+            <div class="col-sm-2">
         <a class="btn btn-primary btn-sml" href="index.php?action=displayAllUsers" role="button">All Users</a>
+            </div>
+            </div>
         </div>
     
     <?php include ('footer.php'); ?>

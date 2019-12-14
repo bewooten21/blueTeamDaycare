@@ -13,7 +13,9 @@ and open the template in the editor.
     <body>
         <?php include('nav.php'); ?> 
         <div class="container">
-  <h2>Login</h2>
+            <br>
+            <div class="jumbotron">
+  <h2>Add Job</h2>
 <form class="form-horizontal" method="post">
     <input type="hidden" name="action" value="addJobVal">
   <div class="form-group">
@@ -64,6 +66,8 @@ and open the template in the editor.
     </div>
   </div>
 </form>
+        </div>
+        </div>
       
        <?php include ('footer.php'); ?> 
     </body>

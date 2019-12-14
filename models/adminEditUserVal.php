@@ -43,4 +43,5 @@ if($isValid===false){
     
 }else if($isValid===true){
     user_db::adminUpdateUser($fn, $ln, $role, $userId);
+    header("Location: index.php?action=displayAllUsers");
 }
