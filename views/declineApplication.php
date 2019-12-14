@@ -42,7 +42,7 @@
             <input type="hidden" name="jobID"  value="<?php echo htmlspecialchars($job->getId()); ?>">
             <input type="hidden" name="action" value="finishAppDecline">
             
-            <input type="submit" class="btn btn-default" value="Confirm">
+            <input type="submit" class="btn btn-primary btn-sml" value="Confirm">
             
         </form> 
                 <br>
@@ -50,7 +50,7 @@
                 <input type="hidden" name="action" value="processApplications">
                 <input type="hidden" name="companyID" value="<?php echo htmlspecialchars($job->getCompanyId()); ?>">
                 <input type="hidden" name="jobID" value="<?php echo htmlspecialchars($job->getId()); ?>">
-                <input type="submit" class="btn btn-default" value="Cancel">
+                <input type="submit" class="btn btn-primary btn-sml" value="Cancel">
             </form>
             </div>
         </div>

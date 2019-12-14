@@ -62,14 +62,14 @@
                   <input type="hidden" name="applicationID"  value="<?php echo htmlspecialchars($appInfo["applicationID"]); ?>">
                   <input type="hidden" name="companyID"  value="<?php echo htmlspecialchars($appInfo["companyID"]); ?>">
                   <input type="hidden" name="jobID"  value="<?php echo htmlspecialchars($job->getId()); ?>">
-                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 75px; height: 25px; padding-top: 2px;" value="Approve">
+                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 100px; height: 25px; padding-top: 2px; background-color:green;" value="Approve">
               </form>
               <form action="index.php" method="post">
                   <input type="hidden" name="action" value="declineJobApp">
                   <input type="hidden" name="applicationID"  value="<?php echo htmlspecialchars($appInfo["applicationID"]); ?>">
                   <input type="hidden" name="companyID"  value="<?php echo htmlspecialchars($appInfo["companyID"]); ?>">
                   <input type="hidden" name="jobID"  value="<?php echo htmlspecialchars($appInfo["jobID"]); ?>">
-                  <input type="submit" class="btn btn-primary" style="border-radius: 0% 0% 10% 10%; width: 75px; height: 25px; padding-top: 2px;" value="Dismiss">
+                  <input type="submit" class="btn btn-info" style="border-radius: 10% 10% 0% 0%; width: 100px; height: 25px; padding-top: 2px; background-color:red;" value="Dismiss">
               </form>
           </td>
        
@@ -84,7 +84,7 @@
         <p><strong> No applications pending at this time! </strong></p>
        <?php endif; ?>  
         
-        <a class="btn btn-default" href="index.php?action=viewCompanyProfile&amp;id=<?php echo htmlspecialchars($job->getCompanyId()); ?>">Company Home</a>
+        <a class="btn btn-primary btn-sml" href="index.php?action=viewCompanyProfile&amp;id=<?php echo htmlspecialchars($job->getCompanyId()); ?>">Company Home</a>
             </div>
         </div>
          <?php include ('footer.php'); ?>   

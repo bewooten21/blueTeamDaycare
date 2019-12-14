@@ -69,12 +69,12 @@ class user_db {
         return $result;
     }
 
-    public static function add_user($fName, $lName, $email, $uName, $hashedPW) {
+    public static function add_user($fName, $lName, $email, $uName, $hashedPW, $roleID) {
         $db = Database::getDB();
         $query = 'INSERT INTO user
-                 (fName, lName, email, uName, pWord)
+                 (fName, lName, email, uName, pWord, roleID)
               VALUES
-                 (:fName, :lName, :email, :uName, :pWord)';
+                 (:fName, :lName, :email, :uName, :pWord, :roleID)';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':fName', $fName);
@@ -82,6 +82,7 @@ class user_db {
             $statement->bindValue(':email', $email);
             $statement->bindValue(':uName', $uName);
             $statement->bindValue(':pWord', $hashedPW);
+            $statement->bindValue(':roleID', $roleID);
            
             $statement->execute();
             $statement->closeCursor();
@@ -95,14 +96,14 @@ class user_db {
         }
     }
     
-    public static function add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $fileName) {
+    public static function add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $fileName, $roleID) {
         
         $fileLocation = "images/". $fileName;
         $db = Database::getDB();
         $query = 'INSERT INTO user
-                 (fName, lName, email, uName, pWord, image)
+                 (fName, lName, email, uName, pWord, image, roleID)
               VALUES
-                 (:fName, :lName, :email, :uName, :pWord, :fileLocation)';
+                 (:fName, :lName, :email, :uName, :pWord, :fileLocation, :roleID)';
         try {
             $statement = $db->prepare($query);
             $statement->bindValue(':fName', $fName);
@@ -111,6 +112,7 @@ class user_db {
             $statement->bindValue(':uName', $uName);
             $statement->bindValue(':pWord', $hashedPW);
             $statement->bindValue(':fileLocation', $fileLocation);
+            $statement->bindValue(':roleID', $roleID);
            
             $statement->execute();
             $statement->closeCursor();

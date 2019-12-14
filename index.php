@@ -225,9 +225,9 @@ switch ($action) {
             $hashedPW = password_hash($password, PASSWORD_DEFAULT);
 
             if ($file_name != '') {
-                user_db::add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $file_name);
+                user_db::add_user_with_image($fName, $lName, $email, $uName, $hashedPW, $file_name, 1);
             } else {
-                user_db::add_user($fName, $lName, $email, $uName, $hashedPW);
+                user_db::add_user($fName, $lName, $email, $uName, $hashedPW, 1);
             }
 
             $currentUser = user_db::validate_user_login($uName);
