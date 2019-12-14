@@ -12,7 +12,7 @@ class user_db {
 
         foreach ($rows as $value) {
             $userRole = role_db::get_role_by_id($value['roleID']);
-            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole);
+            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole, $value['Restricted']);
         }
         $statement->closeCursor();
 
@@ -31,7 +31,7 @@ class user_db {
         $value = $statement->fetch();
         
         $userRole = role_db::get_role_by_id($value['roleID']);
-        $users = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole);
+        $users = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole, $value['Restricted']);
         
         $statement->closeCursor();
 
@@ -197,7 +197,7 @@ class user_db {
         $value = $statement->fetch();
         
         $userRole = role_db::get_role_by_id($value['roleID']);
-        $theUser = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole);
+        $theUser = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole, $value['Restricted']);
 
         $statement->closeCursor();
 
@@ -297,7 +297,7 @@ class user_db {
 
         foreach ($rows as $value) {
             $userRole = role_db::get_role_by_id($value['roleID']);
-            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole);
+            $users[$value['id']] = new user($value['id'], $value['fName'], $value['lName'], $value['email'], $value['uName'], $value['pWord'], $value['image'], $userRole, $value['Restricted']);
         }
         $statement->closeCursor();
 

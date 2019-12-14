@@ -495,7 +495,7 @@ switch ($action) {
                         user_db::restrictUser($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(1);
                     }
-                    else if($_SESSION['currentUser']->getRestricted() === 1 && $reviewCount[0] < 5){
+                    else if($_SESSION['currentUser']->getRestricted() != 1 && $reviewCount[0] < 5){
                         user_db::removeRestriction($_SESSION['currentUser']->getID());
                         $_SESSION['currentUser']->setRestricted(0);
                     }

@@ -10,7 +10,7 @@
         <main>
             <div class="container">
                 <h1>Welcome to your profile page <?php echo htmlspecialchars($_SESSION['currentUser']->getFName()); ?>!</h1>
-                <?php if ($_SESSION['currentUser']->getRestricted() === 1) {?> <h2> Your account is currently restricted pending administrator review!</h2> <?php }?>
+                <?php if ((int)$_SESSION['currentUser']->getRestricted() === 1) { ?> <h2> Your account is currently restricted pending administrator review!</h2> <?php } ?>
                 <div id="profileImg">
                     <p><img src="<?php echo htmlspecialchars($_SESSION['currentUser']->getImage()); ?>" width="200"></p>
                 </div>
