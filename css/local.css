@@ -20,6 +20,15 @@ body{
     color:black;
 }
 
+.flagged{
+    text-align: center;
+    color:black;
+    background-color: red;
+    font-weight: bold;
+    width:100%
+}
+
+
 
 
 

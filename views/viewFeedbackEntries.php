@@ -10,7 +10,7 @@
             <h2>Negative Feedback</h2>
             <br>
             <?php if ($users !== null && !empty($users)) : ?>
-            <h4>Users</h4>
+                <h4>Users</h4>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -20,13 +20,23 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $count = 0;
+                        
+                        <?php
+                        $count = 0;
                         foreach ($users as $user) :
                             ?>
+                        
                             <tr>
-                                <td><a href="index.php?action=viewUserProfile&amp;id=<?php echo $user['userID']; ?>"><?php echo htmlspecialchars($user['uName']); ?></a></td>
+                                
+                                <td><a href="index.php?action=viewUserProfile&amp;id=<?php echo $user['userID']; ?>"><?php echo htmlspecialchars($user['uName']); ?></a>
+                                <?php if ((int)$userReviews[$user[0]] >=5 ) { ?>
+                                    <div class="flagged">
+                                    <?php echo "   FLAGGED!"; ?>
+                                    <?php } ?></div></td>
+                                
                                 <td>
-        <?php echo htmlspecialchars($userReviews[$user[0]]) ?>
+                                        <?php echo htmlspecialchars($userReviews[$user[0]]); ?>
+                                    
                                 <td>
                                     <form action="index.php" method="post">
                                         <input type="hidden" name="action" value="processFeedback">
@@ -59,7 +69,8 @@
                     </thead>
                     <tbody>
 
-                        <?php $count = 0;
+                        <?php
+                        $count = 0;
                         foreach ($companies as $company) :
                             ?>
                             <tr>
@@ -89,7 +100,7 @@
                 <br>
                 <p><strong> No companies have negative feedback at the moment! </strong></p>
         <?php endif; ?>  
-                <a class="btn btn-primary btn-sml" href="index.php?action=displayProfile" role="button">Back To Portal</a>
+            <a class="btn btn-primary btn-sml" href="index.php?action=displayProfile" role="button">Back To Portal</a>
         </div>
 <?php include ('footer.php'); ?>
     </body>
