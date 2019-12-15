@@ -22,7 +22,7 @@
 
 
                     <h2>Companies Pending Approval</h2>
-                    <table class="table table-dark">
+                    <table class="table table-striped table-hover">
                         <thead>
                             <tr>
                                 <th scope="col">Company Name</th>

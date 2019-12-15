@@ -11,7 +11,8 @@
         <div class="container" >
             <h1>Our Jobs</h1>
             <div class="jumbotron"> 
-                <table class="table table-dark">
+                
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th scope="col">JobID</th>

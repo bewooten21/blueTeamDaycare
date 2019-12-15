@@ -11,7 +11,7 @@
             <br>
             <?php if ($users !== null && !empty($users)) : ?>
                 <h4>Users</h4>
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th scope="col">User</th>
@@ -59,7 +59,7 @@
 
 <?php if ($companies !== null && !empty($companies)) : ?>
                 <h4>Companies</h4>
-                <table class="table table-striped">
+                <table class="table table-striped table-hover">
                     <thead>
                         <tr>
                             <th scope="col">Company ID</th>

@@ -25,18 +25,17 @@ if ($action === null) {
     $action = filter_input(INPUT_GET, 'action');
     if ($action === null) {
         $action = 'viewLogin';
-    } else if(isset($_SESSION['currentUser'])){
+    } else if (isset($_SESSION['currentUser'])) {
         //if current user is set and if restricted then redirect action if not logout, profile, or about
-        if((int)$_SESSION['currentUser']->getRestricted() === 1 && $action!='logout' && $action!='displayProfile' && $action!='about'){
+        if ((int) $_SESSION['currentUser']->getRestricted() === 1 && $action != 'logout' && $action != 'displayProfile' && $action != 'about') {
             $action = 'restrictionPage';
         }
-        
     }
 }
 
 
 switch ($action) {
-    
+
     case 'about':
         include('views/about.php');
         die();
@@ -424,27 +423,27 @@ switch ($action) {
 
     case 'viewLogin';
         //if not logged in, then send to log in
-        if(!isset($_SESSION['currentUser'])){
+        if (!isset($_SESSION['currentUser'])) {
             $users = user_db::newest_users();
 
-        $message = '';
+            $message = '';
 
-        if (!isset($uName)) {
-            $uName = '';
-        }
-        $pWord = '';
-        if (!isset($error_message)) {
-            $error_message = [];
-            $error_message['uName'] = '';
-            $error_message['pWord'] = '';
-        }
+            if (!isset($uName)) {
+                $uName = '';
+            }
+            $pWord = '';
+            if (!isset($error_message)) {
+                $error_message = [];
+                $error_message['uName'] = '';
+                $error_message['pWord'] = '';
+            }
 
-        include 'views/login.php';
-        }else{
+            include 'views/login.php';
+        } else {
             //if logged in, send to profile
             header("Location: index.php?action=displayProfile");
         }
-        
+
         die();
         break;
 
@@ -464,7 +463,7 @@ switch ($action) {
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 //check if user is owner of company
                 $userCompany = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
-                
+
                 if ($userCompany != false) {
                     //if user is owner of company, then set company info into session variable
                     $_SESSION['company'] = $userCompany;
@@ -473,7 +472,7 @@ switch ($action) {
                 $role = $_SESSION['currentUser']->getRole();
                 $children = child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if ($role->getID() != 4) {
-                    
+
                     include 'views/profile.php';
                 } else {
                     $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
@@ -557,9 +556,9 @@ switch ($action) {
         session_destroy();
         $users = user_db::newest_users();
         //unset session variables
-         unset($_SESSION['currentUser']);
-         unset($_SESSION['company']);
-        
+        unset($_SESSION['currentUser']);
+        unset($_SESSION['company']);
+
         $message = "You have successfully logged out!";
 
         if (!isset($uName)) {
@@ -741,32 +740,32 @@ switch ($action) {
         break;
 
     case 'applyToJob':
-        if((isset($_SESSION['currentUser']))){
+        if ((isset($_SESSION['currentUser']))) {
             $jobId = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-        $job = job_db::get_job($jobId);
-        if (!isset($jobId)) {
-            $jobId = '';
-        }
-        if (!isset($coverLetter)) {
-            $coverLetter = '';
-        }
+            $job = job_db::get_job($jobId);
+            if (!isset($jobId)) {
+                $jobId = '';
+            }
+            if (!isset($coverLetter)) {
+                $coverLetter = '';
+            }
 
-        if (!isset($resume)) {
-            $resume = '';
-        }
+            if (!isset($resume)) {
+                $resume = '';
+            }
 
-        if (!isset($error_message)) {
-            $error_message = [];
-            $error_message['jobId'] = '';
-            $error_message['coverLetter'] = '';
-            $error_message['resume'] = '';
-            $error_message['previousApplication'] = '';
-        }
-        include'views/jobApplication.php';
-        }else{
+            if (!isset($error_message)) {
+                $error_message = [];
+                $error_message['jobId'] = '';
+                $error_message['coverLetter'] = '';
+                $error_message['resume'] = '';
+                $error_message['previousApplication'] = '';
+            }
+            include'views/jobApplication.php';
+        } else {
             header("Location: index.php?action=viewLogin");
         }
-        
+
         die();
         break;
 
@@ -1048,7 +1047,7 @@ switch ($action) {
         die();
         break;
 
-   
+
     case 'finishAppDecline' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
@@ -1185,6 +1184,8 @@ switch ($action) {
             child_db::approveChild($id, $_SESSION['company']['companyID']);
             company_db::updateChildCount($_SESSION['company']['companyID']);
             childcareapp_db::removeChildSuccess($id);
+            $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+            $_SESSION['company'] = $company;
             $message = "You have approved: " . $child['stuFName'] . " " . $child['stuLName'];
         } else {
             $message = "No more room for child";
@@ -1212,6 +1213,8 @@ switch ($action) {
         child_db::setCompanyIdToNull($studentId);
         company_db::updateChildCountRemove($_SESSION['company']['companyID']);
         $child = child_db::get_child_byId($studentId);
+        $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        $_SESSION['company'] = $company;
         $message = "You have removed " . $child['stuFName'] . " " . $child['stuLName'] . " from your child roster.";
         include('views/removeChildSuccess.php');
         die();
@@ -1242,19 +1245,19 @@ switch ($action) {
         //get user info
         $user = user_db::get_user_by_id($userId);
         //get user info to populate form
-        $roleName= role_db::get_role_by_id($user->getID());
+        $roleName = role_db::get_role_by_id($user->getID());
         $fnError = "";
         $lnError = "";
         $roleError = "";
         include('views/adminEditUser.php');
         die();
         break;
-    
+
     case'adminEditUserVal':
         include('models/adminEditUserVal.php');
         die();
         break;
-    
+
     //company profile view for users
     case 'viewCompanyProfileUser':
         $id = filter_input(INPUT_GET, 'id');
@@ -1267,26 +1270,26 @@ switch ($action) {
         $ratingsCount = feedback_db::getCompanyReviewCount($c->getID());
         $c->setRatingsCount($ratingsCount);
 
-        
+
         include('views/viewCompanyProfileUser.php');
-         die();
+        die();
         break;
-    
+
     //admin view user
     case'viewUserProfile':
         $id = filter_input(INPUT_GET, 'id');
-        $user= user_db::get_user_by_id($id);
+        $user = user_db::get_user_by_id($id);
         $comments = user_db::get_user_comments($user->getID());
-        $comment="";
+        $comment = "";
         include('views/viewUserProfile.php');
         die();
         break;
-    
+
     case'restrictionPage':
         include('views/restrictionPage.php');
         die();
         break;
-    
+
     case'openJob':
         //set job statis to open
         $id = filter_input(INPUT_POST, 'id');
@@ -1294,49 +1297,43 @@ switch ($action) {
         header("Location: index.php?action=ourJobs");
         die();
         break;
-    
+
     case'viewOtherUsers':
         //get all users
-        $users= user_db::select_all();
+        $users = user_db::select_all();
         include('views/viewOtherUsers.php');
         die();
         break;
-    
+
     //user view other user
     case'userViewUser':
         $id = filter_input(INPUT_GET, 'id');
-        $user= user_db::get_user_by_id($id);
+        $user = user_db::get_user_by_id($id);
         $comments = user_db::get_user_comments($user->getID());
-        $comment="";
+        $comment = "";
         $_SESSION['profileID'] = $id;
         include('views/userViewUser.php');
         die();
         break;
-    
+
     case'companyPortal':
         include('views/companyPortal.php');
         die();
         break;
-    
+
     case'childRoster':
         //get all children for logged in company
         $children = child_db::getChildrenByCompanyId($_SESSION['company']['companyID']);
         include('views/childRoster.php');
         die();
         break;
-    
+
     case'viewEmployees':
         //get all employees for logged in company
-        $employees= employee_db::get_employees_by_companyID($_SESSION['company']['companyID']);
+        $employees = employee_db::get_employees_by_companyID($_SESSION['company']['companyID']);
         include('views/viewEmployees.php');
         die();
         break;
-        
-    
-        
-        
-        
-        
 }
 
 
