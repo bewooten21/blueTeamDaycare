@@ -529,7 +529,7 @@ switch ($action) {
             die();
             break;
         }
-    case 'random_display_profile':
+    case 'view_profile':
         $profileID = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
         $_SESSION['profileID'] = $profileID;
         $users = user_db::get_user_by_id($profileID);
@@ -1264,6 +1264,24 @@ switch ($action) {
         header("Location: index.php?action=ourJobs");
         die();
         break;
+    
+    case'viewOtherUsers':
+        
+        $users= user_db::select_all();
+        include('views/viewOtherUsers.php');
+        die();
+        break;
+    
+    case'userViewUser':
+        $id = filter_input(INPUT_GET, 'id');
+        $user= user_db::get_user_by_id($id);
+        $comments = user_db::get_user_comments($user->getID());
+        $comment="";
+        $_SESSION['profileID'] = $id;
+        include('views/userViewUser.php');
+        die();
+        break;
+        
         
         
 }

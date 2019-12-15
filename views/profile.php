@@ -17,7 +17,7 @@
                 <h3><?php echo htmlspecialchars($_SESSION['currentUser']->getUName()); ?></h3> 
                 <p>Email: <?php echo htmlspecialchars($_SESSION['currentUser']->getEmail()); ?></p></br>
                 <?php if (isset($_SESSION['currentUser']) && $_SESSION['currentUser']->getRestricted() != 1) { ?>
-
+                    <a class="btn btn-primary btn-sml" href="index.php?action=viewOtherUsers" role="button">Others Users</a>
                     <h2>Children</h2>
 
                     <a href='index.php?action=addStudent'>Add child/student</a>

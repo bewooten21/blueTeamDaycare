@@ -44,7 +44,7 @@
                                 <input type="textarea" class="form-control" name="comment" value="<?php echo htmlspecialchars($comment); ?>">
                             </div>
                             <div class="form-group">
-                                <input type="submit" class="btn btn-default" value="Submit"><br>
+                                <input type="submit" class="btn btn-primary btn-sml" value="Submit"><br>
                             </div>      
                         </form>
                         

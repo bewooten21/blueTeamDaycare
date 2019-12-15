@@ -43,8 +43,9 @@ class feedback_db {
         $db = Database::getDB();
         $query = 'select distinct userID, uName '
                 . 'FROM userfeedback JOIN user ON '
-                . 'userfeedback.userId = user.id '
-                . 'WHERE rating < 3';
+                . 'userfeedback.userID = user.id '
+                . 'WHERE rating < 3'
+                ;
         try {
             $statement = $db->prepare($query);
             $statement->execute();

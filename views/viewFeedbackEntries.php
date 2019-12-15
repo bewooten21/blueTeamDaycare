@@ -24,13 +24,7 @@
                         foreach ($users as $user) :
                             ?>
                             <tr>
-                                <th>
-                                    <form action="index.php" method="post" target='_blank'>
-                                        <input type="hidden" name="action" value="random_display_profile">
-                                        <input type="hidden" name="id"  value="<?php echo htmlspecialchars($user[0]); ?>">
-                                        <input type="submit" class="btn btn-link" value="<?php echo htmlspecialchars($user[1]); ?>">
-                                    </form>
-                                </th>
+                                <td><a href="index.php?action=viewUserProfile&amp;id=<?php echo $user['userID']; ?>"><?php echo htmlspecialchars($user['uName']); ?></a></td>
                                 <td>
         <?php echo htmlspecialchars($userReviews[$user[0]]) ?>
                                 <td>

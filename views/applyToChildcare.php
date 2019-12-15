@@ -6,8 +6,7 @@
     </head>
     <body>
         <?php include ('nav.php'); ?>
-        <main>
-            
+        
         <div class="container" >
             <h1>Apply To <?php echo $companyName ; ?></h1>
             <div class="jumbotron"> 

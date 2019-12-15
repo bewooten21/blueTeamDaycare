@@ -31,13 +31,13 @@
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="removeFeedback">
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($entry['cFeedbackID']); ?>">
-                                <input type="submit" class="btn btn-danger" value="Remove">
+                                <input type="submit" class="btn btn-danger" style="width: 100px; height: 25px; padding-top: 2px; background-color:red;"  value="Remove">
                             </form>
                             <?php elseif ($_SESSION['targetType'] === 'user') : ?>
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="removeFeedback">
                                 <input type="hidden" name="id" value="<?php echo htmlspecialchars($entry['uFeedbackID']); ?>">
-                                <input type="submit" class="btn btn-danger" value="Remove">
+                                <input type="submit" class="btn btn-danger"  style="width: 100px; height: 25px; padding-top: 2px; background-color:red;" value="Remove">
                             </form>
                             <?php endif; ?>
                         </td>   
@@ -47,7 +47,7 @@
         </table>
         <form action="index.php" method="post">
             <input type="hidden" name="action" value="feedbackEntries">
-            <input type="submit" class="btn btn-default" value="View Feedback Entries"><br>
+            <input type="submit" class="btn btn-primary btn-sml" value="View Feedback Entries"><br>
         </form>
         </div>
         </div>

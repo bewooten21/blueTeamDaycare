@@ -6,7 +6,7 @@
     </head>
     <body>
         <?php include ('nav.php'); ?>
-        <main>
+        
             
         <div class="container" >
             <h1>Childcare Openings</h1>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>About the Blue Team</title>
+        <title>Our Jobs</title>
         <?php include ('css/css.php'); ?>   
     </head>
     <body>
