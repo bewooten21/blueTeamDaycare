@@ -26,6 +26,7 @@ if ($action === null) {
     if ($action === null) {
         $action = 'viewLogin';
     } else if(isset($_SESSION['currentUser'])){
+        //if current user is set and if restricted then redirect action if not logout, profile, or about
         if((int)$_SESSION['currentUser']->getRestricted() === 1 && $action!='logout' && $action!='displayProfile' && $action!='about'){
             $action = 'restrictionPage';
         }
@@ -415,12 +416,14 @@ switch ($action) {
         break;
 
     case 'displayAllUsers';
+        //get all users 
         $users = user_db::select_all();
         include 'views/displayAllUsers.php';
         die();
         break;
 
     case 'viewLogin';
+        //if not logged in, then send to log in
         if(!isset($_SESSION['currentUser'])){
             $users = user_db::newest_users();
 
@@ -438,6 +441,7 @@ switch ($action) {
 
         include 'views/login.php';
         }else{
+            //if logged in, send to profile
             header("Location: index.php?action=displayProfile");
         }
         
@@ -458,8 +462,11 @@ switch ($action) {
             if (password_verify($pWord, $theUser->getPWord())) {
                 $_SESSION['currentUser'] = $theUser;
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
+                //check if user is owner of company
                 $userCompany = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+                
                 if ($userCompany != false) {
+                    //if user is owner of company, then set company info into session variable
                     $_SESSION['company'] = $userCompany;
                 }
 
@@ -499,7 +506,7 @@ switch ($action) {
         if (isset($_SESSION['currentUser'])) {
             $role = $_SESSION['currentUser']->getRole();
             if ($role->getID() != 4) {
-                
+                //if not admin, then get profile info to display
                 $users = user_db::get_user_by_username($_SESSION['currentUser']->getUName());
                 $comments = user_db::get_user_comments($_SESSION['currentUser']->getID());
                 $children = child_db::get_children_byParentId($_SESSION['currentUser']->getID());
@@ -508,6 +515,7 @@ switch ($action) {
                 die();
                 break;
             } else {
+                //if admin, then get companies and direct to adminprofile
                 $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
                 include 'views/adminProfile.php';
                 die();
@@ -555,6 +563,7 @@ switch ($action) {
     case 'logout':
         session_destroy();
         $users = user_db::newest_users();
+        //unset session variables
          unset($_SESSION['currentUser']);
          unset($_SESSION['company']);
         
@@ -575,6 +584,7 @@ switch ($action) {
         break;
 
     case 'viewJobs':
+        //get jobs that are set to open
         $jobs = job_db::select_all();
         include 'views/viewJobs.php';
         die();
@@ -582,7 +592,7 @@ switch ($action) {
 
     case 'addJob':
 
-
+        //set variables for form
         $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
         $cName = "";
         $tError = "";
@@ -596,13 +606,15 @@ switch ($action) {
         break;
 
     case "addJobVal":
-
+        //val from addJob form
         include 'models/addJobVal.php';
         die();
         break;
 
     case 'viewJob':
+        //get id from link on viewJobs
         $id = filter_input(INPUT_GET, 'id');
+        //get job info
         $job = job_db::get_job_by_id($id);
         include ('views/viewJob.php');
         die();
@@ -772,6 +784,7 @@ switch ($action) {
 
     case 'viewCompanies':
         $i = 0;
+        //get all companies 
         $companies = company_db::select_all();
         $companyID = companyApproval_db::getUnapprovedCompanyIDs();
         foreach ($companies as $key => $value) {
@@ -790,6 +803,7 @@ switch ($action) {
         break;
 
     case 'viewCompanyProfile':
+        //get id from link on allCompanies
         $id = filter_input(INPUT_GET, 'id');
         $_SESSION['companyID'] = $id;
         $c = company_db::get_company_by_id($id);
@@ -803,7 +817,9 @@ switch ($action) {
         break;
 
     case 'ourJobs':
+        //get company info from userId
         $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        //get jobs associated with companyId
         $jobs = job_db::get_job_by_Companyid($company['companyID']);
 
         include('views/ourJobs.php');
@@ -811,8 +827,11 @@ switch ($action) {
         break;
 
     case 'editJob':
+        //get jobId from link on allJobs 
         $id = filter_input(INPUT_POST, 'id');
+        //get job info
         $job = job_db::get_job_by_id($id);
+        //set form variables
 
         $tError = "";
         $dError = "";
@@ -824,6 +843,7 @@ switch ($action) {
         break;
 
     case 'deleteJob':
+        //set job status to filled and remove from viewJobs view
         include('models/deleteJob.php');
         die();
         break;
@@ -834,6 +854,7 @@ switch ($action) {
         break;
 
     case 'viewChildcareOpenings' :
+        //get all companies and info where there are openings
         $openings = opening_db::select_all();
         include('views/childcareOpenings.php');
         die();
@@ -927,6 +948,7 @@ switch ($action) {
         break;
 
     case 'addStudent':
+        //set form variables
         $fName = "";
         $lName = "";
         $age = "";
@@ -943,7 +965,9 @@ switch ($action) {
         break;
 
     case 'editChild':
+        //get id from drop down and then button click
         $id = filter_input(INPUT_POST, 'stuId');
+        //get child information to populate form
         $child = child_db::get_child_byId($id);
         $fNError = "";
         $lNError = "";
@@ -952,8 +976,10 @@ switch ($action) {
         die();
         break;
     case 'editChildVal':
+        //get childId from hidden field
         $id = filter_input(INPUT_POST, 'stuId');
         $child = child_db::get_child_byId($id);
+        //get child info to populate form again if there were errors
         include('models/editChildVal.php');
         die();
         break;
@@ -1013,6 +1039,7 @@ switch ($action) {
         break;
 
     case 'editCompany':
+        //set form variables 
         $cNameError = "";
         $eCError = "";
         $cCError = "";
@@ -1028,15 +1055,7 @@ switch ($action) {
         die();
         break;
 
-    case 'viewThread':
-
-        $id = filter_input(INPUT_GET, 'id');
-        $thread = job_db::get_job_by_id($id);
-        $posts;
-        include ('views/viewJob.php');
-        die();
-        break;
-
+   
     case 'finishAppDecline' :
         $applicationID = filter_input(INPUT_POST, 'applicationID', FILTER_VALIDATE_INT);
         $companyID = filter_input(INPUT_POST, 'companyID', FILTER_VALIDATE_INT);
@@ -1072,7 +1091,9 @@ switch ($action) {
         if (!isset($_SESSION['currentUser'])) {
             header("Location: index.php?action=viewLogin");
         } else if (isset($_SESSION['currentUser'])) {
+            //get company where applying to
             $companyName = filter_input(INPUT_POST, 'companyName');
+            //get children associated with parent that arent linked to a company yet
             $children = child_db::get_children_byParentIdNotNull($_SESSION['currentUser']->getID());
 
             $companyId = filter_input(INPUT_POST, 'companyId');
@@ -1086,6 +1107,7 @@ switch ($action) {
         $student = child_db::get_child_byId($studentId);
         $companyId = filter_input(INPUT_POST, 'companyId');
         $company = company_db::get_company_by_id($companyId);
+        //check to see if child has already applied to company
         $checkChild = childcareapp_db::checkforchild_byId($companyId, $studentId);
         if ($checkChild === true) {
             childcareapp_db::addApplication('', $companyId, $studentId, $_SESSION['currentUser']->getID());
@@ -1154,6 +1176,7 @@ switch ($action) {
 
     case 'viewChildApps':
         $message = "";
+        //view all childcare applications for company
         $apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
         include('views/childcareApps.php');
         die();
@@ -1164,6 +1187,7 @@ switch ($action) {
         $child = child_db::get_child_byId($id);
         $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
         $_SESSION['company'] = $company;
+        //check to see if when approving child that new #enrolled doesnt exceed capacity
         if ($_SESSION['company']['childrenEnrolled'] < $_SESSION['company']['childCapacity']) {
             child_db::approveChild($id, $_SESSION['company']['companyID']);
             company_db::updateChildCount($_SESSION['company']['companyID']);
@@ -1181,8 +1205,10 @@ switch ($action) {
     case 'denyChildApp':
         $id = filter_input(INPUT_POST, 'id');
         $child = child_db::get_child_byId($id);
+        //remove child app
         childcareapp_db::removeChildDeny($id, $_SESSION['company']['companyID']);
         $message = "You have denied: " . $child['stuFName'] . " " . $child['stuLName'];
+        //direct back to apps
         $apps = childcareapp_db::getAppsByCompanyId($_SESSION['company']['companyID']);
         include('views/childcareApps.php');
         die();
@@ -1199,24 +1225,30 @@ switch ($action) {
         break;
 
     case 'removeSuspension':
+        //get userId from button click
         $userId = filter_input(INPUT_POST, 'userId');
+        //remove user restriction
         user_db::removeRestriction($userId);
         header("Location: index.php?action=displayAllUsers");
         die();
         break;
 
     case 'suspend':
+        //get userId from button click
         $userId = filter_input(INPUT_POST, 'userId');
+        //restrict user
         user_db::restrictUser($userId);
         header("Location: index.php?action=displayAllUsers");
         die();
         break;
 
     case 'adminEditUser':
+        //get all roles for drop down
         $roles = role_db::select_all();
         $userId = filter_input(INPUT_POST, 'userId');
-        
+        //get user info
         $user = user_db::get_user_by_id($userId);
+        //get user info to populate form
         $roleName= role_db::get_role_by_id($user->getID());
         $fnError = "";
         $lnError = "";
@@ -1230,6 +1262,7 @@ switch ($action) {
         die();
         break;
     
+    //company profile view for users
     case 'viewCompanyProfileUser':
         $id = filter_input(INPUT_GET, 'id');
         $_SESSION['companyID'] = $id;
@@ -1246,6 +1279,7 @@ switch ($action) {
          die();
         break;
     
+    //admin view user
     case'viewUserProfile':
         $id = filter_input(INPUT_GET, 'id');
         $user= user_db::get_user_by_id($id);
@@ -1261,6 +1295,7 @@ switch ($action) {
         break;
     
     case'openJob':
+        //set job statis to open
         $id = filter_input(INPUT_POST, 'id');
         job_db::open_job($id);
         header("Location: index.php?action=ourJobs");
@@ -1268,12 +1303,13 @@ switch ($action) {
         break;
     
     case'viewOtherUsers':
-        
+        //get all users
         $users= user_db::select_all();
         include('views/viewOtherUsers.php');
         die();
         break;
     
+    //user view other user
     case'userViewUser':
         $id = filter_input(INPUT_GET, 'id');
         $user= user_db::get_user_by_id($id);
@@ -1290,12 +1326,14 @@ switch ($action) {
         break;
     
     case'childRoster':
+        //get all children for logged in company
         $children = child_db::getChildrenByCompanyId($_SESSION['company']['companyID']);
         include('views/childRoster.php');
         die();
         break;
     
     case'viewEmployees':
+        //get all employees for logged in company
         $employees= employee_db::get_employees_by_companyID($_SESSION['company']['companyID']);
         include('views/viewEmployees.php');
         die();
