@@ -28,7 +28,8 @@ class child_db {
         $db = Database::getDB();
 
         $query = 'SELECT * from student
-                WHERE parentId = :id';
+                WHERE parentId = :id
+                ORDER by age';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $id);
@@ -106,7 +107,8 @@ class child_db {
 
         $query = 'SELECT * from student
                 WHERE parentId = :id
-                 AND companyId is null';
+                 AND companyId is null
+                 ORDER by age';
 
         $statement = $db->prepare($query);
         $statement->bindValue(':id', $id);

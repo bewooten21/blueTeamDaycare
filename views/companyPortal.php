@@ -27,6 +27,9 @@
                     <br>
                     <br>
                     <a class="btn btn-primary btn-sml" href="index.php?action=viewEmployees" role="button">Our Employees</a>
+                    <br>
+                    <br>
+                    <a class="btn btn-primary btn-sml" href="index.php?action=editCompany" role="button">Edit Company</a>
                 </div>
             </div>
         </div>
