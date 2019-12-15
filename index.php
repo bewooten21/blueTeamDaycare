@@ -1183,8 +1183,11 @@ switch ($action) {
         if ($_SESSION['company']['childrenEnrolled'] < $_SESSION['company']['childCapacity']) {
             child_db::approveChild($id, $_SESSION['company']['companyID']);
             company_db::updateChildCount($_SESSION['company']['companyID']);
+            //display success message
             childcareapp_db::removeChildSuccess($id);
+            //get new company info
             $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+            //reset company session variable
             $_SESSION['company'] = $company;
             $message = "You have approved: " . $child['stuFName'] . " " . $child['stuLName'];
         } else {
@@ -1212,8 +1215,11 @@ switch ($action) {
         $studentId = filter_input(INPUT_POST, 'studentId');
         child_db::setCompanyIdToNull($studentId);
         company_db::updateChildCountRemove($_SESSION['company']['companyID']);
+        //get child info
         $child = child_db::get_child_byId($studentId);
+        //get new company info
         $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        //reset company session variable
         $_SESSION['company'] = $company;
         $message = "You have removed " . $child['stuFName'] . " " . $child['stuLName'] . " from your child roster.";
         include('views/removeChildSuccess.php');
