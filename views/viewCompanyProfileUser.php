@@ -35,23 +35,23 @@
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $owner->getFName() . ' ' . $owner->getLName(); ?></h3>
+                        <h4><?php echo $owner->getFName() . ' ' . $owner->getLName(); ?></h4>
                         <p></p>
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getChildCapacity(); ?></h3>
+                        <h4><?php echo $c->getChildCapacity(); ?></h4>
                         <p></p>
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getChildrenEnrolled(); ?></h3>
+                        <h4><?php echo $c->getChildrenEnrolled(); ?></h4>
                         <p>
                         </p>
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getOverallRating(); ?></h3>
+                        <h4><?php echo $c->getOverallRating(); ?><span> (# of ratings <?php echo $c->getRatingsCount(); ?>)</span></h4>
                         <p>
                         </p>
                     </div>

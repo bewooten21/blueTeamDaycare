@@ -1238,6 +1238,8 @@ switch ($action) {
         $employees = employee_db::get_employees_by_companyID($id);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
         $children = child_db::getChildrenByCompanyId($_SESSION['companyID']);
+        $ratingsCount = feedback_db::getCompanyReviewCount($c->getID());
+        $c->setRatingsCount($ratingsCount);
 
         
         include('views/viewCompanyProfileUser.php');

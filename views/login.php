@@ -7,7 +7,8 @@
     </head>
     <body>
         <?php include ('nav.php'); ?>
-        
+        <br>
+        <div class="container">
         <main class="text-center">
                             
                 <form class="form-signin" action="index.php" method="post">
@@ -27,6 +28,7 @@
 </form>
             
         </main>
+        </div>
         <?php include ('footer.php'); ?>
     </body>
 </html>

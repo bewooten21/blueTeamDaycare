@@ -26,7 +26,7 @@
                         <h3>Rating</h3>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" >
                     <div class="col-md-2">
                         <h3><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo $c->getID(); ?>"><?php echo $c->getCompanyName(); ?></a></h3>
                         <p>
@@ -35,23 +35,23 @@
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $owner->getFName() . ' ' . $owner->getLName(); ?></h3>
+                        <h4><?php echo $owner->getFName() . ' ' . $owner->getLName(); ?></h4>
                         <p></p>
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getChildCapacity(); ?></h3>
+                        <h4><?php echo $c->getChildCapacity(); ?></h4>
                         <p></p>
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getChildrenEnrolled(); ?></h3>
+                        <h4><?php echo $c->getChildrenEnrolled(); ?></h4>
                         <p>
                         </p>
                     </div>
                     <div class="col-md-2">
                         <span class="" aria-hidden="true"></span>
-                        <h3><?php echo $c->getOverallRating(); ?></h3>
+                        <h4><?php echo $c->getOverallRating(); ?></h4>
                         <p>
                         </p>
                     </div>
