@@ -61,7 +61,12 @@
   
   </tbody>
 </table>
+                <a class="btn btn-primary btn-lg" href="index.php?action=addJob" role="button">Add Job</a>
+                <br>
+                <br><a class="btn btn-primary btn-sml" href="index.php?action=companyPortal" role="button">Back To Portal</a>
             </div>
+            
+            
         </div>
             <?php include ('footer.php'); ?>
     </body>

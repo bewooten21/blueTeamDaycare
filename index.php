@@ -1283,6 +1283,26 @@ switch ($action) {
         include('views/userViewUser.php');
         die();
         break;
+    
+    case'companyPortal':
+        include('views/companyPortal.php');
+        die();
+        break;
+    
+    case'childRoster':
+        $children = child_db::getChildrenByCompanyId($_SESSION['company']['companyID']);
+        include('views/childRoster.php');
+        die();
+        break;
+    
+    case'viewEmployees':
+        $employees= employee_db::get_employees_by_companyID($_SESSION['company']['companyID']);
+        include('views/viewEmployees.php');
+        die();
+        break;
+        
+    
+        
         
         
         

@@ -27,17 +27,16 @@
             role="button"
             aria-haspopup="true"
             aria-expanded="false"
-            >Jobs<span class="caret"></span
+            >Openings<span class="caret"></span
           ></a>
           <ul class="dropdown-menu">
             
             <li><a href="index.php?action=viewJobs">View Jobs</a></li>
-            
-            
-            
+            <li><a href='index.php?action=viewChildcareOpenings'>Childcare Openings</a></li>
+
           </ul>
         </li>
-        <li><a href='index.php?action=viewChildcareOpenings'>Childcare Openings</a></li>
+        
         <li><a href='index.php?action=viewCompanies'>Companies</a></li>
         <?php if(isset($_SESSION['company'])) { ?>
         <li class="dropdown">
@@ -51,6 +50,7 @@
             ><?php echo $_SESSION['company']['companyName'] ;?><span class="caret"></span
         ></a>
           <ul class="dropdown-menu">
+              <li><a href="index.php?action=companyPortal">Company Portal</a></li>
               <li><a href="index.php?action=viewCompanyProfile&amp;id=<?php echo $_SESSION['company']['companyID']; ?>">Company Profile</a></li>
             <li><a href="index.php?action=addJob">Add Job</a></li>
             
@@ -66,7 +66,7 @@
         <?php if ($_SESSION['currentUser']->getRole()->getType()==="administrator") { ?>
             <li><a href='index.php?action=displayProfile'>Admin Portal</a></li>
        <?php } else {?> 
-        <li><a href='index.php?action=displayProfile'>Profile</a></li>
+            <li><a href='index.php?action=displayProfile'><span class="glyphicon glyphicon-user"></span>Profile</a></li>
        <?php }?>
         <li><a href='index.php?action=logout'>Logout</a></li>
         <?php else: ?>
