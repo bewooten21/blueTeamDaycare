@@ -473,14 +473,7 @@ switch ($action) {
                 $role = $_SESSION['currentUser']->getRole();
                 $children = child_db::get_children_byParentId($_SESSION['currentUser']->getID());
                 if ($role->getID() != 4) {
-                    $reviewCount = feedback_db::getUserReviewCount($theUser->getID());
-                    if ($reviewCount[0] >= 5) {
-                        user_db::restrictUser($_SESSION['currentUser']->getID());
-                        $_SESSION['currentUser']->setRestricted(1);
-                    } else if ($_SESSION['currentUser']->getRestricted() === 1 ) {
-                        user_db::removeRestriction($_SESSION['currentUser']->getID());
-                        $_SESSION['currentUser']->setRestricted(1);
-                    }
+                    
                     include 'views/profile.php';
                 } else {
                     $pendingCompanies = companyApproval_db::getUnprocessedCompanies();
