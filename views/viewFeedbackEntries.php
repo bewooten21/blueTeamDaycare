@@ -76,6 +76,10 @@
                             <tr>
                                 <th>
                                     <?php echo htmlspecialchars($company[0]); ?>
+                                    <?php if ((int)$companyReviews[$company[0]] >=5 ) { ?>
+                                    <div class="flagged">
+                                    <?php echo "   FLAGGED!"; ?>
+                                    <?php } ?>
                                 </th>
                                 <td>
         <?php echo htmlspecialchars($companyReviews[$company[0]]) ?>
