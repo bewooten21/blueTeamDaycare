@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 14, 2019 at 08:42 PM
+-- Generation Time: Dec 15, 2019 at 09:28 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -45,8 +45,13 @@ CREATE TABLE `application` (
 INSERT INTO `application` (`applicationID`, `jobID`, `isProcessed`, `isApproved`, `coverLetter`, `resume`, `userID`) VALUES
 (1, 1, 1, 1, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
 (2, 1, 0, 0, 'bwooten-1-cover-letter.pdf', 'bwooten-1-resume.pdf', 2),
-(3, 1, 0, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
-(8, 6, 1, 1, 'bwooten-6-cover-letter.pdf', 'bwooten-6-resume.pdf', 2);
+(3, 1, 1, 0, 'tstading-1-cover-letter.pdf', 'tstading-1-resume.pdf', 1),
+(8, 6, 1, 1, 'bwooten-6-cover-letter.pdf', 'bwooten-6-resume.pdf', 2),
+(9, 2, 1, 1, '', '', 4),
+(10, 1, 0, 0, '', '', 4),
+(11, 8, 0, 0, '', '', 2),
+(12, 7, 0, 0, '', '', 2),
+(13, 6, 0, 0, '', '', 2);
 
 -- --------------------------------------------------------
 
@@ -60,6 +65,15 @@ CREATE TABLE `childcareapp` (
   `studentId` int(11) NOT NULL,
   `parentId` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `childcareapp`
+--
+
+INSERT INTO `childcareapp` (`appId`, `companyId`, `studentId`, `parentId`) VALUES
+(16, 4, 5, 2),
+(17, 4, 4, 2),
+(18, 1, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -85,7 +99,10 @@ INSERT INTO `comments` (`commentID`, `profileID`, `comment`, `commenterID`, `com
 (2, 4, 'This is a test.', 3, 'csterup', '2019-10-27 19:42:53'),
 (3, 2, 'Final deafault comment.', 1, 'tstading', '2019-10-27 18:54:16'),
 (4, 2, 'dfgdfgf', 4, 'gray', '2019-12-14 17:41:44'),
-(7, 2, '', 4, 'gray', '2019-12-14 17:46:27');
+(7, 2, '', 4, 'gray', '2019-12-14 17:46:27'),
+(8, 1, 'dfgdfgf', 2, 'bwooten', '2019-12-15 00:34:38'),
+(9, 2, 'dfgdfgf', 4, 'gray', '2019-12-15 00:59:25'),
+(10, 7, '\"<script>alert(\'test\');</script>', 2, 'bwooten', '2019-12-15 16:59:54');
 
 -- --------------------------------------------------------
 
@@ -109,10 +126,11 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`companyID`, `companyName`, `employeeCount`, `childCapacity`, `childrenEnrolled`, `overallRating`, `ownerID`, `companyImage`) VALUES
-(1, 'Tots R Us', 4, 15, 2, 3.88, 1, 'images/default-company.jpg'),
-(2, 'Tinder Tots', 10, 35, 12, 3.38, 1, 'images/default-company.jpg'),
-(3, 'Sprouts', 1, 0, 0, 0, 3, 'images/default-company.jpg'),
-(4, 'Daycare Care', 14, 29, 28, 0, 2, 'images/default-company.jpg');
+(1, 'Tots R Us', 4, 15, 2, 1.11, 1, 'images/default-company.jpg'),
+(2, 'Tinder Tots', 10, 35, 12, 1.5, 1, 'images/default-company.jpg'),
+(3, 'Sprouts', 1, 0, 0, 0.8, 3, 'images/default-company.jpg'),
+(4, 'Daycare Care', 14, 29, 23, 0, 2, 'images/default-company.jpg'),
+(5, 'Daycare CareEdit', 12, 23, 21, 0, 7, 'images/default-company.jpg');
 
 -- --------------------------------------------------------
 
@@ -134,7 +152,8 @@ CREATE TABLE `companyapproval` (
 INSERT INTO `companyapproval` (`compApprovalID`, `companyID`, `isApproved`, `isProcessed`) VALUES
 (1, 1, 1, 1),
 (2, 2, 1, 1),
-(3, 3, 1, 1);
+(3, 3, 1, 1),
+(4, 5, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -155,13 +174,19 @@ CREATE TABLE `companyfeedback` (
 --
 
 INSERT INTO `companyfeedback` (`cFeedbackID`, `raterID`, `companyID`, `feedback`, `rating`) VALUES
-(2, 2, 3, 'Test', 3.2),
 (3, 2, 1, '', 3.75),
 (4, 2, 1, '', 4),
 (5, 2, 2, '', 4.5),
 (6, 2, 2, '', 4.5),
 (7, 2, 2, '', 4.5),
-(9, 2, 2, '', 0);
+(14, 2, 2, '', 0),
+(16, 2, 1, '', 0),
+(17, 2, 2, '', 0),
+(18, 1, 4, '', 0),
+(27, 2, 1, '', 0),
+(28, 2, 1, '', 0),
+(29, 2, 1, '', 0),
+(32, 2, 1, '', 0);
 
 -- --------------------------------------------------------
 
@@ -181,7 +206,8 @@ CREATE TABLE `employee` (
 
 INSERT INTO `employee` (`empID`, `applicationID`, `hireDate`) VALUES
 (10000, 2, '2019-11-20 21:43:05'),
-(10004, 8, '2019-12-14 18:45:28');
+(10004, 8, '2019-12-14 18:45:28'),
+(10005, 9, '2019-12-14 19:56:42');
 
 -- --------------------------------------------------------
 
@@ -204,11 +230,12 @@ CREATE TABLE `job` (
 --
 
 INSERT INTO `job` (`jobID`, `companyID`, `jobName`, `jobDescription`, `jobRequirements`, `applicationSlots`, `status`) VALUES
-(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 14, 'open'),
-(2, 1, 'Daycare Manager', 'Supervise daycare staff and aid in administrative work. ', 'At least 3 years of experience in child care. \r\nPrevious experience with leadership roles preferred. ', 5, 'open'),
+(1, 1, 'Daycare Worker', 'Duties.', '-Good social skills\r\n-No criminal history\r\n-Enjoys working with children', 13, 'open'),
+(2, 1, 'Daycare Manager', 'Supervise daycare staff and aid in administrative work. ', 'At least 3 years of experience in child care. \r\nPrevious experience with leadership roles preferred. ', 3, 'open'),
 (3, 3, 'Manager', 'Manage tinder tots', 'Associates', 4, 'open'),
-(6, 4, 'Job Title', 'JOb Des', 'Associates', -2, 'filled'),
-(7, 4, 'test', 'test', 'test', NULL, 'filled');
+(6, 4, 'Job Title', 'JOb Des', 'Associates', -3, 'filled'),
+(7, 4, 'test', 'test', 'test', -1, 'open'),
+(8, 4, 'Manager', 'JOb Des', 's working with children', -1, 'filled');
 
 -- --------------------------------------------------------
 
@@ -252,7 +279,8 @@ CREATE TABLE `student` (
 
 INSERT INTO `student` (`studentId`, `parentId`, `companyId`, `stuFName`, `stuLName`, `age`) VALUES
 (3, 2, 4, 'Teddy', 'Tedders', 1),
-(4, 2, 4, 'Billy', 'Billerson2', 9);
+(4, 2, NULL, 'Billy', 'Billerson', 9),
+(5, 2, NULL, 'Chad', 'Chadders', 4);
 
 -- --------------------------------------------------------
 
@@ -281,7 +309,7 @@ INSERT INTO `user` (`id`, `fName`, `lName`, `email`, `uName`, `pWord`, `image`, 
 (2, 'Brad', 'Wooten', 'bwooten@gmail.com', 'bwooten', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 2, 0),
 (3, 'Cody', 'Sterup', 'csterup@hotmail.net', 'csterup', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 3, 0),
 (4, 'Glenn', 'Ray', 'gray@my.southeast.edu', 'gray', '$2y$10$c3UvY71xOol1xQOGyq6M9.j5BiHoa/TuS73zrpb2eu.z/owiUY4lm', 'images/default.jpg', 4, 0),
-(5, 'Teddy', 'Bundy', 'bew@hotmail.com', 'ted21', '$2y$10$cKhdB65HFtsfFUdNDU0y.u9DAVracbWM85zTAyF1uNQhrSue7UoFe', 'images/default.jpg', NULL, 0);
+(7, 'Teddy', 'Bundy', 'bew2@hotmail.com', 'tb21', '$2y$10$8Ehq5D.oRqs55hoXy6nT3.MeOqH5JgYv3w6PMFdwBxaGtnfMKTqB2', 'images/tb21.jpg', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -302,8 +330,16 @@ CREATE TABLE `userfeedback` (
 --
 
 INSERT INTO `userfeedback` (`uFeedbackID`, `raterID`, `userID`, `feedback`, `rating`) VALUES
-(1, 1, 2, 'test', 2.5),
-(2, 1, 2, 'test', 2.5);
+(5, 2, 7, '', 0),
+(7, 2, 3, '', 0),
+(9, 2, 1, '', 0),
+(10, 2, 1, '', 0),
+(16, 2, 7, '', 0),
+(17, 2, 7, '', 0),
+(18, 2, 7, '', 0),
+(20, 2, 3, '', 0),
+(21, 2, 3, '', 0),
+(22, 2, 7, '', 0);
 
 --
 -- Indexes for dumped tables
@@ -408,49 +444,49 @@ ALTER TABLE `userfeedback`
 -- AUTO_INCREMENT for table `application`
 --
 ALTER TABLE `application`
-  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `applicationID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `childcareapp`
 --
 ALTER TABLE `childcareapp`
-  MODIFY `appId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `appId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `commentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `companyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `companyID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `companyapproval`
 --
 ALTER TABLE `companyapproval`
-  MODIFY `compApprovalID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `compApprovalID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `companyfeedback`
 --
 ALTER TABLE `companyfeedback`
-  MODIFY `cFeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `cFeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10005;
+  MODIFY `empID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10006;
 
 --
 -- AUTO_INCREMENT for table `job`
 --
 ALTER TABLE `job`
-  MODIFY `jobID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `jobID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `role`
@@ -462,19 +498,19 @@ ALTER TABLE `role`
 -- AUTO_INCREMENT for table `student`
 --
 ALTER TABLE `student`
-  MODIFY `studentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `studentId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `userfeedback`
 --
 ALTER TABLE `userfeedback`
-  MODIFY `uFeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `uFeedbackID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
