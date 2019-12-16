@@ -14,7 +14,21 @@ class opening_db {
 
         return $rows;
     }
+    
+    public static function select_allApproved() {
+        $db = Database::getDB();
 
+        $queryUsers = 'SELECT * FROM company JOIN companyapproval ON
+                        company.companyID= companyapproval.companyID
+                       WHERE  company.childCapacity - company.childrenEnrolled > 0 && companyapproval.isProcessed =1'
+                ;
+        $statement = $db->prepare($queryUsers);
+        $statement->execute();
+        $rows = $statement->fetchAll();
+        
+
+        return $rows;
+    }
     public static function get_opening_by_id($id) {
         $db = Database::getDB();
         $query = 'SELECT *

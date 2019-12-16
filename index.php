@@ -847,7 +847,7 @@ switch ($action) {
 
     case 'viewChildcareOpenings' :
         //get all companies and info where there are openings
-        $openings = opening_db::select_all();
+        $openings = opening_db::select_allApproved();
         include('views/childcareOpenings.php');
         die();
         break;
