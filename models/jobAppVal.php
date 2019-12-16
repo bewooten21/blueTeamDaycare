@@ -40,6 +40,8 @@ if ($_FILES['coverLetter']['name'] != '') {
         $coverLetter_file_name = $_SESSION['currentUser']->getUName() . '-' . $job->getId() . '-cover-letter' . '.' . $file_ext;
         move_uploaded_file($file_tmp, "coverLetters/" . $coverLetter_file_name);
     }
+} else{
+    $error_message['coverLetter'] = "You must upload a cover letter";
 }
 // validate resume
 if ($_FILES['resume']['name'] != '') {
@@ -65,6 +67,8 @@ if ($_FILES['resume']['name'] != '') {
         $resume_file_name = $_SESSION['currentUser']->getUName() . '-' . $job->getId() . '-resume' . '.' . $file_ext;
         move_uploaded_file($file_tmp, "resumes/" . $resume_file_name);
     }
+} else {
+    $error_message['resume'] = "You must upload a resume";
 }
 // if an error message exists, go to the index page
 if ($error_message['resume'] != '' || $error_message['coverLetter'] != '' || $error_message['jobId'] != '') {
