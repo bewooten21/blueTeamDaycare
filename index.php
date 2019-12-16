@@ -997,7 +997,17 @@ switch ($action) {
         $job = job_db::get_job($jobID);
         $applicationSlots = $job->getApplicationSlots() - 1;
         job_db::update_application_slot($job->getId(), $applicationSlots);
+        
+        // update company database
+        $empCount = company_db::getEmployeeCount($companyID);
+        $empCount['employeeCount'] += 1;
+        company_db::updateEmployeeCount($companyID, $empCount['employeeCount']);
 
+        //get new company info
+        $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        //reset company session variable
+        $_SESSION['company'] = $company;
+        
         $applicant = user_db::get_user_by_id(application_db::get_application_by_id($applicationID)->getUserID());
         // check if user is a basic user if not other roles supercede
         if ($applicant->getRole()->getID() === 1) {
@@ -1338,6 +1348,27 @@ switch ($action) {
         //get all employees for logged in company
         $employees = employee_db::get_employees_by_companyID($_SESSION['company']['companyID']);
         include('views/viewEmployees.php');
+        die();
+        break;
+    
+    case 'fireEmployee':
+        $empId = filter_input(INPUT_POST, 'empId');
+        employee_db::updateExitDate($empId);
+        
+        // update company database
+        $empCount = company_db::getEmployeeCount($_SESSION['company']['companyID']);
+        $empCount['employeeCount'] -= 1;
+        company_db::updateEmployeeCount($_SESSION['company']['companyID'], $empCount['employeeCount']);
+        
+        // get employee info 
+        $emp = employee_db::get_employee_by_id($empId);
+        
+        //get new company info
+        $company = company_db::get_company_by_ownerId($_SESSION['currentUser']->getID());
+        //reset company session variable
+        $_SESSION['company'] = $company;
+        $message = $emp["fName"] . " " . $emp["lName"] . " has exited your company.";
+        include('views/removeChildSuccess.php');
         die();
         break;
 }

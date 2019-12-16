@@ -120,10 +120,14 @@
                     <th scope="col">Position</th>
                     <th scope="col">Name of Employee</th>
                     <th scope="col">Date Hired</th>
+                    <?php if ($_SESSION['currentUser']->getID() == $owner->getID()) : ?>
+                    <th scope="col"></th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
 <?php foreach ($employees as $employee) : ?>
+                <?php if ($employee['exitDate'] === NULL) : ?>
                     <tr>
                         <th>
                             <a href="index.php?action=viewJob&amp;id=<?php echo $employee["jobID"]; ?>" target="_blank">
@@ -131,8 +135,18 @@
                             </a>
                         </th>
                         <td><?php echo htmlspecialchars($employee["fName"] . ' ' . $employee["lName"]); ?></td>
-                        <td><?php echo htmlspecialchars($employee["hireDate"]); ?></td>     
+                        <td><?php echo htmlspecialchars($employee["hireDate"]); ?></td>  
+                        <?php if ($_SESSION['currentUser']->getID() == $owner->getID()) : ?>
+                        <td>
+                            <form action="index.php" method="post">
+                                <input type="hidden" name="action" value="fireEmployee">
+                                <input type="hidden" name="empId" value="<?php echo htmlspecialchars($employee['empID']); ?>">
+                                <input type="submit" class="btn btn-default" style="background-color: red;" value="Remove"><br>
+                            </form>
+                        </td>
+                        <?php endif; ?>
                     </tr>
+                    <?php endif; ?>
 <?php endforeach; ?>
             </tbody>
         </table>
@@ -143,8 +157,9 @@
                 <tr>
                     <th scope="col">Name</th>
                     <th scope="col">Age</th>
-                    
+                    <?php if ($_SESSION['currentUser']->getID() == $owner->getID()) : ?>
                     <th scope="col"></th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <?php foreach ($children as $c) : ?>
@@ -154,6 +169,7 @@
                         
                         <td><?php echo $c['stuFName']. " ". $c['stuLName']; ?></td>
                         <td> <?php echo $c['age']; ?></td>
+                        <?php if ($_SESSION['currentUser']->getID() == $owner->getID()) : ?>
                         <td>
                             <form action="index.php" method="post">
                                 <input type="hidden" name="action" value="removeChild">
@@ -161,6 +177,7 @@
                                 <input type="submit" class="btn btn-default" style="background-color: red;" value="Remove"><br>
                             </form>
                         </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
 

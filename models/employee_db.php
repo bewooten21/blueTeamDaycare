@@ -4,7 +4,12 @@ class employee_db {
     public static function get_employee_by_id($id) {
         $db = Database::getDB();
         $query = 'SELECT *
-              FROM employee
+              FROM employee JOIN application ON
+            employee.applicationID=application.applicationID
+            JOIN job ON
+            application.jobID=job.jobID
+            JOIN user ON
+            application.userID=user.id
               WHERE empID= :id';
 
         $statement = $db->prepare($query);
@@ -61,6 +66,20 @@ class employee_db {
         }
     }   
 
+    public static function updateExitDate($empId){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE employee
+                  SET exitDate = CURRENT_TIMESTAMP
+                  WHERE empId = :empId';
+        
+            $statement = $db->prepare($query);
+            $statement->bindValue(':empId', $empId);
+            $statement->execute();
+            $statement->closeCursor();
+    }
+    
     public static function delete_by_ID($id) {
         $db = Database::getDB();
         $query = 'DELETE from employee WHERE empID= :id';

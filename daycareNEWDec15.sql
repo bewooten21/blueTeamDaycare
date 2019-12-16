@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 15, 2019 at 09:28 PM
+-- Generation Time: Dec 16, 2019 at 06:56 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -21,6 +21,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `daycare`
 --
+CREATE DATABASE IF NOT EXISTS `daycare` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `daycare`;
 
 -- --------------------------------------------------------
 
@@ -197,17 +199,18 @@ INSERT INTO `companyfeedback` (`cFeedbackID`, `raterID`, `companyID`, `feedback`
 CREATE TABLE `employee` (
   `empID` int(11) NOT NULL,
   `applicationID` int(11) NOT NULL,
-  `hireDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `hireDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `exitDate` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empID`, `applicationID`, `hireDate`) VALUES
-(10000, 2, '2019-11-20 21:43:05'),
-(10004, 8, '2019-12-14 18:45:28'),
-(10005, 9, '2019-12-14 19:56:42');
+INSERT INTO `employee` (`empID`, `applicationID`, `hireDate`, `exitDate`) VALUES
+(10000, 2, '2019-11-20 21:43:05', NULL),
+(10004, 8, '2019-12-14 18:45:28', NULL),
+(10005, 9, '2019-12-14 19:56:42', NULL);
 
 -- --------------------------------------------------------
 

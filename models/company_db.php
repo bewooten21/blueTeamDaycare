@@ -313,4 +313,37 @@ class company_db {
             $statement->closeCursor();
     }
     
+    public static function getEmployeeCount($id){
+        $db = Database::getDB();
+        $query = 'select employeeCount from company where companyID = :id';
+        try {
+            $statement = $db->prepare($query);
+            $statement->bindValue(':id', $id);
+            $statement->execute();
+            $empCount = $statement->fetch();
+            $statement->closeCursor();
+            return $empCount;
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            include('database_error.php');
+        }
+    }
+    
+    public static function updateEmployeeCount($companyId, $employeeCount){
+        
+        $db = Database::getDB();
+        
+        $query = 'UPDATE company
+                  SET employeeCount = :employeeCount
+                  WHERE companyID = :companyId
+                  ';
+        
+       
+            $statement = $db->prepare($query);
+            $statement->bindValue(':employeeCount', $employeeCount);
+            $statement->bindValue(':companyId', $companyId);
+             $statement->execute();
+            $statement->closeCursor();
+    }
+    
 }
