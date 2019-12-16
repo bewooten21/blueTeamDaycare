@@ -800,7 +800,7 @@ switch ($action) {
         $_SESSION['companyID'] = $id;
         $c = company_db::get_company_by_id($id);
         $jobs = job_db::get_job_by_Companyid($id);
-        $employees = employee_db::get_employees_by_companyID($id);
+        $employees = employee_db::get_employees_by_companyID($_SESSION['company']['companyID']);
         $owner = user_db::get_user_by_id($c->getOwnerID()->getID());
         $children = child_db::getChildrenByCompanyId($_SESSION['companyID']);
 
